@@ -13,7 +13,7 @@ namespace ValhallaVaultCyberAwareness.Domain.Models
         public string Name { get; set; } = null!;
 
         //Navigation property
-        List<SegmentModel> Segments = new();
+        public List<SegmentModel> Segments = new();
 
     }
 }

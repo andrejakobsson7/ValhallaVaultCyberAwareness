@@ -12,7 +12,12 @@ namespace ValhallaVaultCyberAwareness.Domain.Models
         [Column("question")]
         public string Question { get; set; } = null!;
 
+        [Column("subcategory_id")]
+        public int SubCategoryId { get; set; }
+
         //Navigation properties
+
+        public SubCategoryModel SubCategory { get; set; } = null!;
         public List<AnswerModel> Answers { get; set; } = new();
     }
 }
