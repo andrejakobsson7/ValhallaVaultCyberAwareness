@@ -17,4 +17,8 @@
     <PackageReference Include="Newtonsoft.json" Version="13.0.3" />
   </ItemGroup>
 
+  <ItemGroup>
+    <None Include="wwwroot\Images\Logo.jpg" />
+  </ItemGroup>
+
 </Project>
