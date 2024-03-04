@@ -1,5 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using ValhallaVaultCyberAwareness.Data;
+using ValhallaVaultCyberAwareness.Domain.Models;
+using ValhallaVaultCyberAwareness.Repositories;
+
 
 namespace ValhallaVaultCyberAwareness.Controllers
 {
@@ -7,24 +9,22 @@ namespace ValhallaVaultCyberAwareness.Controllers
     [ApiController]
     public class QuestionController : ControllerBase
     {
-        ApplicationDbContext _context;
-
-        public QuestionController(ApplicationDbContext context)
+        QuestionRepository _questionRepo;
+        public QuestionController(QuestionRepository questionRepo)
         {
-            _context = context;
+            _questionRepo = questionRepo;
         }
 
-        //[HttpGet]
-        //public ActionResult<List<QuestionModel>> GetAllQuestions()
-        //{
+        [HttpGet]
+        public ActionResult<List<QuestionModel>> GetAllQuestionsPerSubCategory(int subCategoryId)
+        {
+            var questions = _questionRepo.GetAllQuestionsSubCategory(subCategoryId);
 
-        //}
-
-
-        //[HttpGet]
-        //public ActionResult<List<QuestionModel>> GetAllQuestionsPerSegment()
-        //{
-
-        //}
+            if (questions != null)
+            {
+                return Ok(questions);
+            }
+            return BadRequest();
+        }
     }
 }
