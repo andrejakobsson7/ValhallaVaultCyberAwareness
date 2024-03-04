@@ -50,4 +50,3 @@ namespace ValhallaVaultCyberAwareness.Client.Services
 
 
 }
-}
