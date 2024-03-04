@@ -1,0 +1,37 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.8.34316.72
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ValhallaVaultCyberAwareness", "ValhallaVaultCyberAwareness\ValhallaVaultCyberAwareness\ValhallaVaultCyberAwareness.csproj", "{C94C5F5B-ED53-4899-8D8C-38A2BC77356E}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ValhallaVaultCyberAwareness.Client", "ValhallaVaultCyberAwareness\ValhallaVaultCyberAwareness.Client\ValhallaVaultCyberAwareness.Client.csproj", "{EED9A68B-09A7-409C-B8AD-7368E2372C35}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ValhallaVaultCyberAwareness.Domain", "ValhallaVaultCyberAwareness.Domain\ValhallaVaultCyberAwareness.Domain.csproj", "{2232BFCE-6531-480C-9686-D7CFAB0664E7}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{C94C5F5B-ED53-4899-8D8C-38A2BC77356E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C94C5F5B-ED53-4899-8D8C-38A2BC77356E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C94C5F5B-ED53-4899-8D8C-38A2BC77356E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C94C5F5B-ED53-4899-8D8C-38A2BC77356E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{EED9A68B-09A7-409C-B8AD-7368E2372C35}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EED9A68B-09A7-409C-B8AD-7368E2372C35}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EED9A68B-09A7-409C-B8AD-7368E2372C35}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EED9A68B-09A7-409C-B8AD-7368E2372C35}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2232BFCE-6531-480C-9686-D7CFAB0664E7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2232BFCE-6531-480C-9686-D7CFAB0664E7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2232BFCE-6531-480C-9686-D7CFAB0664E7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2232BFCE-6531-480C-9686-D7CFAB0664E7}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {D9D11BDD-5273-4804-9A11-56BC949F0807}
+	EndGlobalSection
+EndGlobal
