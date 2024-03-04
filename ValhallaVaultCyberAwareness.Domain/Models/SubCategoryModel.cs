@@ -17,5 +17,7 @@ namespace ValhallaVaultCyberAwareness.Domain.Models
 
         //Navigation property
         public SegmentModel Segment { get; set; } = null!;
+
+        public List<QuestionModel> Questions { get; set; } = new();
     }
 }

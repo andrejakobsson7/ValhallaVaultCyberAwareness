@@ -17,5 +17,7 @@ namespace ValhallaVaultCyberAwareness.Domain.Models
 
         //Navigation property
         public CategoryModel Category { get; set; } = null!;
+
+        public List<SubCategoryModel> SubCategories { get; set; } = new();
     }
 }
