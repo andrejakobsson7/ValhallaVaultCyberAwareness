@@ -3,11 +3,11 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.8.34316.72
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ValhallaVaultCyberAwareness", "ValhallaVaultCyberAwareness\ValhallaVaultCyberAwareness\ValhallaVaultCyberAwareness.csproj", "{C94C5F5B-ED53-4899-8D8C-38A2BC77356E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ValhallaVaultCyberAwareness", "ValhallaVaultCyberAwareness\ValhallaVaultCyberAwareness\ValhallaVaultCyberAwareness.csproj", "{C94C5F5B-ED53-4899-8D8C-38A2BC77356E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ValhallaVaultCyberAwareness.Client", "ValhallaVaultCyberAwareness\ValhallaVaultCyberAwareness.Client\ValhallaVaultCyberAwareness.Client.csproj", "{EED9A68B-09A7-409C-B8AD-7368E2372C35}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ValhallaVaultCyberAwareness.Client", "ValhallaVaultCyberAwareness\ValhallaVaultCyberAwareness.Client\ValhallaVaultCyberAwareness.Client.csproj", "{EED9A68B-09A7-409C-B8AD-7368E2372C35}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ValhallaVaultCyberAwareness.Domain", "ValhallaVaultCyberAwareness.Domain\ValhallaVaultCyberAwareness.Domain.csproj", "{2232BFCE-6531-480C-9686-D7CFAB0664E7}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ValhallaVaultCyberAwareness.Domain", "ValhallaVaultCyberAwareness.Domain\ValhallaVaultCyberAwareness.Domain.csproj", "{2232BFCE-6531-480C-9686-D7CFAB0664E7}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
