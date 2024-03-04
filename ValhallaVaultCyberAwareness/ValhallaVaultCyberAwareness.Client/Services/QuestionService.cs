@@ -1,4 +1,5 @@
 ﻿using Newtonsoft.Json;
+using System.Net.Http.Json;
 using ValhallaVaultCyberAwareness.Domain.Models;
 
 namespace ValhallaVaultCyberAwareness.Client.Services
@@ -28,7 +29,7 @@ namespace ValhallaVaultCyberAwareness.Client.Services
             }
             throw new HttpRequestException();
         }
-        public async Task<QuestionModel> GetQuestionById(int questionId)
+        public async Task<QuestionModel> GetQuestionByIdAsync(int questionId)
         {
             var apiResponse = await Client.GetAsync(Client.BaseAddress);
             if (apiResponse.IsSuccessStatusCode)
@@ -46,8 +47,34 @@ namespace ValhallaVaultCyberAwareness.Client.Services
             }
             throw new HttpRequestException();
         }
+
+        public async Task<bool> AddQuestionAsync(QuestionModel newQuestion)
+        {
+            var apiResponse = await Client.PostAsJsonAsync<QuestionModel>(Client.BaseAddress, newQuestion);
+            if (apiResponse.IsSuccessStatusCode)
+            {
+                return true;
+            }
+            return false;
+        }
+
+        public async Task<bool> RemoveQuestionAsync(int questionId)
+        {
+            var apiResponse = await Client.DeleteAsync($"{questionId}");
+            if (apiResponse.IsSuccessStatusCode)
+            {
+                return true;
+            }
+            return false;
+        }
+        public async Task<bool> UpdateQuestionAsync(QuestionModel question)
+        {
+            var apiResponse = await Client.PutAsJsonAsync<QuestionModel>(Client.BaseAddress, question);
+            if (apiResponse.IsSuccessStatusCode)
+            {
+                return true;
+            }
+            return false;
+        }
     }
-
-
-}
 }
