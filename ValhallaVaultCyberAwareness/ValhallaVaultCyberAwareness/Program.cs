@@ -31,68 +31,69 @@ builder.Services.AddDbContext<ApplicationDbContext>(options =>
 builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 
 builder.Services.AddIdentityCore<ApplicationUser>(options => options.SignIn.RequireConfirmedAccount = true)
+    .AddRoles<IdentityRole>()
     .AddEntityFrameworkStores<ApplicationDbContext>()
     .AddSignInManager()
     .AddDefaultTokenProviders();
 
 builder.Services.AddSingleton<IEmailSender<ApplicationUser>, IdentityNoOpEmailSender>();
 
-//using (ServiceProvider sp = builder.Services.BuildServiceProvider())
-//{
-//    var context = sp.GetRequiredService<ApplicationDbContext>();
-//    var signInManager = sp.GetRequiredService<SignInManager<ApplicationUser>>();
-//    var roleManager = sp.GetRequiredService<RoleManager<IdentityRole>>();
+using (ServiceProvider sp = builder.Services.BuildServiceProvider())
+{
+    var context = sp.GetRequiredService<ApplicationDbContext>();
+    var signInManager = sp.GetRequiredService<SignInManager<ApplicationUser>>();
+    var roleManager = sp.GetRequiredService<RoleManager<IdentityRole>>();
 
-//    context.Database.Migrate();
+    context.Database.Migrate();
 
-//    ApplicationUser newAdmin = new()
-//    {
-//        UserName = "admin",
-//        Email = "adminuser@mail.com",
-//        EmailConfirmed = true
-//    };
+    ApplicationUser newAdmin = new()
+    {
+        UserName = "admin",
+        Email = "adminuser@mail.com",
+        EmailConfirmed = true
+    };
 
-//    ApplicationUser newUser = new()
-//    {
-//        UserName = "user",
-//        Email = "user@mail.com",
-//        EmailConfirmed = true
+    ApplicationUser newUser = new()
+    {
+        UserName = "user",
+        Email = "user@mail.com",
+        EmailConfirmed = true
 
-//    };
+    };
 
-//    var admin = signInManager.UserManager.FindByEmailAsync(newAdmin.Email).GetAwaiter().GetResult();
-//    var user = signInManager.UserManager.FindByEmailAsync(newUser.Email).GetAwaiter().GetResult();
+    var admin = signInManager.UserManager.FindByEmailAsync(newAdmin.Email).GetAwaiter().GetResult();
 
-//    if (admin == null)
-//    {
-//        // Skapa en ny user 
-//        signInManager.UserManager.CreateAsync(newAdmin, "Password1234!");
+    if (admin == null)
+    {
+        // Skapa en ny user 
+        signInManager.UserManager.CreateAsync(newAdmin, "Password1234!");
 
-//        // Kolla om admin rollen existerar
-//        bool adminRoleExists = roleManager.RoleExistsAsync("Admin").GetAwaiter().GetResult();
+        // Kolla om admin rollen existerar
+        bool adminRoleExists = roleManager.RoleExistsAsync("Admin").GetAwaiter().GetResult();
 
-//        if (!adminRoleExists)
-//        {
-//            IdentityRole adminRole = new()
-//            {
-//                Name = "Admin"
-//            };
+        if (!adminRoleExists)
+        {
+            IdentityRole adminRole = new()
+            {
+                Name = "Admin"
+            };
 
-//            // Skapa adminrollen
-//            roleManager.CreateAsync(adminRole).GetAwaiter().GetResult();
+            // Skapa adminrollen
+            roleManager.CreateAsync(adminRole).GetAwaiter().GetResult();
 
-//            // Tilldela adminrollen till den nya admin-usern
-//            signInManager.UserManager.AddToRoleAsync(newAdmin, "Admin").GetAwaiter().GetResult();
+            // Tilldela adminrollen till den nya admin-usern
+            signInManager.UserManager.AddToRoleAsync(newAdmin, "Admin").GetAwaiter().GetResult();
 
-//        }
+        }
 
-//        if (user == null)
-//        {
-//            signInManager.UserManager.CreateAsync(newUser, "Password1234!");
-//        }
+    }
+    var user = signInManager.UserManager.FindByEmailAsync(newUser.Email).GetAwaiter().GetResult();
 
-//    }
-//}
+    if (user == null)
+    {
+        signInManager.UserManager.CreateAsync(newUser, "Password1234!").GetAwaiter().GetResult();
+    }
+}
 
 var app = builder.Build();
 
