@@ -6,13 +6,15 @@ namespace ValhallaVaultCyberAwareness.Client.Services
 {
     public class SegmentService : ISegmentService
     {
-        public HttpClient Client { get; set; } = new()
+        public HttpClient Client { get; set; }
+
+        public SegmentService(HttpClient client)
         {
-            BaseAddress = new Uri("https://localhost:7107/Segment/")
-        };
+            Client = client;
+        }
         public async Task<SegmentModel> GetSegmentByIdAsync(int segmentId)
         {
-            var apiResponse = await Client.GetAsync($"{segmentId}");
+            var apiResponse = await Client.GetAsync($"/api/Segment/{segmentId}/");
             if (apiResponse.IsSuccessStatusCode)
             {
                 string jsonSegment = await apiResponse.Content.ReadAsStringAsync();
@@ -31,7 +33,7 @@ namespace ValhallaVaultCyberAwareness.Client.Services
 
         public async Task<bool> AddSegmentAsync(SegmentModel newSegment)
         {
-            var apiResponse = await Client.PostAsJsonAsync<SegmentModel>(Client.BaseAddress, newSegment);
+            var apiResponse = await Client.PostAsJsonAsync<SegmentModel>("/api/Segment/", newSegment);
             if (apiResponse.IsSuccessStatusCode)
             {
                 return true;
@@ -41,7 +43,7 @@ namespace ValhallaVaultCyberAwareness.Client.Services
 
         public async Task<bool> RemoveSegmentAsync(int segmentId)
         {
-            var apiResponse = await Client.DeleteAsync($"{segmentId}");
+            var apiResponse = await Client.DeleteAsync($"/api/Segment/{segmentId}/");
             if (apiResponse.IsSuccessStatusCode)
             {
                 return true;
@@ -50,7 +52,7 @@ namespace ValhallaVaultCyberAwareness.Client.Services
         }
         public async Task<bool> UpdateSegmentAsync(SegmentModel segment)
         {
-            var apiResponse = await Client.PutAsJsonAsync<SegmentModel>(Client.BaseAddress, segment);
+            var apiResponse = await Client.PutAsJsonAsync<SegmentModel>($"/api/Segment/{segment.Id}/", segment);
             if (apiResponse.IsSuccessStatusCode)
             {
                 return true;

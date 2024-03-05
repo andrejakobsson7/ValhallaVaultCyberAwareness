@@ -1,5 +1,8 @@
 ﻿@page "/counter"
+@using ValhallaVaultCyberAwareness.Client.Services
+@using ValhallaVaultCyberAwareness.Domain.Models
 @rendermode InteractiveAuto
+@inject ICategoryService categoryService;
 
 <PageTitle>Counter</PageTitle>
 
@@ -15,5 +18,10 @@
     private void IncrementCount()
     {
         currentCount++;
+    }
+
+    protected override async Task OnInitializedAsync()
+    {
+        List<CategoryModel> allCategories = await categoryService.GetAllCategoriesAsync();
     }
 }

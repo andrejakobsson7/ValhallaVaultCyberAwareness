@@ -13,7 +13,7 @@ namespace ValhallaVaultCyberAwareness.Client.Services
 
         public async Task<List<QuestionModel>> GetAllQuestionsBySubCategoryId(int subCategoryId)
         {
-            var apiResponse = await Client.GetAsync($"{subCategoryId}");
+            var apiResponse = await Client.GetAsync($"/api/Question/{subCategoryId}/");
             if (apiResponse.IsSuccessStatusCode)
             {
                 string jsonQuestions = await apiResponse.Content.ReadAsStringAsync();
@@ -31,7 +31,7 @@ namespace ValhallaVaultCyberAwareness.Client.Services
         }
         public async Task<QuestionModel> GetQuestionByIdAsync(int questionId)
         {
-            var apiResponse = await Client.GetAsync(Client.BaseAddress);
+            var apiResponse = await Client.GetAsync($"/api/Question/{questionId}/");
             if (apiResponse.IsSuccessStatusCode)
             {
                 string jsonQuestion = await apiResponse.Content.ReadAsStringAsync();
@@ -50,7 +50,7 @@ namespace ValhallaVaultCyberAwareness.Client.Services
 
         public async Task<bool> AddQuestionAsync(QuestionModel newQuestion)
         {
-            var apiResponse = await Client.PostAsJsonAsync<QuestionModel>(Client.BaseAddress, newQuestion);
+            var apiResponse = await Client.PostAsJsonAsync<QuestionModel>("/api/Question/", newQuestion);
             if (apiResponse.IsSuccessStatusCode)
             {
                 return true;
@@ -60,7 +60,7 @@ namespace ValhallaVaultCyberAwareness.Client.Services
 
         public async Task<bool> RemoveQuestionAsync(int questionId)
         {
-            var apiResponse = await Client.DeleteAsync($"{questionId}");
+            var apiResponse = await Client.DeleteAsync($"api/Question/{questionId}/");
             if (apiResponse.IsSuccessStatusCode)
             {
                 return true;
@@ -69,7 +69,7 @@ namespace ValhallaVaultCyberAwareness.Client.Services
         }
         public async Task<bool> UpdateQuestionAsync(QuestionModel question)
         {
-            var apiResponse = await Client.PutAsJsonAsync<QuestionModel>(Client.BaseAddress, question);
+            var apiResponse = await Client.PutAsJsonAsync<QuestionModel>($"/api/Question/{question.Id}", question);
             if (apiResponse.IsSuccessStatusCode)
             {
                 return true;

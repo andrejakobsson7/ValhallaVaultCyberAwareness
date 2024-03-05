@@ -1,17 +1,19 @@
 ﻿using Newtonsoft.Json;
+using System.Net.Http.Json;
 using ValhallaVaultCyberAwareness.Domain.Models;
 
 namespace ValhallaVaultCyberAwareness.Client.Services
 {
     public class CategoryService : ICategoryService
     {
-        public HttpClient Client { get; set; } = new()
+        public HttpClient Client { get; set; }
+        public CategoryService(HttpClient client)
         {
-            BaseAddress = new Uri("https://localhost:7107/Category/")
-        };
+            Client = client;
+        }
         public async Task<List<CategoryModel>> GetAllCategoriesAsync()
         {
-            var apiResponse = await Client.GetAsync(Client.BaseAddress);
+            var apiResponse = await Client.GetAsync("api/Category/");
             if (apiResponse.IsSuccessStatusCode)
             {
                 string jsonCategories = await apiResponse.Content.ReadAsStringAsync();
@@ -30,7 +32,7 @@ namespace ValhallaVaultCyberAwareness.Client.Services
 
         public async Task<CategoryModel> GetCategoryByIdAsync(int categoryId)
         {
-            var apiResponse = await Client.GetAsync($"{categoryId}");
+            var apiResponse = await Client.GetAsync($"/api/Category/{categoryId}/");
             if (apiResponse.IsSuccessStatusCode)
             {
                 string jsonCategory = await apiResponse.Content.ReadAsStringAsync();
@@ -45,6 +47,35 @@ namespace ValhallaVaultCyberAwareness.Client.Services
                 }
             }
             throw new HttpRequestException();
+        }
+
+        public async Task<bool> AddCategoryAsync(CategoryModel newCategory)
+        {
+            var apiResponse = await Client.PostAsJsonAsync<CategoryModel>("/api/Category/", newCategory);
+            if (apiResponse.IsSuccessStatusCode)
+            {
+                return true;
+            }
+            return false;
+        }
+
+        public async Task<bool> RemoveCategoryAsync(int categoryId)
+        {
+            var apiResponse = await Client.DeleteAsync($"/api/Category/{categoryId}/");
+            if (apiResponse.IsSuccessStatusCode)
+            {
+                return true;
+            }
+            return false;
+        }
+        public async Task<bool> UpdateCategoryAsync(CategoryModel category)
+        {
+            var apiResponse = await Client.PutAsJsonAsync<CategoryModel>($"/api/Category/{category.Id}", category);
+            if (apiResponse.IsSuccessStatusCode)
+            {
+                return true;
+            }
+            return false;
         }
     }
 }
