@@ -16,14 +16,27 @@ namespace ValhallaVaultCyberAwareness.Controllers
         }
 
         [HttpGet]
-        public ActionResult<List<QuestionModel>> GetAllQuestionsPerSubCategory(int subCategoryId)
+        public async Task<ActionResult<List<QuestionModel>>> GetAllQuestionsPerSubCategoryAsync(int subCategoryId)
         {
-            var questions = _questionRepo.GetAllQuestionsSubCategory(subCategoryId);
+            var questions = await _questionRepo.GetAllQuestionsSubCategoryAsync(subCategoryId);
 
             if (questions != null)
             {
                 return Ok(questions);
             }
+            return BadRequest();
+        }
+
+        [HttpPost]
+        public async Task<ActionResult<QuestionModel>> PostQuestion(QuestionModel newQuestion)
+        {
+            var questionToAdd = await _questionRepo.AddQuestionAsync(newQuestion);
+
+            if (questionToAdd != null)
+            {
+                return Ok(questionToAdd);
+            }
+
             return BadRequest();
         }
     }
