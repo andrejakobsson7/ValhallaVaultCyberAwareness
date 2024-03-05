@@ -46,7 +46,6 @@ namespace ValhallaVaultCyberAwareness.Repositories
             return false;
         }
 
-
         public async Task<QuestionModel> UpdateQuestionAsync(int Id, QuestionModel newQuestion)
         {
             var questionToUpdate = await _context.Questions.FirstOrDefaultAsync(q => q.Id == Id);
@@ -61,6 +60,5 @@ namespace ValhallaVaultCyberAwareness.Repositories
             throw new Exception("Question not found");
 
         }
-
     }
 }
