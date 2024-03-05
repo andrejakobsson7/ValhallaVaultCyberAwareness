@@ -28,7 +28,7 @@ namespace ValhallaVaultCyberAwareness.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult<QuestionModel>> PostQuestion(QuestionModel newQuestion)
+        public async Task<ActionResult<QuestionModel>> AddQuestion(QuestionModel newQuestion)
         {
             var questionToAdd = await _questionRepo.AddQuestionAsync(newQuestion);
 
@@ -37,6 +37,31 @@ namespace ValhallaVaultCyberAwareness.Controllers
                 return Ok(questionToAdd);
             }
 
+            return BadRequest();
+        }
+
+        [HttpPut("{id}")]
+        public async Task<ActionResult<QuestionModel>> UpdateQuestion(int id, QuestionModel question)
+        {
+            var updatedQuestion = _questionRepo.UpdateQuestionAsync(id, question);
+
+            if (updatedQuestion != null)
+            {
+                return Ok(question);
+
+            }
+            return BadRequest();
+        }
+
+        [HttpDelete("{id}")]
+        public async Task<ActionResult<QuestionModel>> DeleteQuestion(int id)
+        {
+            var questionToDelete = _questionRepo.DeleteQuestionAsync(id);
+
+            if (questionToDelete != null)
+            {
+                return Ok(questionToDelete);
+            }
             return BadRequest();
         }
     }

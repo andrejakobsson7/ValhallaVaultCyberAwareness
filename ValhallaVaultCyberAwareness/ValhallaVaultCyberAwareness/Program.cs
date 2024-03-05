@@ -37,6 +37,17 @@ builder.Services.AddAuthentication(options =>
 var connectionString = builder.Configuration.GetConnectionString("DefaultConnection") ?? throw new InvalidOperationException("Connection string 'DefaultConnection' not found.");
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
     options.UseSqlServer(connectionString));
+
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("AllowAll", options =>
+    {
+        options.AllowAnyHeader();
+        options.AllowAnyMethod();
+        options.AllowAnyOrigin();
+    });
+});
+
 builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 
 builder.Services.AddIdentityCore<ApplicationUser>(options => options.SignIn.RequireConfirmedAccount = true)
@@ -105,6 +116,8 @@ using (ServiceProvider sp = builder.Services.BuildServiceProvider())
 }
 
 var app = builder.Build();
+
+app.UseCors("AllowAll");
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
