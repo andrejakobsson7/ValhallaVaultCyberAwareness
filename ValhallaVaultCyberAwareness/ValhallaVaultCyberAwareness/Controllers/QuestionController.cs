@@ -16,13 +16,51 @@ namespace ValhallaVaultCyberAwareness.Controllers
         }
 
         [HttpGet]
-        public ActionResult<List<QuestionModel>> GetAllQuestionsPerSubCategory(int subCategoryId)
+        public async Task<ActionResult<List<QuestionModel>>> GetAllQuestionsPerSubCategoryAsync(int subCategoryId)
         {
-            var questions = _questionRepo.GetAllQuestionsSubCategory(subCategoryId);
+            var questions = await _questionRepo.GetAllQuestionsSubCategoryAsync(subCategoryId);
 
             if (questions != null)
             {
                 return Ok(questions);
+            }
+            return BadRequest();
+        }
+
+        [HttpPost]
+        public async Task<ActionResult<QuestionModel>> AddQuestion(QuestionModel newQuestion)
+        {
+            var questionToAdd = await _questionRepo.AddQuestionAsync(newQuestion);
+
+            if (questionToAdd != null)
+            {
+                return Ok(questionToAdd);
+            }
+
+            return BadRequest();
+        }
+
+        [HttpPut("{id}")]
+        public async Task<ActionResult<QuestionModel>> UpdateQuestion(int id, QuestionModel question)
+        {
+            var updatedQuestion = _questionRepo.UpdateQuestionAsync(id, question);
+
+            if (updatedQuestion != null)
+            {
+                return Ok(question);
+
+            }
+            return BadRequest();
+        }
+
+        [HttpDelete("{id}")]
+        public async Task<ActionResult<QuestionModel>> DeleteQuestion(int id)
+        {
+            var questionToDelete = _questionRepo.DeleteQuestionAsync(id);
+
+            if (questionToDelete != null)
+            {
+                return Ok(questionToDelete);
             }
             return BadRequest();
         }
