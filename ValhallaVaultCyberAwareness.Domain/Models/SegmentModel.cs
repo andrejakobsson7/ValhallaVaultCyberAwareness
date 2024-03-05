@@ -12,6 +12,9 @@ namespace ValhallaVaultCyberAwareness.Domain.Models
         [Column("name")]
         public string Name { get; set; } = null!;
 
+        [Column("description")]
+        public string? Description { get; set; }
+
         [Column("category_id")]
         public int CategoryId { get; set; }
 

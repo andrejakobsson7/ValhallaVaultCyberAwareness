@@ -6,6 +6,10 @@ namespace ValhallaVaultCyberAwareness.Client.Services
     {
         public HttpClient Client { get; set; }
 
-        public Task<SubCategoryModel> GetSubCategoryById(int subCategoryId);
+        public Task<SubCategoryModel> GetSubCategoryByIdAsync(int subCategoryId);
+        public Task<bool> AddSubCategoryAsync(SubCategoryModel newSubCategory);
+
+        public Task<bool> RemoveSubCategoryAsync(int subCategoryId);
+        public Task<bool> UpdateSubCategoryAsync(SubCategoryModel subCategory);
     }
 }

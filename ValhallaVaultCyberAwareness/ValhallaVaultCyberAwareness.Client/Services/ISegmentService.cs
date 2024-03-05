@@ -6,6 +6,11 @@ namespace ValhallaVaultCyberAwareness.Client.Services
     {
         public HttpClient Client { get; set; }
 
-        public Task<SegmentModel> GetSegmentById(int segmentId);
+        public Task<SegmentModel> GetSegmentByIdAsync(int segmentId);
+
+        public Task<bool> AddSegmentAsync(SegmentModel newSegment);
+
+        public Task<bool> RemoveSegmentAsync(int segmentId);
+        public Task<bool> UpdateSegmentAsync(SegmentModel segment);
     }
 }

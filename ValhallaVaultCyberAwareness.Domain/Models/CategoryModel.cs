@@ -12,6 +12,9 @@ namespace ValhallaVaultCyberAwareness.Domain.Models
         [Column("name")]
         public string Name { get; set; } = null!;
 
+        [Column("description")]
+        public string? Description { get; set; }
+
         //Navigation property
         public List<SegmentModel> Segments = new();
 
