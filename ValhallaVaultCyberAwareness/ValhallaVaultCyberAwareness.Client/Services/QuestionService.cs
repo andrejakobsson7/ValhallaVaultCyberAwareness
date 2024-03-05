@@ -77,4 +77,5 @@ namespace ValhallaVaultCyberAwareness.Client.Services
             return false;
         }
     }
+
 }
