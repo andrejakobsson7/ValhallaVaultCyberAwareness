@@ -9,6 +9,8 @@ namespace ValhallaVaultCyberAwareness.Repositories
 
         public Task<SegmentModel?> GetSegmentByIdAsync(int segmentId);
 
+        public Task<List<SegmentModel>> GetSegmentsByCategoryIdAsync(int categoryId);
+
         public Task<bool> AddSegmentAsync(SegmentModel newSegment);
 
         public Task<bool> RemoveSegmentAsync(int segmentId);
