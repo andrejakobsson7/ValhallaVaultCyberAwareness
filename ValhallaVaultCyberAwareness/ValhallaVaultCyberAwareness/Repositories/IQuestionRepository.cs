@@ -8,6 +8,6 @@ namespace ValhallaVaultCyberAwareness.Repositories
         Task<List<QuestionModel>> GetAllQuestionsSubCategoryAsync(int subCategoryId);
         Task<QuestionModel> AddQuestionAsync(QuestionModel newQuestion);
         Task<bool> DeleteQuestionAsync(int Id);
-        Task<QuestionModel> UpdateQuestionAsync(int Id, QuestionModel newQuestion);
+        Task<QuestionModel> UpdateQuestionAsync(QuestionModel question);
     }
 }

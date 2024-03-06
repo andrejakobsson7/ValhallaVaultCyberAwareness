@@ -19,7 +19,7 @@ namespace ValhallaVaultCyberAwareness.Domain.Models
         public int QuestionId { get; set; }
 
         //Navigation property
-        public QuestionModel Question { get; set; } = null!;
+        public QuestionModel? Question { get; set; }
         public List<UserAnswers> UserAnswers { get; set; } = new();
     }
 }

@@ -9,8 +9,8 @@ namespace ValhallaVaultCyberAwareness.Controllers
     [ApiController]
     public class QuestionController : ControllerBase
     {
-        QuestionRepository _questionRepo;
-        public QuestionController(QuestionRepository questionRepo)
+        public IQuestionRepository _questionRepo { get; set; }
+        public QuestionController(IQuestionRepository questionRepo)
         {
             _questionRepo = questionRepo;
         }
@@ -52,10 +52,11 @@ namespace ValhallaVaultCyberAwareness.Controllers
             return BadRequest();
         }
 
-        [HttpPut("{id}")]
-        public async Task<ActionResult<QuestionModel>> UpdateQuestion(int id, QuestionModel question)
+        [HttpPut]
+        [Route("{id}")]
+        public async Task<ActionResult<QuestionModel>> UpdateQuestion(QuestionModel question)
         {
-            var updatedQuestion = _questionRepo.UpdateQuestionAsync(id, question);
+            var updatedQuestion = await _questionRepo.UpdateQuestionAsync(question);
 
             if (updatedQuestion != null)
             {
@@ -65,12 +66,13 @@ namespace ValhallaVaultCyberAwareness.Controllers
             return BadRequest();
         }
 
-        [HttpDelete("{id}")]
+        [HttpDelete]
+        [Route("{id}")]
         public async Task<ActionResult<QuestionModel>> DeleteQuestion(int id)
         {
-            var questionToDelete = _questionRepo.DeleteQuestionAsync(id);
+            var questionToDelete = await _questionRepo.DeleteQuestionAsync(id);
 
-            if (questionToDelete != null)
+            if (questionToDelete != false)
             {
                 return Ok(questionToDelete);
             }

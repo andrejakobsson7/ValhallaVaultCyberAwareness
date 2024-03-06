@@ -44,7 +44,7 @@ namespace ValhallaVaultCyberAwareness.Client.Services
 
         public async Task<bool> RemoveSegmentAsync(int segmentId)
         {
-            var apiResponse = await Client.DeleteAsync($"/api/Segment/{segmentId}/");
+            var apiResponse = await Client.DeleteAsync($"/api/segment/{segmentId}/");
             if (apiResponse.IsSuccessStatusCode)
             {
                 return true;
@@ -53,7 +53,7 @@ namespace ValhallaVaultCyberAwareness.Client.Services
         }
         public async Task<bool> UpdateSegmentAsync(SegmentModel segment)
         {
-            var apiResponse = await Client.PutAsJsonAsync<SegmentModel>($"/api/Segment/{segment.Id}/", segment);
+            var apiResponse = await Client.PutAsJsonAsync($"/api/Segment/{segment.Id}/", segment);
             if (apiResponse.IsSuccessStatusCode)
             {
                 return true;

@@ -8,28 +8,29 @@ namespace ValhallaVaultCyberAwareness.Controllers
     [ApiController]
     public class SubCategoryController : ControllerBase
     {
-        SubCategoryRepository _subCategoryRepo;
+        public ISubCategoryRepository _subCategoryRepo;
 
-        public SubCategoryController(SubCategoryRepository subCategoryRepo)
+        public SubCategoryController(ISubCategoryRepository subCategoryRepo)
         {
             _subCategoryRepo = subCategoryRepo;
         }
 
         [HttpGet]
-        public async Task<ActionResult<SubCategoryModel>> GetSubCategoryBySegmentId(int segmentId)
+        [Route("{segmentId}")]
+        public async Task<ActionResult<SubCategoryModel>> GetSubCategoriesBySegmentId(int segmentId)
         {
-            var subCategory = await _subCategoryRepo.GetSubCategoryBySegmentId(segmentId);
+            var subCategories = await _subCategoryRepo.GetSubCategoriesBySegmentId(segmentId);
 
-            if (subCategory != null)
+            if (subCategories != null)
             {
-                return Ok(subCategory);
+                return Ok(subCategories);
             }
 
             return BadRequest();
         }
 
         [HttpPost]
-        public async Task<ActionResult<QuestionModel>> AddSubCategory(SubCategoryModel newSubCategory)
+        public async Task<ActionResult<SubCategoryModel>> AddSubCategory(SubCategoryModel newSubCategory)
         {
             var subCategoryToAdd = await _subCategoryRepo.AddSubCategory(newSubCategory);
 
@@ -41,10 +42,11 @@ namespace ValhallaVaultCyberAwareness.Controllers
             return BadRequest();
         }
 
-        [HttpPut("{id}")]
-        public async Task<ActionResult<SubCategoryModel>> UpdateSubCategory(int id, SubCategoryModel subCategory)
+        [HttpPut]
+        [Route("{id}")]
+        public async Task<ActionResult<SubCategoryModel>> UpdateSubCategory(SubCategoryModel subCategory)
         {
-            var updatedSubCategory = _subCategoryRepo.UpdateSubCategoryAsync(id, subCategory);
+            var updatedSubCategory = await _subCategoryRepo.UpdateSubCategoryAsync(subCategory);
 
             if (updatedSubCategory != null)
             {
@@ -54,12 +56,13 @@ namespace ValhallaVaultCyberAwareness.Controllers
             return BadRequest();
         }
 
-        [HttpDelete("{id}")]
+        [HttpDelete]
+        [Route("{id}")]
         public async Task<ActionResult<SubCategoryModel>> DeleteSubCategory(int id)
         {
-            var subCategoryToDelete = _subCategoryRepo.DeleteSubCategoryAsync(id);
+            var subCategoryToDelete = await _subCategoryRepo.DeleteSubCategoryAsync(id);
 
-            if (subCategoryToDelete != null)
+            if (subCategoryToDelete != false)
             {
                 return Ok(subCategoryToDelete);
             }

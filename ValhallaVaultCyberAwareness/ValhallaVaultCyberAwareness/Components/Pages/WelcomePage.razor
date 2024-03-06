@@ -18,15 +18,9 @@
 </NavLink>
 
 @code {
-	public SegmentModel newSegment { get; set; } = new()
-		{
-			Name = "Test segment added from server",
-			Description = "Test segment added from server description",
-			CategoryId = 1
-		};
 	protected override async Task OnInitializedAsync()
 	{
-		bool isAdded = await segmentRepository.AddSegmentAsync(newSegment);
+		bool isDeleted = await segmentRepository.RemoveSegmentAsync(10);
 	}
 
 
