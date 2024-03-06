@@ -11,7 +11,7 @@ namespace ValhallaVaultCyberAwareness.Client.Services
         };
         public async Task<bool> AddAnswerAsync(AnswerModel newAnswer)
         {
-            var apiResponse = await Client.PostAsJsonAsync<AnswerModel>(Client.BaseAddress, newAnswer);
+            var apiResponse = await Client.PostAsJsonAsync<AnswerModel>("api/Answer/", newAnswer);
             if (apiResponse.IsSuccessStatusCode)
             {
                 return true;
@@ -21,7 +21,7 @@ namespace ValhallaVaultCyberAwareness.Client.Services
 
         public async Task<bool> RemoveAnswerAsync(int answerId)
         {
-            var apiResponse = await Client.DeleteAsync($"{answerId}");
+            var apiResponse = await Client.DeleteAsync($"/api/Answer/{answerId}/");
             if (apiResponse.IsSuccessStatusCode)
             {
                 return true;
@@ -30,7 +30,7 @@ namespace ValhallaVaultCyberAwareness.Client.Services
         }
         public async Task<bool> UpdateAnswerAsync(AnswerModel answer)
         {
-            var apiResponse = await Client.PutAsJsonAsync<AnswerModel>(Client.BaseAddress, answer);
+            var apiResponse = await Client.PutAsJsonAsync<AnswerModel>($"/api/Answer/{answer.Id}", answer);
             if (apiResponse.IsSuccessStatusCode)
             {
                 return true;

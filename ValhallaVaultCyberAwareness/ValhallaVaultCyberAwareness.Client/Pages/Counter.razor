@@ -1,5 +1,9 @@
 ﻿@page "/counter"
+@using ValhallaVaultCyberAwareness.Client.Services
+@using ValhallaVaultCyberAwareness.Domain.Models
 @rendermode InteractiveAuto
+@inject ICategoryService categoryService;
+@inject ISegmentService segmentService;
 
 <PageTitle>Counter</PageTitle>
 
@@ -15,5 +19,19 @@
     private void IncrementCount()
     {
         currentCount++;
+    }
+
+    protected override async Task OnInitializedAsync()
+    {
+        //TEST CALL
+        // List<CategoryModel> allCategories = await categoryService.GetAllCategoriesAsync();
+        // var category = await categoryService.GetCategoryByIdAsync(1);
+        // SegmentModel segment = await segmentService.GetSegmentByIdAsync(1);
+        bool isAdded = await segmentService.AddSegmentAsync(new SegmentModel()
+            {
+                Name = "Test segment",
+                Description = "Test segment description",
+                CategoryId = 1
+            });
     }
 }

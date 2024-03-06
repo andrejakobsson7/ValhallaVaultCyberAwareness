@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using ValhallaVaultCyberAwareness.Data;
 
@@ -11,9 +12,11 @@ using ValhallaVaultCyberAwareness.Data;
 namespace ValhallaVaultCyberAwareness.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240305141919_SeedData")]
+    partial class SeedData
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -995,7 +998,7 @@ namespace ValhallaVaultCyberAwareness.Migrations
             modelBuilder.Entity("ValhallaVaultCyberAwareness.Domain.Models.SegmentModel", b =>
                 {
                     b.HasOne("ValhallaVaultCyberAwareness.Domain.Models.CategoryModel", "Category")
-                        .WithMany("Segments")
+                        .WithMany()
                         .HasForeignKey("CategoryId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -1041,11 +1044,6 @@ namespace ValhallaVaultCyberAwareness.Migrations
             modelBuilder.Entity("ValhallaVaultCyberAwareness.Domain.Models.AnswerModel", b =>
                 {
                     b.Navigation("UserAnswers");
-                });
-
-            modelBuilder.Entity("ValhallaVaultCyberAwareness.Domain.Models.CategoryModel", b =>
-                {
-                    b.Navigation("Segments");
                 });
 
             modelBuilder.Entity("ValhallaVaultCyberAwareness.Domain.Models.QuestionModel", b =>

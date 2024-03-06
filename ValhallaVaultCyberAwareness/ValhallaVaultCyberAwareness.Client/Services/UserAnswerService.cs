@@ -5,14 +5,16 @@ namespace ValhallaVaultCyberAwareness.Client.Services
 {
     public class UserAnswerService : IUserAnswersService
     {
-        public HttpClient Client { get; set; } = new()
+        public HttpClient Client { get; set; }
+
+        public UserAnswerService(HttpClient client)
         {
-            BaseAddress = new Uri("https://localhost:7107/UserAnswer/")
-        };
+            Client = client;
+        }
 
         public async Task<bool> AddUserAnswerAsync(UserAnswers newUserAnswer)
         {
-            var apiResponse = await Client.PostAsJsonAsync<UserAnswers>(Client.BaseAddress, newUserAnswer);
+            var apiResponse = await Client.PostAsJsonAsync<UserAnswers>("/api/UserAnswers/", newUserAnswer);
             if (apiResponse.IsSuccessStatusCode)
             {
                 return true;

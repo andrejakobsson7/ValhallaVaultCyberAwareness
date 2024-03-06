@@ -9,6 +9,9 @@ namespace ValhallaVaultCyberAwareness.Domain.Models
         [Column("id")]
         public int Id { get; set; }
 
+        [Column("answer")]
+        public string Answer { get; set; } = null!;
+
         [Column("is_correct")]
         public bool IsCorrect { get; set; }
 

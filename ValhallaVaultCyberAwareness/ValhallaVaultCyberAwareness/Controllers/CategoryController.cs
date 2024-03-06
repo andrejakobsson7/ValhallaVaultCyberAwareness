@@ -1,4 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using System.Text.Json;
+using System.Text.Json.Serialization;
 using ValhallaVaultCyberAwareness.Domain.Models;
 using ValhallaVaultCyberAwareness.Repositories;
 
@@ -8,21 +10,30 @@ namespace ValhallaVaultCyberAwareness.Controllers
     [ApiController]
     public class CategoryController : ControllerBase
     {
-        CategoryRepository _categoryRepo;
+        private readonly ICategoryRepository _categoryRepo;
+        private JsonSerializerOptions _jsonSerializerOptions = new()
+        {
+            ReferenceHandler = ReferenceHandler.Preserve
+        };
 
-        public CategoryController(CategoryRepository categoryRepo)
+        public CategoryController(ICategoryRepository categoryRepo)
         {
             _categoryRepo = categoryRepo;
         }
 
         [HttpGet]
-        public async Task<ActionResult<List<CategoryModel>>> GetAllCategories()
+        public async Task<IActionResult> GetAllCategories()
         {
             var categories = await _categoryRepo.GetAllCategoriesWithInclude();
 
             if (categories != null)
             {
-                return Ok(categories);
+                //Convert to temporary api model that holds all information first hand.
+                List<CategoryApiModel> apiCategories = categories.Select(c => new CategoryApiModel(c)).ToList();
+
+                //To prevent cycles we need to serialize the object before returning it.
+                var categoriesJson = JsonSerializer.Serialize(apiCategories, _jsonSerializerOptions);
+                return Ok(categoriesJson);
             }
             return BadRequest();
         }
@@ -50,6 +61,30 @@ namespace ValhallaVaultCyberAwareness.Controllers
                 return Ok(categoryToDelete);
             }
             return BadRequest();
+        }
+
+        //Temporary model that is returned from the API to enable that the client service can get access to navigation properties,
+        //since these are not serialized otherwise
+        public class CategoryApiModel
+        {
+            public int Id { get; set; }
+            public string Name { get; set; } = null!;
+            public List<SegmentModel> Segments { get; set; } = new();
+            public List<SubCategoryModel> SubCategories { get; set; } = new();
+
+            public CategoryApiModel(CategoryModel category)
+            {
+                Id = category.Id;
+                Name = category.Name;
+                Segments = category.Segments;
+                foreach (var segment in Segments)
+                {
+                    for (int i = 0; i < segment.SubCategories.Count; i++)
+                    {
+                        SubCategories.Add(segment.SubCategories[i]);
+                    }
+                }
+            }
         }
     }
 }
