@@ -13,4 +13,10 @@ namespace ValhallaVaultCyberAwareness.Client.Services
         public Task<bool> RemoveSegmentAsync(int segmentId);
         public Task<bool> UpdateSegmentAsync(SegmentModel segment);
     }
+
+    public class SegmentWithSubcategories
+    {
+        public SegmentModel Segment { get; set; }
+        public List<SubCategoryModel> Subcategories { get; set; }
+    }
 }
