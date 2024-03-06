@@ -6,7 +6,7 @@ namespace ValhallaVaultCyberAwareness.Client.Services
     {
         public HttpClient Client { get; set; }
 
-        public Task<SegmentModel> GetSegmentByIdAsync(int segmentId);
+        public Task<List<SegmentModel>> GetSegmentsByCategoryIdAsync(int categoryId);
 
         public Task<bool> AddSegmentAsync(SegmentModel newSegment);
 

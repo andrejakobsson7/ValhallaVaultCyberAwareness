@@ -26,6 +26,7 @@
     {
         //TEST CALL
         // List<CategoryModel> allCategories = await categoryService.GetAllCategoriesAsync();
+        List<SegmentModel> allSegments = await segmentService.GetSegmentsByCategoryIdAsync(1);
         // var category = await categoryService.GetCategoryByIdAsync(1);
         // SegmentModel segment = await segmentService.GetSegmentByIdAsync(1);
 
