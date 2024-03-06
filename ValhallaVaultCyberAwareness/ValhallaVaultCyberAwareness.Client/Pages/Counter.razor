@@ -29,9 +29,16 @@
     {
         //TEST CALL
         // List<CategoryModel> allCategories = await categoryService.GetAllCategoriesAsync();
-        // List<SegmentModel> allSegments = await segmentService.GetSegmentsByCategoryIdAsync(1);
+        // List<SegmentModel> allSegments = await segmentService.GetSegmentsByCategoryIdAsync(1, "e547fd1c-ec07-49e1-b2ce-0d326f467c01");
         // var category = await categoryService.GetCategoryByIdAsync(1);
         // SegmentModel segment = await segmentService.GetSegmentByIdAsync(1);
+        SegmentModel newSegment = new()
+            {
+                Name = "New segment",
+                Description = "Test description for new segment",
+                CategoryId = 1
+            };
+        bool isSegmentAdded = await segmentService.AddSegmentAsync(newSegment);
 
         // List<QuestionModel> allQuestions = await questionService.GetAllQuestionsBySubCategoryId(1);
 
