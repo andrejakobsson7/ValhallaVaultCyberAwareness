@@ -113,6 +113,24 @@ namespace ValhallaVaultCyberAwareness.Data
                     Id = 7,
                     Name = "Del 4 - Cybersäkerhet för företag",
                     CategoryId = 2,
+                },
+                new SegmentModel()
+                {
+                    Id = 8,
+                    Name = "Del 1 - Cyberspionage",
+                    CategoryId = 3,
+                },
+                new SegmentModel()
+                {
+                    Id = 9,
+                    Name = "Del 2 - Cyberspionage",
+                    CategoryId = 3
+                },
+                new SegmentModel()
+                {
+                    Id = 10,
+                    Name = "Del 3 - Cyberspionage",
+                    CategoryId = 3
                 });
 
 
@@ -341,6 +359,72 @@ namespace ValhallaVaultCyberAwareness.Data
                     Id = 35,
                     Name = "De sårbara molnen",
                     SegmentId = 7
+                },
+
+
+                new SubCategoryModel
+                {
+                    Id = 36,
+                    Name = "Allmänt om cyberspionage",
+                    SegmentId = 8
+                },
+                new SubCategoryModel
+                {
+                    Id = 37,
+                    Name = "Metoder för cyberspionage",
+                    SegmentId = 8
+                },
+                new SubCategoryModel
+                {
+                    Id = 38,
+                    Name = "Säkerhetsskyddslagen",
+                    SegmentId = 8
+                },
+                new SubCategoryModel
+                {
+                    Id = 39,
+                    Name = "Cyberspionagets aktörer",
+                    SegmentId = 8
+                },
+
+
+                new SubCategoryModel
+                {
+                    Id = 40,
+                    Name = "Värvningsförsök",
+                    SegmentId = 9
+                },
+                new SubCategoryModel
+                {
+                    Id = 41,
+                    Name = "Affärsspionage",
+                    SegmentId = 9
+                },
+                new SubCategoryModel
+                {
+                    Id = 42,
+                    Name = "Påverkanskampanjer",
+                    SegmentId = 9
+                },
+
+
+                new SubCategoryModel
+                {
+                    Id = 43,
+                    Name = "Svensk underrättelsetjänst och cyberförsvar",
+                    SegmentId = 10
+                },
+                new SubCategoryModel
+                {
+                    Id = 44,
+                    Name = "Signalspaning, informationssäkerhet och 5G",
+                    SegmentId = 10
+                },
+                new SubCategoryModel
+                {
+                    Id = 45,
+                    Name = "Samverkan mot cyberspionage",
+                    SegmentId = 10
                 });
 
             builder.Entity<QuestionModel>()
@@ -404,6 +488,30 @@ namespace ValhallaVaultCyberAwareness.Data
                     Id = 10,
                     Question = "Det globala fraktbolaget Maersk blev offer för ett omfattande cyberangrepp som avsevärt störde deras verksamhet världen över. Vilken typ av malware var primärt ansvarig för denna incident?",
                     SubCategoryId = 10
+                },
+                new QuestionModel()
+                {
+                    Id = 11,
+                    Question = "Regeringen upptäcker att känslig politisk kommunikation har läckt och misstänker elektronisk övervakning. Vilket fenomen beskriver bäst denna situation?",
+                    SubCategoryId = 36
+                },
+                new QuestionModel()
+                {
+                    Id = 12,
+                    Question = "Regeringen blir varse om en sofistikerad skadeprogramskampanj som utnyttjar Zero-day sårbarheter för att infiltrera deras nätverk och stjäla oerhört viktig data. Vilken metod för cyberspionage används sannolikt här?",
+                    SubCategoryId = 37
+                },
+                new QuestionModel()
+                {
+                    Id = 13,
+                    Question = "Regeringen i Sverige ökar sitt interna säkerhetsprotokoll för att skydda sig mot utländska underrättelsetjänsters infiltration. Vilken lagstiftning ger ramverket för detta skydd?",
+                    SubCategoryId = 38
+                },
+                new QuestionModel()
+                {
+                    Id = 14,
+                    Question = "Lunds universitet upptäcker att forskningsdata om ny teknologi har stulits. Undersökningar tyder på en välorganiserad grupp med kopplingar till en utländsk stat. Vilken typ av aktör ligger sannolikt bakom detta?",
+                    SubCategoryId = 39
                 });
 
             builder.Entity<AnswerModel>()
@@ -618,6 +726,113 @@ namespace ValhallaVaultCyberAwareness.Data
                     Answer = "Adware",
                     IsCorrect = false,
                     QuestionId = 10
+                },
+                new AnswerModel
+                {
+                    Id = 31,
+                    Answer = "Cyberkriminalitet",
+                    IsCorrect = false,
+                    QuestionId = 11
+                },
+                new AnswerModel
+                {
+                    Id = 32,
+                    Answer = "Cyberspionage",
+                    IsCorrect = true,
+                    QuestionId = 11
+                },
+                new AnswerModel
+                {
+                    Id = 33,
+                    Answer = "Cyberterrorism",
+                    IsCorrect = false,
+                    QuestionId = 11
+                },
+                new AnswerModel
+                {
+                    Id = 34,
+                    Answer = "Social ingenjörskonst",
+                    IsCorrect = false,
+                    QuestionId = 12
+                },
+                new AnswerModel
+                {
+                    Id = 35,
+                    Answer = "Massövervakning",
+                    IsCorrect = false,
+                    QuestionId = 12
+                },
+                new AnswerModel
+                {
+                    Id = 36,
+                    Answer = "Riktade cyberattacker",
+                    IsCorrect = true,
+                    QuestionId = 12
+                },
+                new AnswerModel
+                {
+                    Id = 37,
+                    Answer = "GDPR",
+                    IsCorrect = false,
+                    QuestionId = 13
+                },
+                new AnswerModel
+                {
+                    Id = 38,
+                    Answer = "Säkerhetsskyddslagen",
+                    IsCorrect = true,
+                    QuestionId = 13
+                },
+                new AnswerModel
+                {
+                    Id = 39,
+                    Answer = "IT-säkerhetslagen",
+                    IsCorrect = false,
+                    QuestionId = 13
+                },
+                new AnswerModel
+                {
+                    Id = 40,
+                    Answer = "Oberoende hackare",
+                    IsCorrect = false,
+                    QuestionId = 14
+                },
+                new AnswerModel
+                {
+                    Id = 41,
+                    Answer = "Aktivistgrupper",
+                    IsCorrect = false,
+                    QuestionId = 14
+                },
+                new AnswerModel
+                {
+                    Id = 42,
+                    Answer = "Statssponsrade hackers",
+                    IsCorrect = true,
+                    QuestionId = 14
+                });
+
+            builder.Entity<UserAnswers>()
+                .HasData(
+                new UserAnswers()
+                {
+                    UserId = "e547fd1c-ec07-49e1-b2ce-0d326f467c01",
+                    AnswerId = 2
+                },
+                new UserAnswers()
+                {
+                    UserId = "e547fd1c-ec07-49e1-b2ce-0d326f467c01",
+                    AnswerId = 4
+                },
+                new UserAnswers()
+                {
+                    UserId = "e547fd1c-ec07-49e1-b2ce-0d326f467c01",
+                    AnswerId = 8
+                },
+                new UserAnswers()
+                {
+                    UserId = "e547fd1c-ec07-49e1-b2ce-0d326f467c01",
+                    AnswerId = 11
                 });
         }
     }
