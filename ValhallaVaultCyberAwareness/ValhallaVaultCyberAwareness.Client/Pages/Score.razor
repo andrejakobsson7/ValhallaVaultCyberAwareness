@@ -29,15 +29,52 @@ else
                     <div class="card-footer">
                         <p>@segmentItem.Description</p>
                         <ul>
-                            @foreach (var subcategoryItem in segmentItem.SubCategories)
+                           
+                            @foreach (var SubCategoryItem in segmentItem.SubCategories)
                             {
-                                <li>@subcategoryItem.Name - 0 / @subcategoryItem.Questions.Count</li>
+                                <!-- 1. List the name of every SubCategory contained in each Segment
+
+                                     2. For every SubCategory contained in a segment, display the amount
+                                        of TRUE's IsCorrect contains (a TRUE boolean singifies a correct answer).
+
+                                     3. Count the amount of Questions contained within a SubCategory.
+                                -->
+                                <li>@SubCategoryItem.Name - 
+                                    @(SubCategoryItem.Questions.FirstOrDefault()?
+                                    .Answers.Count(a => a.IsCorrect == true) ?? 0) / 
+                                    @SubCategoryItem.Questions.Count
+                                </li>
                             }
                         </ul>
                         <p class="card-description">@segmentItem.Description</p>
                     </div>
                     <div class="card-footer bg-secondary">
-                        <h5 >Completed SubCategories:   / @segmentItem.SubCategories.Count </h5>
+                        <h5 >Completed SubCategories: 
+
+                            <!-- In each SubCategory we compare the amount of booleans in the IsCorrect property
+                                 to the amount of booleans that are TRUE (a TRUE boolean signifies a correct answer).
+                                 If the amount of TRUE booleans is >= 80% of the amount of booleans,
+                                 it counts that as a completed SubCategory and is counted to the max amount of SubCategories.
+                            -->
+                            @(segmentItem.SubCategories.Count(SubCategory => SubCategory
+                            .Questions.FirstOrDefault()?
+                            .Answers.Count(a => a.IsCorrect) > 0.8 * 
+                            SubCategory.Questions.FirstOrDefault()?
+                            .Answers.Count(a => a.IsCorrect))) /
+
+                            <!-- I admit I had to use the help of ChatGPT to make the above monster of a LINQ statement.
+                               This was the original I came up with before I asked ChatGPT for help:
+
+                                @(segmentItem.SubCategories.FirstOrDefault()?
+                                .Questions.FirstOrDefault()?
+                                .Answers.Count(a => a.IsCorrect == true) > @segmentItem.SubCategories.FirstOrDefault()?
+                                .Questions.FirstOrDefault()?
+                                .Answers.Count(a => a.IsCorrect)
+                                * 0.8 ? "true" : "false")
+                            -->
+
+                            <!-- Count the amount of SubCategories contained in each Segment-->
+                            @segmentItem.SubCategories.Count </h5>
                     </div>
                     <a href="@($"https://localhost:7107/quizpage/{segmentItem.Id}")" class="stretched-link"></a>
                 </div>
@@ -49,10 +86,10 @@ else
 @code {
     // Create a list of all segments using GetSegments();
     private List<SegmentModel>? segments;
-     // private List<QuestionModel>? questions;
 
     protected override async Task OnInitializedAsync()
     {
-        segments = await SegmentService.GetSegmentsByCategoryIdAsync(1);
+        // Use the Category Id and User Id to fetch the corresponding Segment and the user information tied to it.
+        segments = await SegmentService.GetSegmentsByCategoryIdAsync(1 , "e547fd1c-ec07-49e1-b2ce-0d326f467c01");
     }
 }
