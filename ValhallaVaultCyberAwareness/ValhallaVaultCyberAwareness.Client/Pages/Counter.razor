@@ -1,11 +1,14 @@
 ﻿@page "/counter"
+@using Microsoft.AspNetCore.Identity
 @using ValhallaVaultCyberAwareness.Client.Services
+@using ValhallaVaultCyberAwareness.Data
 @using ValhallaVaultCyberAwareness.Domain.Models
 @rendermode InteractiveAuto
 @inject ICategoryService categoryService;
 @inject ISegmentService segmentService;
 @inject IQuestionService questionService
 @inject ISubCategoryService subCategoryService;
+@inject UserManager<ApplicationUser> UserManager
 
 <PageTitle>Counter</PageTitle>
 
@@ -25,11 +28,16 @@
 
     protected override async Task OnInitializedAsync()
     {
-        //TEST CALL
+        //TEST CALL CATEGORIES
         // List<CategoryModel> allCategories = await categoryService.GetAllCategoriesAsync();
+  
+        //TEST CALL SEGMENTS
         // List<SegmentModel> allSegments = await segmentService.GetSegmentsByCategoryIdAsync(1, "e547fd1c-ec07-49e1-b2ce-0d326f467c01");
+  
+        //TEST CALL CATEGORY
         // var category = await categoryService.GetCategoryByIdAsync(1);
-        // SegmentModel segment = await segmentService.GetSegmentByIdAsync(1);
+  
+        //TEST ADD NEW SEGMENT
         // SegmentModel newSegment = new()
         //     {
         //         Name = "New segment",
@@ -37,6 +45,8 @@
         //         CategoryId = 1
         //     };
         // bool isSegmentAdded = await segmentService.AddSegmentAsync(newSegment);
+  
+        //TEST UPDATE SEGMENT
         // List<SegmentModel> segmentsToUpdate = await segmentService.GetSegmentsByCategoryIdAsync(1, "e547fd1c-ec07-49e1-b2ce-0d326f467c01");
         // SegmentModel segment = new()
         //     {
@@ -46,10 +56,25 @@
         //         Description = "Lägg till beskrivning"
 
         //     };
+        // bool isUpdated = await segmentService.UpdateSegmentAsync(segment);
+        
+        //TEST CALL QUESTIONS
+        // List<QuestionModel> allQuestions = await questionService.GetAllQuestionsBySubCategoryId(1);
+  
+        //TEST ADD NEW QUESTION
+        // QuestionModel newQuestion = new QuestionModel
+        //  {
+        //      Id = 0,
+        //      Question = "Hej",
+        //      SubCategoryId = 1,
+        //  };
 
-        // bool isRemoved = await segmentService.UpdateSegmentAsync(segment);
+        //  await questionService.AddQuestionAsync(newQuestion);
+  
+        //TEST CALL GET USERS IN ROLE
+            var users = await UserManager.GetUsersInRoleAsync("Admin");
 
-        // List<QuestionModel> allQuestions = await questionService.GetAllQuestionsBySubCategoryId(1); 
+        //TEST ADD NEW SUBCATEGORY
         // SubCategoryModel newSubCategory = new()
         //     {
         //         Name = "New subcategory",
@@ -57,8 +82,11 @@
         //         SegmentId = 1
         //     };
         // bool isAdded = await subCategoryService.AddSubCategoryAsync(newSubCategory);
+  
+        //TEST REMOVE SUBCATEGORY
         // bool isRemoved = await subCategoryService.RemoveSubCategoryAsync(36);
 
+        //TEST UPDATE SUBCATEGORY
         // List<SubCategoryModel> subCategories = await subCategoryService.GetSubCategoriesBySegmentIdAsync(2);
         // SubCategoryModel subToUpdate = new()
         //     {
@@ -69,41 +97,43 @@
         //     };
 
         // bool isUpdated = await subCategoryService.UpdateSubCategoryAsync(subToUpdate);
-
+        
+        //TEST ADD NEW CATEGORY
         // bool isAdded = await categoryService.AddCategoryAsync(new CategoryModel()
         //     {
         //         Name = "Test category",
         //         Description = "N/A"
 
         //     });
-
+        
+        //TEST REMOVE CATEGORY
         // bool isRemoved = await categoryService.RemoveCategoryAsync(4);
+  
+        //TEST UPDATE CATEGORY
         // var categories = await categoryService.GetAllCategoriesAsync();
         // var x = await categoryService.UpdateCategoryAsync(new CategoryModel()
         //     {
         //         Id = categories[0].Id,
         //         Name = "New category name"
         //     });
-
+  
+        //TEST ADD NEW QUESTION
         // var x = await questionService.AddQuestionAsync(new QuestionModel()
         //     {
         //         Question = "How old are you?",
         //         SubCategoryId = 3
         //     });
-
+  
+        //TEST REMOVE QUESTION
         // var y = await questionService.RemoveQuestionAsync(12);
-        var a = await questionService.GetAllQuestionsBySubCategoryId(1);
-        var z = await questionService.UpdateQuestionAsync(new QuestionModel()
-            {
-                Id = a[0].Id,
-                Question = "How are you doing today????"
-            });
-
-        // bool isAdded = await segmentService.AddSegmentAsync(new SegmentModel()
-        //     {
-        //         Name = "Test segment",
-        //         Description = "Test segment description",
-        //         CategoryId = 1
-        //     });
+  
+        //TEST UPDATE QUESTION
+        // var a = await questionService.GetAllQuestionsBySubCategoryId(1);
+        // var z = await questionService.UpdateQuestionAsync(new QuestionModel()
+        //    {
+        //        Id = a[0].Id,
+        //        Question = "How are you doing today????"
+        //    });
+        
     }
 }

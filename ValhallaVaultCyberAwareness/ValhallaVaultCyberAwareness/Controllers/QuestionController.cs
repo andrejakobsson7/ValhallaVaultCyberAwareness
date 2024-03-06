@@ -10,6 +10,7 @@ namespace ValhallaVaultCyberAwareness.Controllers
     public class QuestionController : ControllerBase
     {
         public IQuestionRepository _questionRepo { get; set; }
+
         public QuestionController(IQuestionRepository questionRepo)
         {
             _questionRepo = questionRepo;
@@ -40,7 +41,7 @@ namespace ValhallaVaultCyberAwareness.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult<QuestionModel>> AddQuestion(QuestionModel newQuestion)
+        public async Task<ActionResult<QuestionModel>> Post(QuestionModel newQuestion)
         {
             var questionToAdd = await _questionRepo.AddQuestionAsync(newQuestion);
 
@@ -49,7 +50,7 @@ namespace ValhallaVaultCyberAwareness.Controllers
                 return Ok(questionToAdd);
             }
 
-            return BadRequest();
+            return NotFound();
         }
 
         [HttpPut]

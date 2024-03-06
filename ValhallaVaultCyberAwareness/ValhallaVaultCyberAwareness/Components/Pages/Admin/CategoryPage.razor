@@ -1,0 +1,17 @@
+﻿@page "/Admin/CategoryPage"
+@using Microsoft.AspNetCore.Authorization
+@using ValhallaVaultCyberAwareness.Managers
+@using ValhallaVaultCyberAwareness.Repositories
+@attribute [Authorize(Roles = "Admin")]
+@inject AdminManager manager
+
+
+<h3>CategoryPage</h3>
+
+
+@code {
+    protected override async Task OnInitializedAsync()
+    {
+        var categories = await manager._categoryRepository.GetAllCategoriesWithInclude();
+    }
+}
