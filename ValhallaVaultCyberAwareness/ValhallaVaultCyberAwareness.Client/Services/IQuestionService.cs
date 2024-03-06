@@ -7,7 +7,6 @@ namespace ValhallaVaultCyberAwareness.Client.Services
         public HttpClient Client { get; set; }
 
         public Task<List<QuestionModel>> GetAllQuestionsBySubCategoryId(int subCategoryId);
-
         public Task<QuestionModel> GetQuestionByIdAsync(int questionId);
 
         public Task<bool> AddQuestionAsync(QuestionModel newQuestion);

@@ -6,10 +6,11 @@ namespace ValhallaVaultCyberAwareness.Client.Services
 {
     public class QuestionService : IQuestionService
     {
-        public HttpClient Client { get; set; } = new()
+        public HttpClient Client { get; set; }
+        public QuestionService(HttpClient client)
         {
-            BaseAddress = new Uri("https://localhost:7107/Question/")
-        };
+            Client = client;
+        }
 
         public async Task<List<QuestionModel>> GetAllQuestionsBySubCategoryId(int subCategoryId)
         {
@@ -76,6 +77,7 @@ namespace ValhallaVaultCyberAwareness.Client.Services
             }
             return false;
         }
+
     }
 
 }

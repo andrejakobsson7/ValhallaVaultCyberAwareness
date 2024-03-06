@@ -1,14 +1,16 @@
-﻿using ValhallaVaultCyberAwareness.Data;
+﻿using ValhallaVaultCyberAwareness.Client.Services;
+using ValhallaVaultCyberAwareness.Repositories;
 
 namespace ValhallaVaultCyberAwareness.Managers
 {
     public class AdminManager
     {
-        ApplicationDbContext _context;
+        private readonly ICategoryService _categoryService;
+        private readonly ISegmentRepository _segmentService;
 
-        public AdminManager(ApplicationDbContext context)
+        public AdminManager(ICategoryService categoryService)
         {
-            _context = context;
+            _categoryService = categoryService;
         }
 
         public void AddCategory()

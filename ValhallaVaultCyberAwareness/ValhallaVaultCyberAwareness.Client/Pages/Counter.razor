@@ -4,6 +4,7 @@
 @rendermode InteractiveAuto
 @inject ICategoryService categoryService;
 @inject ISegmentService segmentService;
+@inject IQuestionService questionService
 
 <PageTitle>Counter</PageTitle>
 
@@ -28,6 +29,9 @@
         List<SegmentModel> allSegments = await segmentService.GetSegmentsByCategoryIdAsync(1);
         // var category = await categoryService.GetCategoryByIdAsync(1);
         // SegmentModel segment = await segmentService.GetSegmentByIdAsync(1);
+
+        List<QuestionModel> allQuestions = await questionService.GetAllQuestionsBySubCategoryId(1); 
+
         // bool isAdded = await segmentService.AddSegmentAsync(new SegmentModel()
         //     {
         //         Name = "Test segment",
