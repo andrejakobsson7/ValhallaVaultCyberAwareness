@@ -20,7 +20,12 @@ namespace ValhallaVaultCyberAwareness.Repositories
         /// <returns>The segment that matches the id passed along as parameter, or null if not found. </returns>
         public async Task<SegmentModel?> GetSegmentByIdAsync(int segmentId)
         {
-            return await _context.Segments.Include(s => s.SubCategories).FirstOrDefaultAsync(s => s.Id == segmentId);
+            return await _context.Segments.FirstOrDefaultAsync(s => s.Id == segmentId);
+        }
+
+        public async Task<List<SegmentModel>> GetSegmentsByCategoryIdAsync(int categoryId)
+        {
+            return await _context.Segments.Include(s => s.SubCategories).Where(s => s.CategoryId == categoryId).ToListAsync();
         }
 
         private async Task<SegmentModel?> GetSegmentByIdWithoutIncludedDataAsync(int segmentId)

@@ -1,4 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using System.Text.Json;
+using System.Text.Json.Serialization;
 using ValhallaVaultCyberAwareness.Domain.Models;
 using ValhallaVaultCyberAwareness.Repositories;
 
@@ -9,20 +11,39 @@ namespace ValhallaVaultCyberAwareness.Controllers
     public class SegmentController : ControllerBase
     {
         public ISegmentRepository _segmentRepo;
+        private JsonSerializerOptions _jsonSerializerOptions = new()
+        {
+            ReferenceHandler = ReferenceHandler.Preserve
+        };
         public SegmentController(ISegmentRepository segmentRepo)
         {
             _segmentRepo = segmentRepo;
         }
 
-        [HttpGet]
-        [Route("{segmentId}")]
-        public async Task<ActionResult<List<SegmentModel>>> GetSegmentById(int segmentId)
-        {
-            var segment = await _segmentRepo.GetSegmentByIdAsync(segmentId);
+        //[HttpGet]
+        //[Route("{segmentId}")]
+        //public async Task<ActionResult<List<SegmentModel>>> GetSegmentById(int segmentId)
+        //{
+        //    var segment = await _segmentRepo.GetSegmentByIdAsync(segmentId);
 
-            if (segment != null)
+        //    if (segment != null)
+        //    {
+        //        return Ok(segment);
+        //    }
+        //    return BadRequest();
+        //}
+
+        [HttpGet]
+        [Route("{categoryId}")]
+        public async Task<IActionResult> GetSegmentsByCategoryId(int categoryId)
+        {
+            var segments = await _segmentRepo.GetSegmentsByCategoryIdAsync(categoryId);
+            if (segments != null)
             {
-                return Ok(segment);
+                List<SegmentApiModel> apiSegments = segments.Select(s => new SegmentApiModel(s)).ToList();
+
+                var segmentsJson = JsonSerializer.Serialize(apiSegments, _jsonSerializerOptions);
+                return Ok(segmentsJson);
             }
             return BadRequest();
         }
@@ -63,6 +84,27 @@ namespace ValhallaVaultCyberAwareness.Controllers
                 return Ok(segmentToDelete);
             }
             return BadRequest();
+        }
+
+        public class SegmentApiModel
+        {
+            public int Id { get; set; }
+            public string Name { get; set; } = null!;
+            public string? Description { get; set; }
+            public int CategoryId { get; set; }
+            public List<SubCategoryModel> SubCategories { get; set; } = new();
+
+            public SegmentApiModel(SegmentModel segment)
+            {
+                Id = segment.Id;
+                Name = segment.Name;
+                Description = segment.Description;
+                CategoryId = segment.CategoryId;
+                foreach (var subCategory in segment.SubCategories)
+                {
+                    SubCategories.Add(subCategory);
+                }
+            }
         }
     }
 }
