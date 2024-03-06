@@ -1,7 +1,10 @@
 ﻿@inject NavigationManager NavigationManager
+@inject ISegmentRepository segmentRepository;
 
 
 @page "/WelcomePage"
+@using ValhallaVaultCyberAwareness.Domain.Models
+@using ValhallaVaultCyberAwareness.Repositories
 
 <img src="Images/Logo.jpg" alt="Logotyp" style="width:300px; height:300px">
 <h1> Key to Valhalla or Success</h1>
@@ -15,5 +18,17 @@
 </NavLink>
 
 @code {
+	public SegmentModel newSegment { get; set; } = new()
+		{
+			Name = "Test segment added from server",
+			Description = "Test segment added from server description",
+			CategoryId = 1
+		};
+	protected override async Task OnInitializedAsync()
+	{
+		bool isAdded = await segmentRepository.AddSegmentAsync(newSegment);
+	}
+
+
 
 }

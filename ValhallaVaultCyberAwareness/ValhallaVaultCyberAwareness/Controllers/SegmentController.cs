@@ -6,105 +6,123 @@ using ValhallaVaultCyberAwareness.Repositories;
 
 namespace ValhallaVaultCyberAwareness.Controllers
 {
-    [Route("api/[controller]")]
-    [ApiController]
-    public class SegmentController : ControllerBase
-    {
-        public ISegmentRepository _segmentRepo;
-        private JsonSerializerOptions _jsonSerializerOptions = new()
-        {
-            ReferenceHandler = ReferenceHandler.Preserve
-        };
-        public SegmentController(ISegmentRepository segmentRepo)
-        {
-            _segmentRepo = segmentRepo;
-        }
+	[Route("api/[controller]")]
+	[ApiController]
+	public class SegmentController : ControllerBase
+	{
+		public ISegmentRepository _segmentRepo;
+		private JsonSerializerOptions _jsonSerializerOptions = new()
+		{
+			ReferenceHandler = ReferenceHandler.Preserve
+		};
+		public SegmentController(ISegmentRepository segmentRepo)
+		{
+			_segmentRepo = segmentRepo;
+		}
 
-        //[HttpGet]
-        //[Route("{segmentId}")]
-        //public async Task<ActionResult<List<SegmentModel>>> GetSegmentById(int segmentId)
-        //{
-        //    var segment = await _segmentRepo.GetSegmentByIdAsync(segmentId);
+		//[HttpGet]
+		//[Route("{segmentId}")]
+		//public async Task<ActionResult<List<SegmentModel>>> GetSegmentById(int segmentId)
+		//{
+		//    var segment = await _segmentRepo.GetSegmentByIdAsync(segmentId);
 
-        //    if (segment != null)
-        //    {
-        //        return Ok(segment);
-        //    }
-        //    return BadRequest();
-        //}
+		//    if (segment != null)
+		//    {
+		//        return Ok(segment);
+		//    }
+		//    return BadRequest();
+		//}
 
-        [HttpGet]
-        [Route("{categoryId}")]
-        public async Task<IActionResult> GetSegmentsByCategoryId(int categoryId)
-        {
-            var segments = await _segmentRepo.GetSegmentsByCategoryIdAsync(categoryId);
-            if (segments != null)
-            {
-                List<SegmentApiModel> apiSegments = segments.Select(s => new SegmentApiModel(s)).ToList();
+		[HttpGet]
+		[Route("{categoryId}/{userId}")]
+		public async Task<IActionResult> GetSegmentsByCategoryId(int categoryId, string userId)
+		{
+			var segments = await _segmentRepo.GetSegmentsByCategoryIdAsync(categoryId, userId);
+			if (segments != null)
+			{
+				List<SegmentApiModel> apiSegments = segments.Select(s => new SegmentApiModel(s)).ToList();
 
-                var segmentsJson = JsonSerializer.Serialize(apiSegments, _jsonSerializerOptions);
-                return Ok(segmentsJson);
-            }
-            return BadRequest();
-        }
+				var segmentsJson = JsonSerializer.Serialize(apiSegments, _jsonSerializerOptions);
+				return Ok(segmentsJson);
+			}
+			return BadRequest();
+		}
 
-        [HttpPost]
-        public async Task<ActionResult<SegmentModel>> AddSegment(SegmentModel newSegment)
-        {
-            var segmentToAdd = await _segmentRepo.AddSegmentAsync(newSegment);
+		[HttpPost]
+		public async Task<ActionResult<SegmentModel>> AddSegment(SegmentModel newSegment)
+		{
+			var segmentToAdd = await _segmentRepo.AddSegmentAsync(newSegment);
 
-            if (segmentToAdd != false)
-            {
-                return Ok(segmentToAdd);
-            }
+			if (segmentToAdd != false)
+			{
+				return Ok(segmentToAdd);
+			}
 
-            return BadRequest();
-        }
+			return BadRequest();
+		}
 
-        [HttpPut("{id}")]
-        public async Task<ActionResult<SegmentModel>> UpdateSegment(SegmentModel segment)
-        {
-            var updatedSegment = _segmentRepo.UpdateSegmentAsync(segment);
+		[HttpPut("{id}")]
+		public async Task<ActionResult<SegmentModel>> UpdateSegment(SegmentModel segment)
+		{
+			var updatedSegment = _segmentRepo.UpdateSegmentAsync(segment);
 
-            if (updatedSegment != null)
-            {
-                return Ok(updatedSegment);
+			if (updatedSegment != null)
+			{
+				return Ok(updatedSegment);
 
-            }
-            return BadRequest();
-        }
+			}
+			return BadRequest();
+		}
 
-        [HttpDelete("{id}")]
-        public async Task<ActionResult<SegmentModel>> DeleteQuestion(int id)
-        {
-            var segmentToDelete = _segmentRepo.RemoveSegmentAsync(id);
+		[HttpDelete("{id}")]
+		public async Task<ActionResult<SegmentModel>> DeleteQuestion(int id)
+		{
+			var segmentToDelete = _segmentRepo.RemoveSegmentAsync(id);
 
-            if (segmentToDelete != null)
-            {
-                return Ok(segmentToDelete);
-            }
-            return BadRequest();
-        }
+			if (segmentToDelete != null)
+			{
+				return Ok(segmentToDelete);
+			}
+			return BadRequest();
+		}
 
-        public class SegmentApiModel
-        {
-            public int Id { get; set; }
-            public string Name { get; set; } = null!;
-            public string? Description { get; set; }
-            public int CategoryId { get; set; }
-            public List<SubCategoryModel> SubCategories { get; set; } = new();
+		public class SegmentApiModel
+		{
+			public int Id { get; set; }
+			public string Name { get; set; } = null!;
+			public string? Description { get; set; }
+			public int CategoryId { get; set; }
+			public List<SubCategoryModel> SubCategories { get; set; } = new();
 
-            public SegmentApiModel(SegmentModel segment)
-            {
-                Id = segment.Id;
-                Name = segment.Name;
-                Description = segment.Description;
-                CategoryId = segment.CategoryId;
-                foreach (var subCategory in segment.SubCategories)
-                {
-                    SubCategories.Add(subCategory);
-                }
-            }
-        }
-    }
+			public List<QuestionModel> Questions { get; set; } = new();
+
+			public List<AnswerModel> Answers { get; set; } = new();
+
+			public List<UserAnswers> UserAnswers { get; set; } = new();
+
+			public SegmentApiModel(SegmentModel segment)
+			{
+				Id = segment.Id;
+				Name = segment.Name;
+				Description = segment.Description;
+				CategoryId = segment.CategoryId;
+				foreach (var subCategory in segment.SubCategories)
+				{
+					SubCategories.Add(subCategory);
+					foreach (var question in subCategory.Questions)
+					{
+						Questions.Add(question);
+						foreach (var answer in question.Answers)
+						{
+							Answers.Add(answer);
+							foreach (var userAnswer in answer.UserAnswers)
+							{
+								UserAnswers.Add(userAnswer);
+							}
+						}
+					}
+				}
+			}
+		}
+	}
 }

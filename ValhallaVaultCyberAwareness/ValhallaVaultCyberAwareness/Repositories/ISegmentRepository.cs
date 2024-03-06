@@ -3,18 +3,18 @@ using ValhallaVaultCyberAwareness.Domain.Models;
 
 namespace ValhallaVaultCyberAwareness.Repositories
 {
-    public interface ISegmentRepository
-    {
-        public ApplicationDbContext _context { get; set; }
+	public interface ISegmentRepository
+	{
+		public ApplicationDbContext _context { get; set; }
 
-        public Task<SegmentModel?> GetSegmentByIdAsync(int segmentId);
+		public Task<SegmentModel?> GetSegmentByIdAsync(int segmentId);
 
-        public Task<List<SegmentModel>> GetSegmentsByCategoryIdAsync(int categoryId);
+		public Task<List<SegmentModel>> GetSegmentsByCategoryIdAsync(int categoryId, string userId);
 
-        public Task<bool> AddSegmentAsync(SegmentModel newSegment);
+		public Task<bool> AddSegmentAsync(SegmentModel newSegment);
 
-        public Task<bool> RemoveSegmentAsync(int segmentId);
+		public Task<bool> RemoveSegmentAsync(int segmentId);
 
-        public Task<bool> UpdateSegmentAsync(SegmentModel segment);
-    }
+		public Task<bool> UpdateSegmentAsync(SegmentModel segment);
+	}
 }
