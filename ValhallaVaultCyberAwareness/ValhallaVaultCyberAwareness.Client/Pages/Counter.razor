@@ -26,11 +26,15 @@
     {
         //TEST CALL
         // List<CategoryModel> allCategories = await categoryService.GetAllCategoriesAsync();
+        List<SegmentModel> allSegments = await segmentService.GetSegmentsByCategoryIdAsync(1);
         // var category = await categoryService.GetCategoryByIdAsync(1);
         // SegmentModel segment = await segmentService.GetSegmentByIdAsync(1);
+<<<<<<< HEAD
 
         List<QuestionModel> allQuestions = await questionService.GetAllQuestionsBySubCategoryId(1); 
 
+=======
+>>>>>>> 9540c0455d63f460df93114cbd7f1155285c7b1f
         // bool isAdded = await segmentService.AddSegmentAsync(new SegmentModel()
         //     {
         //         Name = "Test segment",

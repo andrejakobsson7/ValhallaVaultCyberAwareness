@@ -1,0 +1,26 @@
+﻿@page "/quizpage/{segmentId:int}"
+
+<h3>Quiz @SegmentId</h3>
+
+
+
+
+
+
+@code
+{
+    [Parameter]
+    public int SegmentId { get; set; }
+
+    private List<QuestionModel>? questions;
+
+    protected override async Task OnInitializedAsync()
+    {
+        // questions = await GetQuestionsBySegmentId(SegmentId);
+    }
+
+    public class QuestionModel
+    {
+
+    }
+}

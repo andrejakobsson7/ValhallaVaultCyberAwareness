@@ -12,21 +12,21 @@ namespace ValhallaVaultCyberAwareness.Client.Services
         {
             Client = client;
         }
-        public async Task<SegmentModel> GetSegmentByIdAsync(int segmentId)
+        public async Task<List<SegmentModel>> GetSegmentsByCategoryIdAsync(int categoryId)
         {
 
-            var apiResponse = await Client.GetAsync($"/api/segment/{segmentId}/");
+            var apiResponse = await Client.GetAsync($"/api/segment/{categoryId}/");
             if (apiResponse.IsSuccessStatusCode)
             {
                 string jsonSegment = await apiResponse.Content.ReadAsStringAsync();
-                SegmentModel segment = JsonConvert.DeserializeObject<SegmentModel>(jsonSegment);
-                if (segment == null)
+                List<SegmentModel> segments = JsonConvert.DeserializeObject<List<SegmentModel>>(jsonSegment);
+                if (segments == null)
                 {
                     throw new JsonException();
                 }
                 else
                 {
-                    return segment;
+                    return segments;
                 }
             }
             throw new HttpRequestException();
