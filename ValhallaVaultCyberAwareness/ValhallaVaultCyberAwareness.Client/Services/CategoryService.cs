@@ -51,7 +51,7 @@ namespace ValhallaVaultCyberAwareness.Client.Services
 
         public async Task<bool> AddCategoryAsync(CategoryModel newCategory)
         {
-            var apiResponse = await Client.PostAsJsonAsync<CategoryModel>("/api/Category/", newCategory);
+            var apiResponse = await Client.PostAsJsonAsync("/api/category/", newCategory);
             if (apiResponse.IsSuccessStatusCode)
             {
                 return true;
@@ -70,7 +70,7 @@ namespace ValhallaVaultCyberAwareness.Client.Services
         }
         public async Task<bool> UpdateCategoryAsync(CategoryModel category)
         {
-            var apiResponse = await Client.PutAsJsonAsync<CategoryModel>($"/api/Category/{category.Id}", category);
+            var apiResponse = await Client.PutAsJsonAsync($"/api/Category/{category.Id}", category);
             if (apiResponse.IsSuccessStatusCode)
             {
                 return true;

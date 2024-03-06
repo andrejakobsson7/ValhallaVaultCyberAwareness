@@ -4,16 +4,16 @@ using ValhallaVaultCyberAwareness.Domain.Models;
 
 namespace ValhallaVaultCyberAwareness.Repositories
 {
-    public class SubCategoryRepository
+    public class SubCategoryRepository : ISubCategoryRepository
     {
-        ApplicationDbContext _context;
+        public ApplicationDbContext _context { get; set; }
 
         public SubCategoryRepository(ApplicationDbContext context)
         {
             _context = context;
         }
 
-        public async Task<List<SubCategoryModel>> GetSubCategoryBySegmentId(int segmentId)
+        public async Task<List<SubCategoryModel>> GetSubCategoriesBySegmentId(int segmentId)
         {
             var subCategories = await _context.SubCategories.Where(s => s.SegmentId == segmentId).ToListAsync();
             return subCategories;
@@ -41,9 +41,9 @@ namespace ValhallaVaultCyberAwareness.Repositories
             return false;
         }
 
-        public async Task<SubCategoryModel> UpdateSubCategoryAsync(int Id, SubCategoryModel newSubCategory)
+        public async Task<SubCategoryModel> UpdateSubCategoryAsync(SubCategoryModel newSubCategory)
         {
-            var subCategoryToUpdate = await _context.SubCategories.FirstOrDefaultAsync(c => c.Id == Id);
+            var subCategoryToUpdate = await _context.SubCategories.FirstOrDefaultAsync(c => c.Id == newSubCategory.Id);
 
             if (subCategoryToUpdate != null)
             {

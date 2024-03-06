@@ -38,25 +38,38 @@ namespace ValhallaVaultCyberAwareness.Controllers
             return BadRequest();
         }
 
-        [HttpPut("{id}")]
-        public async Task<ActionResult<CategoryModel>> UpdateCategory(int id, CategoryModel category)
+        [HttpPost]
+        public async Task<IActionResult> AddCategory(CategoryModel newCategory)
         {
-            var cateogryToUpdate = _categoryRepo.UpdateCategoryAsync(id, category);
-
-            if (cateogryToUpdate != null)
+            var category = await _categoryRepo.AddCategoryAsync(newCategory);
+            if (category != null)
             {
-                return Ok(cateogryToUpdate);
+                return Ok(category);
+            }
+            return BadRequest();
+        }
+
+        [HttpPut]
+        [Route("{id}")]
+        public async Task<ActionResult<CategoryModel>> UpdateCategory(CategoryModel category)
+        {
+            var categoryToUpdate = await _categoryRepo.UpdateCategoryAsync(category);
+
+            if (categoryToUpdate != null)
+            {
+                return Ok(categoryToUpdate);
 
             }
             return BadRequest();
         }
 
-        [HttpDelete("{id}")]
+        [HttpDelete]
+        [Route("{id}")]
         public async Task<ActionResult<CategoryModel>> DeleteCategory(int id)
         {
-            var categoryToDelete = _categoryRepo.DeleteCategoryAsync(id);
+            var categoryToDelete = await _categoryRepo.DeleteCategoryAsync(id);
 
-            if (categoryToDelete != null)
+            if (categoryToDelete != false)
             {
                 return Ok(categoryToDelete);
             }

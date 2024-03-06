@@ -19,7 +19,7 @@ namespace ValhallaVaultCyberAwareness.Domain.Models
         public int SegmentId { get; set; }
 
         //Navigation property
-        public SegmentModel Segment { get; set; } = null!;
+        public SegmentModel? Segment { get; set; }
 
         public List<QuestionModel> Questions { get; set; } = new();
     }

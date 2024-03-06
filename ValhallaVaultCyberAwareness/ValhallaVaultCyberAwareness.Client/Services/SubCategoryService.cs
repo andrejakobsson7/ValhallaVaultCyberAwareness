@@ -13,20 +13,20 @@ namespace ValhallaVaultCyberAwareness.Client.Services
             Client = client;
         }
 
-        public async Task<SubCategoryModel> GetSubCategoryByIdAsync(int subCategoryId)
+        public async Task<List<SubCategoryModel>> GetSubCategoriesBySegmentIdAsync(int subCategoryId)
         {
             var apiResponse = await Client.GetAsync($"/api/SubCategory/{subCategoryId}/");
             if (apiResponse.IsSuccessStatusCode)
             {
                 string jsonSubCategory = await apiResponse.Content.ReadAsStringAsync();
-                SubCategoryModel subCategory = JsonConvert.DeserializeObject<SubCategoryModel>(jsonSubCategory);
-                if (subCategory == null)
+                List<SubCategoryModel> subCategories = JsonConvert.DeserializeObject<List<SubCategoryModel>>(jsonSubCategory);
+                if (subCategories == null)
                 {
                     throw new JsonException();
                 }
                 else
                 {
-                    return subCategory;
+                    return subCategories;
                 }
             }
             throw new HttpRequestException();
@@ -34,7 +34,7 @@ namespace ValhallaVaultCyberAwareness.Client.Services
 
         public async Task<bool> AddSubCategoryAsync(SubCategoryModel newSubCategory)
         {
-            var apiResponse = await Client.PostAsJsonAsync<SubCategoryModel>("/api/SubCategory/", newSubCategory);
+            var apiResponse = await Client.PostAsJsonAsync("/api/subcategory/", newSubCategory);
             if (apiResponse.IsSuccessStatusCode)
             {
                 return true;
@@ -44,7 +44,7 @@ namespace ValhallaVaultCyberAwareness.Client.Services
 
         public async Task<bool> RemoveSubCategoryAsync(int subCategoryId)
         {
-            var apiResponse = await Client.DeleteAsync($"/api/SubCategory/{subCategoryId}/");
+            var apiResponse = await Client.DeleteAsync($"/api/subcategory/{subCategoryId}/");
             if (apiResponse.IsSuccessStatusCode)
             {
                 return true;
@@ -53,7 +53,7 @@ namespace ValhallaVaultCyberAwareness.Client.Services
         }
         public async Task<bool> UpdateSubCategoryAsync(SubCategoryModel subCategory)
         {
-            var apiResponse = await Client.PutAsJsonAsync<SubCategoryModel>($"/api/SubCategory/{subCategory.Id}/", subCategory);
+            var apiResponse = await Client.PutAsJsonAsync($"/api/SubCategory/{subCategory.Id}/", subCategory);
             if (apiResponse.IsSuccessStatusCode)
             {
                 return true;

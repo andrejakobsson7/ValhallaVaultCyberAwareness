@@ -46,13 +46,13 @@ namespace ValhallaVaultCyberAwareness.Repositories
             return false;
         }
 
-        public async Task<QuestionModel> UpdateQuestionAsync(int Id, QuestionModel newQuestion)
+        public async Task<QuestionModel> UpdateQuestionAsync(QuestionModel question)
         {
-            var questionToUpdate = await _context.Questions.FirstOrDefaultAsync(q => q.Id == Id);
+            var questionToUpdate = await _context.Questions.FirstOrDefaultAsync(q => q.Id == question.Id);
 
             if (questionToUpdate != null)
             {
-                questionToUpdate.Question = newQuestion.Question;
+                questionToUpdate.Question = question.Question;
                 await _context.SaveChangesAsync();
                 return questionToUpdate;
             }
