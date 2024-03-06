@@ -1,6 +1,9 @@
-﻿@inject NavigationManager NavigationManager 
+﻿
+@inject NavigationManager NavigationManager 
 @rendermode InteractiveServer
+@attribute [Authorize]
 @page "/UserPage"
+@using Microsoft.AspNetCore.Authorization
 
 <h1>Want To Change Email or Password?</h1>
 
