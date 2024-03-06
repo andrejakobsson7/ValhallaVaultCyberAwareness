@@ -13,7 +13,7 @@ namespace ValhallaVaultCyberAwareness.Client.Services
         }
         public async Task<List<CategoryModel>> GetAllCategoriesAsync()
         {
-            var apiResponse = await Client.GetAsync("api/Category/");
+            var apiResponse = await Client.GetAsync("api/category/");
             if (apiResponse.IsSuccessStatusCode)
             {
                 string jsonCategories = await apiResponse.Content.ReadAsStringAsync();
@@ -32,7 +32,7 @@ namespace ValhallaVaultCyberAwareness.Client.Services
 
         public async Task<CategoryModel> GetCategoryByIdAsync(int categoryId)
         {
-            var apiResponse = await Client.GetAsync($"/api/Category/{categoryId}/");
+            var apiResponse = await Client.GetAsync($"/api/category/{categoryId}/");
             if (apiResponse.IsSuccessStatusCode)
             {
                 string jsonCategory = await apiResponse.Content.ReadAsStringAsync();

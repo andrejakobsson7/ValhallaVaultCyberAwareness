@@ -4,9 +4,9 @@ using ValhallaVaultCyberAwareness.Domain.Models;
 
 namespace ValhallaVaultCyberAwareness.Repositories
 {
-    public class CategoryRepository
+    public class CategoryRepository : ICategoryRepository
     {
-        ApplicationDbContext _context;
+        public ApplicationDbContext _context { get; set; }
 
         public CategoryRepository(ApplicationDbContext context)
         {
@@ -64,6 +64,8 @@ namespace ValhallaVaultCyberAwareness.Repositories
             throw new Exception("Category not found");
 
         }
+
+
 
     }
 }

@@ -17,6 +17,25 @@ namespace ValhallaVaultCyberAwareness.Data
         {
             base.OnModelCreating(builder);
 
+            builder.Entity<SegmentModel>()
+                .HasOne(c => c.Category)
+                .WithMany(c => c.Segments)
+                .HasForeignKey(c => c.CategoryId);
+
+            builder.Entity<SubCategoryModel>()
+                .HasOne(s => s.Segment)
+                .WithMany(s => s.SubCategories)
+                .HasForeignKey(s => s.SegmentId);
+
+            builder.Entity<QuestionModel>()
+                .HasOne(q => q.SubCategory)
+                .WithMany(s => s.Questions)
+                .HasForeignKey(q => q.SubCategoryId);
+
+            builder.Entity<AnswerModel>()
+                .HasOne(a => a.Question)
+                .WithMany(q => q.Answers)
+                .HasForeignKey(a => a.QuestionId);
             //Set combined key for join table UserAnswers
             //builder.Entity<UserAnswers>().HasKey(ua => new { ua.UserId, ua.AnswerId });
 

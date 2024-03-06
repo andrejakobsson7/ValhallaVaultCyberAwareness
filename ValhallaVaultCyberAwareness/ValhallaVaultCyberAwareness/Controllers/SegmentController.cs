@@ -8,13 +8,14 @@ namespace ValhallaVaultCyberAwareness.Controllers
     [ApiController]
     public class SegmentController : ControllerBase
     {
-        SegmentRepository _segmentRepo;
-        public SegmentController(SegmentRepository segmentRepo)
+        public ISegmentRepository _segmentRepo;
+        public SegmentController(ISegmentRepository segmentRepo)
         {
             _segmentRepo = segmentRepo;
         }
 
         [HttpGet]
+        [Route("{segmentId}")]
         public async Task<ActionResult<List<SegmentModel>>> GetSegmentById(int segmentId)
         {
             var segment = await _segmentRepo.GetSegmentByIdAsync(segmentId);

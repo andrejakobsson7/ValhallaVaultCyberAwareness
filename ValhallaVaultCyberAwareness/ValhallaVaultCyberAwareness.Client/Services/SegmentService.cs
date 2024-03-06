@@ -14,7 +14,8 @@ namespace ValhallaVaultCyberAwareness.Client.Services
         }
         public async Task<SegmentModel> GetSegmentByIdAsync(int segmentId)
         {
-            var apiResponse = await Client.GetAsync($"/api/Segment/{segmentId}/");
+
+            var apiResponse = await Client.GetAsync($"/api/segment/{segmentId}/");
             if (apiResponse.IsSuccessStatusCode)
             {
                 string jsonSegment = await apiResponse.Content.ReadAsStringAsync();
@@ -33,7 +34,7 @@ namespace ValhallaVaultCyberAwareness.Client.Services
 
         public async Task<bool> AddSegmentAsync(SegmentModel newSegment)
         {
-            var apiResponse = await Client.PostAsJsonAsync<SegmentModel>("/api/Segment/", newSegment);
+            var apiResponse = await Client.PostAsJsonAsync<SegmentModel>("/api/segment/", newSegment);
             if (apiResponse.IsSuccessStatusCode)
             {
                 return true;

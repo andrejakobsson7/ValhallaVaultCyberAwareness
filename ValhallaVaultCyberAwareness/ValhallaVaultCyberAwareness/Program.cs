@@ -19,7 +19,12 @@ builder.Services.AddCascadingAuthenticationState();
 builder.Services.AddScoped<IdentityUserAccessor>();
 builder.Services.AddScoped<IdentityRedirectManager>();
 builder.Services.AddScoped<AuthenticationStateProvider, PersistingRevalidatingAuthenticationStateProvider>();
+
+//Repositories
 builder.Services.AddScoped<ISegmentRepository, SegmentRepository>();
+builder.Services.AddScoped<ICategoryRepository, CategoryRepository>();
+
+//Services
 builder.Services.AddScoped<ICategoryService, CategoryService>();
 builder.Services.AddScoped<ISegmentService, SegmentService>();
 builder.Services.AddScoped<ISubCategoryService, SubCategoryService>();
