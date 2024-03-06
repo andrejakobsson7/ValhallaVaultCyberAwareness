@@ -15,10 +15,22 @@ namespace ValhallaVaultCyberAwareness.Controllers
             _questionRepo = questionRepo;
         }
 
-        [HttpGet]
+        [HttpGet("{subCategoryId}")]
         public async Task<ActionResult<List<QuestionModel>>> GetAllQuestionsPerSubCategoryAsync(int subCategoryId)
         {
             var questions = await _questionRepo.GetAllQuestionsSubCategoryAsync(subCategoryId);
+
+            if (questions != null)
+            {
+                return Ok(questions);
+            }
+            return BadRequest();
+        }
+
+        [HttpGet]
+        public async Task<ActionResult<List<QuestionModel>>> GetAllQuestionsAsync()
+        {
+            var questions = await _questionRepo.GetAllQuestionsAsync();
 
             if (questions != null)
             {

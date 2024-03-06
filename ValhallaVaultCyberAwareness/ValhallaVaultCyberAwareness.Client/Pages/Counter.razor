@@ -4,6 +4,7 @@
 @rendermode InteractiveAuto
 @inject ICategoryService categoryService;
 @inject ISegmentService segmentService;
+@inject IQuestionService questionService
 
 <PageTitle>Counter</PageTitle>
 
@@ -27,11 +28,14 @@
         // List<CategoryModel> allCategories = await categoryService.GetAllCategoriesAsync();
         // var category = await categoryService.GetCategoryByIdAsync(1);
         // SegmentModel segment = await segmentService.GetSegmentByIdAsync(1);
-        bool isAdded = await segmentService.AddSegmentAsync(new SegmentModel()
-            {
-                Name = "Test segment",
-                Description = "Test segment description",
-                CategoryId = 1
-            });
+
+        List<QuestionModel> allQuestions = await questionService.GetAllQuestionsBySubCategoryId(1); 
+
+        // bool isAdded = await segmentService.AddSegmentAsync(new SegmentModel()
+        //     {
+        //         Name = "Test segment",
+        //         Description = "Test segment description",
+        //         CategoryId = 1
+        //     });
     }
 }

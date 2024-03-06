@@ -4,7 +4,7 @@ using ValhallaVaultCyberAwareness.Domain.Models;
 
 namespace ValhallaVaultCyberAwareness.Repositories
 {
-    public class QuestionRepository
+    public class QuestionRepository : IQuestionRepository
     {
         ApplicationDbContext _context;
 
@@ -13,7 +13,7 @@ namespace ValhallaVaultCyberAwareness.Repositories
             _context = context;
         }
 
-        public async Task<List<QuestionModel>> GetAllQuestions()
+        public async Task<List<QuestionModel>> GetAllQuestionsAsync()
         {
             var questions = await _context.Questions.ToListAsync();
             return questions;
