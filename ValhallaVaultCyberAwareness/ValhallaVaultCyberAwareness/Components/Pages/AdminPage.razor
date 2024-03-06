@@ -1,7 +1,18 @@
 ﻿@page "/AdminPage"
+@using Microsoft.AspNetCore.Authorization
 
-<h3>AdminPage</h3>
+@attribute [Authorize]
+@rendermode InteractiveAuto
+
+<h1>AdminPage</h1>
+<h2>detta är bara för Admins</h2>
+
+<AuthorizeView>
+    Hello @context.User.Identity?.Name!
+</AuthorizeView>
+
 
 @code {
+
 
 }

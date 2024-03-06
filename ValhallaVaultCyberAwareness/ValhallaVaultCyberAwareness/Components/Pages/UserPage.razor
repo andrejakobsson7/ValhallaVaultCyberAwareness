@@ -1,7 +1,22 @@
-﻿@page "/UserPage"
+﻿@inject NavigationManager NavigationManager 
+@rendermode InteractiveServer
+@page "/UserPage"
 
-<h3>UserPage</h3>
+<h1>Want To Change Email or Password?</h1>
+
+<button @onclick="UserChangeEmail"> Change Email </button>
+
+<button @onclick="ChangePassword">Change Password</button>
 
 @code {
 
+    private void UserChangeEmail() 
+    {
+        NavigationManager.NavigateTo("/UserChangeEmail");
+    }
+
+    private void ChangePassword()
+    {
+       NavigationManager.NavigateTo("/UserChangePassword");
+    }
 }
