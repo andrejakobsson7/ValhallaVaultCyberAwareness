@@ -1,0 +1,10 @@
+﻿@page "/Admin/AdminPage"
+@using Microsoft.AspNetCore.Authorization
+@attribute [Authorize(Roles = "Admin")]
+
+<h3>AdminPage</h3>
+<a href="Admin/CategoryPage">Manage Categories</a>
+
+@code {
+
+}

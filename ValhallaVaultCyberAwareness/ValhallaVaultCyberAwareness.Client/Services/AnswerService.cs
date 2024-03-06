@@ -5,10 +5,11 @@ namespace ValhallaVaultCyberAwareness.Client.Services
 {
     public class AnswerService : IAnswerService
     {
-        public HttpClient Client { get; set; } = new()
+        public HttpClient Client { get; set; }
+        public AnswerService(HttpClient client)
         {
-            BaseAddress = new Uri("https://localhost:7107/Answer/")
-        };
+            Client = client;
+        }
         public async Task<bool> AddAnswerAsync(AnswerModel newAnswer)
         {
             var apiResponse = await Client.PostAsJsonAsync<AnswerModel>("api/Answer/", newAnswer);

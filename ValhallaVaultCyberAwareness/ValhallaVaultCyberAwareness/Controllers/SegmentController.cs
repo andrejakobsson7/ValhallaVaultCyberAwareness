@@ -34,8 +34,8 @@ namespace ValhallaVaultCyberAwareness.Controllers
         //}
 
         [HttpGet]
-        [Route("{categoryId}")]
-        public async Task<IActionResult> GetSegmentsByCategoryId(int categoryId)
+        [Route("{categoryId}/{userId}")]
+        public async Task<IActionResult> GetSegmentsByCategoryId(int categoryId, string userId)
         {
             var segments = await _segmentRepo.GetSegmentsByCategoryIdAsync(categoryId);
             if (segments != null)

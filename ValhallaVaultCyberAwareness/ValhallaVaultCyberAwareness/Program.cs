@@ -23,6 +23,7 @@ builder.Services.AddScoped<AuthenticationStateProvider, PersistingRevalidatingAu
 //Repositories
 builder.Services.AddScoped<ISegmentRepository, SegmentRepository>();
 builder.Services.AddScoped<ICategoryRepository, CategoryRepository>();
+builder.Services.AddScoped<IQuestionRepository, QuestionRepository>();
 
 //Services
 builder.Services.AddScoped<ICategoryService, CategoryService>();
@@ -99,7 +100,7 @@ using (ServiceProvider sp = builder.Services.BuildServiceProvider())
     if (admin == null)
     {
         // Skapa en ny user 
-        signInManager.UserManager.CreateAsync(newAdmin, "Password1234!");
+        signInManager.UserManager.CreateAsync(newAdmin, "Password1234!").GetAwaiter().GetResult();
 
         // Kolla om admin rollen existerar
         bool adminRoleExists = roleManager.RoleExistsAsync("Admin").GetAwaiter().GetResult();
@@ -120,6 +121,7 @@ using (ServiceProvider sp = builder.Services.BuildServiceProvider())
         }
 
     }
+
     var user = signInManager.UserManager.FindByEmailAsync(newUser.Email).GetAwaiter().GetResult();
 
     if (user == null)

@@ -1,10 +1,13 @@
 ﻿@page "/counter"
+@using Microsoft.AspNetCore.Identity
 @using ValhallaVaultCyberAwareness.Client.Services
+@using ValhallaVaultCyberAwareness.Data
 @using ValhallaVaultCyberAwareness.Domain.Models
 @rendermode InteractiveAuto
 @inject ICategoryService categoryService;
 @inject ISegmentService segmentService;
 @inject IQuestionService questionService
+@inject UserManager<ApplicationUser> UserManager
 
 <PageTitle>Counter</PageTitle>
 
@@ -26,11 +29,22 @@
     {
         //TEST CALL
         // List<CategoryModel> allCategories = await categoryService.GetAllCategoriesAsync();
-        List<SegmentModel> allSegments = await segmentService.GetSegmentsByCategoryIdAsync(1);
+        // List<SegmentModel> allSegments = await segmentService.GetSegmentsByCategoryIdAsync(1);
         // var category = await categoryService.GetCategoryByIdAsync(1);
         // SegmentModel segment = await segmentService.GetSegmentByIdAsync(1);
 
-        List<QuestionModel> allQuestions = await questionService.GetAllQuestionsBySubCategoryId(1); 
+        // List<QuestionModel> allQuestions = await questionService.GetAllQuestionsBySubCategoryId(1);
+
+        // QuestionModel newQuestion = new QuestionModel
+        //  {
+        //      Id = 0,
+        //      Question = "Hej",
+        //      SubCategoryId = 1,
+        //  };
+
+        //  await questionService.AddQuestionAsync(newQuestion);
+
+            var users = await UserManager.GetUsersInRoleAsync("Admin");
 
 
         // bool isAdded = await segmentService.AddSegmentAsync(new SegmentModel()
