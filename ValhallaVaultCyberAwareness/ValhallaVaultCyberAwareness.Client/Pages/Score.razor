@@ -1,5 +1,8 @@
 ﻿@page "/Score"
+@using ValhallaVaultCyberAwareness.Client.Services
+@using ValhallaVaultCyberAwareness.Domain.Models
 
+@inject ISegmentService SegmentService
 
 <PageTitle>Quiz Score and Links</PageTitle>
 
@@ -16,18 +19,25 @@ else
     <div class="row">
         @foreach (var segmentItem in segments)
         {
-            // Create a card for each segment. Then include name, picture, score & a link to take the quiz
+            // Create a card for each segment. Then include name, picture, score & a link to select SubSegments
             <div class="col-4">
-                <div class="card border-dark text-center w-100">
+                <div class="card border-dark text-center w-100 h-300">
                     <img class="card-img-top" src="https://variety.com/wp-content/uploads/2023/04/Twitter-Logo-Doge-Dogecoin.png" alt="Card image cap" />
                     <div class="card-img-overlay">
                         <h2 class="card-title">@segmentItem.Name</h2>
                     </div>
-                    <div class="card-body text-muted">
+                    <div class="card-footer">
+                        <p>@segmentItem.Description</p>
+                        <ul>
+                            @foreach (var subcategoryItem in segmentItem.SubCategories)
+                            {
+                                <li>@subcategoryItem.Name - 0 / @subcategoryItem.Questions.Count</li>
+                            }
+                        </ul>
                         <p class="card-description">@segmentItem.Description</p>
                     </div>
                     <div class="card-footer bg-secondary">
-                        <h5 >Previous score:  @segmentItem.Score / @segmentItem.Questions.Count</h5>
+                        <h5 >Completed SubCategories:   / @segmentItem.SubCategories.Count </h5>
                     </div>
                     <a href="@($"https://localhost:7107/quizpage/{segmentItem.Id}")" class="stretched-link"></a>
                 </div>
@@ -39,61 +49,10 @@ else
 @code {
     // Create a list of all segments using GetSegments();
     private List<SegmentModel>? segments;
+     // private List<QuestionModel>? questions;
 
     protected override async Task OnInitializedAsync()
     {
-        // segments = await GetSegments();
-
-        // DUMMY DATA //
-        segments = new List<SegmentModel>
-        {
-            new SegmentModel
-            {
-                Id = 1,
-                Name = "Cyberstalking",
-                Description = "How can you avoid being stalked online?",
-                Score = 55,
-                Questions = new List<QuestionModel>
-                {
-                    new QuestionModel
-                    {
-                        QuestionId = 3,
-                    },
-                    new QuestionModel
-                    {
-                        QuestionId = 2,
-                    },
-                }
-            },
-            new SegmentModel
-            {
-                Id = 2,
-                Name = "Phishing",
-                Description = "How to avoid a Phishing attack",
-                Score = 12,
-                Questions = new List<QuestionModel>
-                {
-                    new QuestionModel
-                    {
-                        QuestionId = 1,
-                    },
-                }
-            },
-        };
-
-        // DUMMY DATA END //
-    }
-
-    public class SegmentModel
-    {
-        public int Id { get; set; }
-        public string Name { get; set; }
-        public string Description { get; set; }
-        public int Score { get; set; }
-        public List<QuestionModel> Questions { get; set; } = new List<QuestionModel>();
-    }
-    public class QuestionModel
-    {
-        public int QuestionId { get; set; }
+        segments = await SegmentService.GetSegmentsByCategoryIdAsync(1);
     }
 }

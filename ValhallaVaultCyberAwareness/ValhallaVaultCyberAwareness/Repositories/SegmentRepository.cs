@@ -23,9 +23,21 @@ namespace ValhallaVaultCyberAwareness.Repositories
             return await _context.Segments.FirstOrDefaultAsync(s => s.Id == segmentId);
         }
 
-        public async Task<List<SegmentModel>> GetSegmentsByCategoryIdAsync(int categoryId)
+        /// <summary>
+        /// Retrieves all segments by category-id.
+        /// </summary>
+        /// <param name="categoryId"></param>
+        /// <param name="userId"></param>
+        /// <returns>A list of segments with included data</returns>
+        public async Task<List<SegmentModel>> GetSegmentsByCategoryIdAsync(int categoryId, string userId)
         {
-            return await _context.Segments.Include(s => s.SubCategories).Where(s => s.CategoryId == categoryId).ToListAsync();
+            return await _context.Segments
+                .Include(s => s.SubCategories)
+                .ThenInclude(s => s.Questions)
+                .ThenInclude(q => q.Answers)
+                .ThenInclude(a => a.UserAnswers.Where(u => u.UserId == userId))
+                .Where(s => s.CategoryId == categoryId)
+                .ToListAsync();
         }
 
         private async Task<SegmentModel?> GetSegmentByIdWithoutIncludedDataAsync(int segmentId)
