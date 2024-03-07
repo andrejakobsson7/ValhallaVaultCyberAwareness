@@ -23,17 +23,6 @@ namespace ValhallaVaultCyberAwareness.Migrations
                 });
 
             migrationBuilder.InsertData(
-                table: "UserAnswers",
-                columns: new[] { "answer_id", "user_id" },
-                values: new object[,]
-                {
-                    { 2, "e547fd1c-ec07-49e1-b2ce-0d326f467c01" },
-                    { 4, "e547fd1c-ec07-49e1-b2ce-0d326f467c01" },
-                    { 8, "e547fd1c-ec07-49e1-b2ce-0d326f467c01" },
-                    { 11, "e547fd1c-ec07-49e1-b2ce-0d326f467c01" }
-                });
-
-            migrationBuilder.InsertData(
                 table: "SubCategories",
                 columns: new[] { "id", "description", "name", "segment_id" },
                 values: new object[,]
@@ -173,26 +162,6 @@ namespace ValhallaVaultCyberAwareness.Migrations
                 table: "SubCategories",
                 keyColumn: "id",
                 keyValue: 45);
-
-            migrationBuilder.DeleteData(
-                table: "UserAnswers",
-                keyColumns: new[] { "answer_id", "user_id" },
-                keyValues: new object[] { 2, "e547fd1c-ec07-49e1-b2ce-0d326f467c01" });
-
-            migrationBuilder.DeleteData(
-                table: "UserAnswers",
-                keyColumns: new[] { "answer_id", "user_id" },
-                keyValues: new object[] { 4, "e547fd1c-ec07-49e1-b2ce-0d326f467c01" });
-
-            migrationBuilder.DeleteData(
-                table: "UserAnswers",
-                keyColumns: new[] { "answer_id", "user_id" },
-                keyValues: new object[] { 8, "e547fd1c-ec07-49e1-b2ce-0d326f467c01" });
-
-            migrationBuilder.DeleteData(
-                table: "UserAnswers",
-                keyColumns: new[] { "answer_id", "user_id" },
-                keyValues: new object[] { 11, "e547fd1c-ec07-49e1-b2ce-0d326f467c01" });
 
             migrationBuilder.DeleteData(
                 table: "Questions",
