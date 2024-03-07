@@ -1,5 +1,4 @@
-﻿using Newtonsoft.Json;
-using System.Net.Http.Json;
+﻿using System.Net.Http.Json;
 using ValhallaVaultCyberAwareness.Domain.Models;
 
 namespace ValhallaVaultCyberAwareness.Client.Services
@@ -15,7 +14,6 @@ namespace ValhallaVaultCyberAwareness.Client.Services
 
         public async Task<bool> AddUserAnswersAsync(List<UserAnswers> newUserAnswers)
         {
-            var x = JsonConvert.SerializeObject(newUserAnswers);
             var apiResponse = await Client.PostAsJsonAsync("/api/useranswers/", newUserAnswers);
             if (apiResponse.IsSuccessStatusCode)
             {
