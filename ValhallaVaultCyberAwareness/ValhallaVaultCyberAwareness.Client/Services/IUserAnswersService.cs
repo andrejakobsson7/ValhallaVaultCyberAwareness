@@ -6,6 +6,6 @@ namespace ValhallaVaultCyberAwareness.Client.Services
     {
         public HttpClient Client { get; set; }
 
-        public Task<bool> AddUserAnswerAsync(UserAnswers newUserAnswer);
+        public Task<bool> AddUserAnswersAsync(List<UserAnswers> newUserAnswers);
     }
 }
