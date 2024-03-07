@@ -1,31 +1,25 @@
-﻿using ValhallaVaultCyberAwareness.Client.Services;
-using ValhallaVaultCyberAwareness.Repositories;
+﻿using ValhallaVaultCyberAwareness.Repositories;
 
 namespace ValhallaVaultCyberAwareness.Managers
 {
     public class AdminManager
     {
-        private readonly ICategoryService _categoryService;
-        private readonly ISegmentRepository _segmentService;
+        public readonly ICategoryRepository _categoryRepository;
+        public readonly ISubCategoryRepository _subcategoryRepository;
+        public readonly ISegmentRepository _segmentRepository;
+        public readonly IQuestionRepository _questionRepository;
 
-        public AdminManager(ICategoryService categoryService)
+        public AdminManager
+            (ICategoryRepository categoryRepository,
+            ISubCategoryRepository subcategoryRepository,
+            ISegmentRepository segmentRepository,
+            IQuestionRepository questionRepository)
         {
-            _categoryService = categoryService;
+            categoryRepository = _categoryRepository;
+            subcategoryRepository = _subcategoryRepository;
+            segmentRepository = _segmentRepository;
+            questionRepository = _questionRepository;
         }
 
-        public void AddCategory()
-        {
-
-        }
-
-        public void UpdateCategory()
-        {
-
-        }
-
-        public void DeleteCategory()
-        {
-
-        }
     }
 }

@@ -19,7 +19,7 @@ namespace ValhallaVaultCyberAwareness.Domain.Models
         public int CategoryId { get; set; }
 
         //Navigation property
-        public CategoryModel Category { get; set; } = null!;
+        public CategoryModel? Category { get; set; }
 
         public List<SubCategoryModel> SubCategories { get; set; } = new();
     }

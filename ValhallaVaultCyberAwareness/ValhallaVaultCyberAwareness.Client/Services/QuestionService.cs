@@ -49,19 +49,21 @@ namespace ValhallaVaultCyberAwareness.Client.Services
             throw new HttpRequestException();
         }
 
-        public async Task<bool> AddQuestionAsync(QuestionModel newQuestion)
+        public async Task<QuestionModel> AddQuestionAsync(QuestionModel newQuestion)
         {
-            var apiResponse = await Client.PostAsJsonAsync<QuestionModel>("/api/Question/", newQuestion);
+            var apiResponse = await Client.PostAsJsonAsync("/api/question/", newQuestion);
             if (apiResponse.IsSuccessStatusCode)
-            {
-                return true;
+             {
+                string jsonQuestion = await apiResponse.Content.ReadAsStringAsync();
+                QuestionModel question = JsonConvert.DeserializeObject<QuestionModel>(jsonQuestion);
+                return question;
             }
-            return false;
+            throw new HttpRequestException();
         }
 
         public async Task<bool> RemoveQuestionAsync(int questionId)
         {
-            var apiResponse = await Client.DeleteAsync($"api/Question/{questionId}/");
+            var apiResponse = await Client.DeleteAsync($"api/question/{questionId}/");
             if (apiResponse.IsSuccessStatusCode)
             {
                 return true;
@@ -70,13 +72,14 @@ namespace ValhallaVaultCyberAwareness.Client.Services
         }
         public async Task<bool> UpdateQuestionAsync(QuestionModel question)
         {
-            var apiResponse = await Client.PutAsJsonAsync<QuestionModel>($"/api/Question/{question.Id}", question);
+            var apiResponse = await Client.PutAsJsonAsync($"/api/question/{question.Id}", question);
             if (apiResponse.IsSuccessStatusCode)
             {
                 return true;
             }
             return false;
         }
+
 
     }
 

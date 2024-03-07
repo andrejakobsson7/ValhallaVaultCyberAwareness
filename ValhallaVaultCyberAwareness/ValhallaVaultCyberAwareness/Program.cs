@@ -1,8 +1,6 @@
 using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
-using System.Diagnostics.Metrics;
-using ValhallaVaultCyberAwareness.Client.Pages;
 using ValhallaVaultCyberAwareness.Client.Services;
 using ValhallaVaultCyberAwareness.Components;
 using ValhallaVaultCyberAwareness.Components.Account;
@@ -25,13 +23,14 @@ builder.Services.AddScoped<AuthenticationStateProvider, PersistingRevalidatingAu
 //Repositories
 builder.Services.AddScoped<ISegmentRepository, SegmentRepository>();
 builder.Services.AddScoped<ICategoryRepository, CategoryRepository>();
+builder.Services.AddScoped<ISubCategoryRepository, SubCategoryRepository>();
+builder.Services.AddScoped<IQuestionRepository, QuestionRepository>();
 
 //Services
 builder.Services.AddScoped<ICategoryService, CategoryService>();
 builder.Services.AddScoped<ISegmentService, SegmentService>();
 builder.Services.AddScoped<ISubCategoryService, SubCategoryService>();
 builder.Services.AddScoped<IQuestionService, QuestionService>();
-builder.Services.AddScoped<IQuestionRepository, QuestionRepository>();
 builder.Services.AddScoped<IAnswerService, AnswerService>();
 builder.Services.AddScoped<IUserAnswersService, UserAnswerService>();
 
@@ -101,7 +100,7 @@ using (ServiceProvider sp = builder.Services.BuildServiceProvider())
     if (admin == null)
     {
         // Skapa en ny user 
-        signInManager.UserManager.CreateAsync(newAdmin, "Password1234!");
+        signInManager.UserManager.CreateAsync(newAdmin, "Password1234!").GetAwaiter().GetResult();
 
         // Kolla om admin rollen existerar
         bool adminRoleExists = roleManager.RoleExistsAsync("Admin").GetAwaiter().GetResult();
@@ -122,6 +121,7 @@ using (ServiceProvider sp = builder.Services.BuildServiceProvider())
         }
 
     }
+
     var user = signInManager.UserManager.FindByEmailAsync(newUser.Email).GetAwaiter().GetResult();
 
     if (user == null)

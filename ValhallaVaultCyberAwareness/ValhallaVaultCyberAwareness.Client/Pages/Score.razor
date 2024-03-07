@@ -1,5 +1,8 @@
 ﻿@page "/Score"
+@using ValhallaVaultCyberAwareness.Client.Services
+@using ValhallaVaultCyberAwareness.Domain.Models
 
+@inject ISegmentService SegmentService
 
 <PageTitle>Quiz Score and Links</PageTitle>
 
@@ -16,18 +19,62 @@ else
     <div class="row">
         @foreach (var segmentItem in segments)
         {
-            // Create a card for each segment. Then include name, picture, score & a link to take the quiz
+            // Create a card for each segment. Then include name, picture, score & a link to select SubSegments
             <div class="col-4">
-                <div class="card border-dark text-center w-100">
+                <div class="card border-dark text-center w-100 h-300">
                     <img class="card-img-top" src="https://variety.com/wp-content/uploads/2023/04/Twitter-Logo-Doge-Dogecoin.png" alt="Card image cap" />
                     <div class="card-img-overlay">
                         <h2 class="card-title">@segmentItem.Name</h2>
                     </div>
-                    <div class="card-body text-muted">
+                    <div class="card-footer">
+                        <p>@segmentItem.Description</p>
+                        <ul>
+                           
+                            @foreach (var SubCategoryItem in segmentItem.SubCategories)
+                            {
+                                <!-- 1. List the name of every SubCategory contained in each Segment
+
+                                     2. For every SubCategory contained in a segment, display the amount
+                                        of TRUE's IsCorrect contains (a TRUE boolean singifies a correct answer).
+
+                                     3. Count the amount of Questions contained within a SubCategory.
+                                -->
+                                <li>@SubCategoryItem.Name - 
+                                    @(SubCategoryItem.Questions.FirstOrDefault()?
+                                    .Answers.Count(a => a.IsCorrect == true) ?? 0) / 
+                                    @SubCategoryItem.Questions.Count
+                                </li>
+                            }
+                        </ul>
                         <p class="card-description">@segmentItem.Description</p>
                     </div>
                     <div class="card-footer bg-secondary">
-                        <h5 >Previous score:  @segmentItem.Score / @segmentItem.Questions.Count</h5>
+                        <h5 >Completed SubCategories: 
+
+                            <!-- In each SubCategory we compare the amount of booleans in the IsCorrect property
+                                 to the amount of booleans that are TRUE (a TRUE boolean signifies a correct answer).
+                                 If the amount of TRUE booleans is >= 80% of the amount of booleans,
+                                 it counts that as a completed SubCategory and is counted to the max amount of SubCategories.
+                            -->
+                            @(segmentItem.SubCategories.Count(SubCategory => SubCategory
+                            .Questions.FirstOrDefault()?
+                            .Answers.Count(a => a.IsCorrect) > 0.8 * 
+                            SubCategory.Questions.FirstOrDefault()?
+                            .Answers.Count(a => a.IsCorrect))) /
+
+                            <!-- I admit I had to use the help of ChatGPT to make the above monster of a LINQ statement.
+                               This was the original I came up with before I asked ChatGPT for help:
+
+                                @(segmentItem.SubCategories.FirstOrDefault()?
+                                .Questions.FirstOrDefault()?
+                                .Answers.Count(a => a.IsCorrect == true) > @segmentItem.SubCategories.FirstOrDefault()?
+                                .Questions.FirstOrDefault()?
+                                .Answers.Count(a => a.IsCorrect)
+                                * 0.8 ? "true" : "false")
+                            -->
+
+                            <!-- Count the amount of SubCategories contained in each Segment-->
+                            @segmentItem.SubCategories.Count </h5>
                     </div>
                     <a href="@($"https://localhost:7107/quizpage/{segmentItem.Id}")" class="stretched-link"></a>
                 </div>
@@ -42,58 +89,7 @@ else
 
     protected override async Task OnInitializedAsync()
     {
-        // segments = await GetSegments();
-
-        // DUMMY DATA //
-        segments = new List<SegmentModel>
-        {
-            new SegmentModel
-            {
-                Id = 1,
-                Name = "Cyberstalking",
-                Description = "How can you avoid being stalked online?",
-                Score = 55,
-                Questions = new List<QuestionModel>
-                {
-                    new QuestionModel
-                    {
-                        QuestionId = 3,
-                    },
-                    new QuestionModel
-                    {
-                        QuestionId = 2,
-                    },
-                }
-            },
-            new SegmentModel
-            {
-                Id = 2,
-                Name = "Phishing",
-                Description = "How to avoid a Phishing attack",
-                Score = 12,
-                Questions = new List<QuestionModel>
-                {
-                    new QuestionModel
-                    {
-                        QuestionId = 1,
-                    },
-                }
-            },
-        };
-
-        // DUMMY DATA END //
-    }
-
-    public class SegmentModel
-    {
-        public int Id { get; set; }
-        public string Name { get; set; }
-        public string Description { get; set; }
-        public int Score { get; set; }
-        public List<QuestionModel> Questions { get; set; } = new List<QuestionModel>();
-    }
-    public class QuestionModel
-    {
-        public int QuestionId { get; set; }
+        // Use the Category Id and User Id to fetch the corresponding Segment and the user information tied to it.
+        segments = await SegmentService.GetSegmentsByCategoryIdAsync(1 , "e547fd1c-ec07-49e1-b2ce-0d326f467c01");
     }
 }

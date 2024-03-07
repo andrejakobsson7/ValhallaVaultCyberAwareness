@@ -47,14 +47,14 @@ namespace ValhallaVaultCyberAwareness.Repositories
             return false;
         }
 
-        public async Task<CategoryModel> UpdateCategoryAsync(int Id, CategoryModel newCategory)
+        public async Task<CategoryModel> UpdateCategoryAsync(CategoryModel category)
         {
-            var categoryToUpdate = await _context.Categories.FirstOrDefaultAsync(c => c.Id == Id);
+            var categoryToUpdate = await _context.Categories.FirstOrDefaultAsync(c => c.Id == category.Id);
 
             if (categoryToUpdate != null)
             {
-                categoryToUpdate.Name = newCategory.Name;
-                categoryToUpdate.Description = newCategory.Description;
+                categoryToUpdate.Name = category.Name;
+                categoryToUpdate.Description = category.Description;
 
                 await _context.SaveChangesAsync();
 

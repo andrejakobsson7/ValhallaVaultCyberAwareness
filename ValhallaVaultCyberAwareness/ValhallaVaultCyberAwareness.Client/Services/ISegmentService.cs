@@ -2,12 +2,14 @@
 
 namespace ValhallaVaultCyberAwareness.Client.Services
 {
-    public interface ISegmentService
-    {
-        public HttpClient Client { get; set; }
+	public interface ISegmentService
+	{
+		public HttpClient Client { get; set; }
 
-        public Task<List<SegmentModel>> GetSegmentsByCategoryIdAsync(int categoryId);
+		public Task<List<SegmentModel>> GetSegmentsByCategoryIdAsync(int categoryId, string userId);
+		public Task<bool> AddSegmentAsync(SegmentModel newSegment);
 
+<<<<<<< HEAD
         public Task<bool> AddSegmentAsync(SegmentModel newSegment);
 
         public Task<bool> RemoveSegmentAsync(int segmentId);
@@ -19,4 +21,9 @@ namespace ValhallaVaultCyberAwareness.Client.Services
         public SegmentModel Segment { get; set; }
         public List<SubCategoryModel> Subcategories { get; set; }
     }
+=======
+		public Task<bool> RemoveSegmentAsync(int segmentId);
+		public Task<bool> UpdateSegmentAsync(SegmentModel segment);
+	}
+>>>>>>> fa894dfe905467be3dc641e5553c85bcf05109b1
 }

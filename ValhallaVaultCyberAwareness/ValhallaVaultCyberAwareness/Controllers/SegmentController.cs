@@ -34,10 +34,10 @@ namespace ValhallaVaultCyberAwareness.Controllers
         //}
 
         [HttpGet]
-        [Route("{categoryId}")]
-        public async Task<IActionResult> GetSegmentsByCategoryId(int categoryId)
+        [Route("{categoryId}/{userId}")]
+        public async Task<IActionResult> GetSegmentsByCategoryId(int categoryId, string userId)
         {
-            var segments = await _segmentRepo.GetSegmentsByCategoryIdAsync(categoryId);
+            var segments = await _segmentRepo.GetSegmentsByCategoryIdAsync(categoryId, userId);
             if (segments != null)
             {
                 List<SegmentApiModel> apiSegments = segments.Select(s => new SegmentApiModel(s)).ToList();
@@ -61,12 +61,13 @@ namespace ValhallaVaultCyberAwareness.Controllers
             return BadRequest();
         }
 
-        [HttpPut("{id}")]
+        [HttpPut]
+        [Route("{id}")]
         public async Task<ActionResult<SegmentModel>> UpdateSegment(SegmentModel segment)
         {
-            var updatedSegment = _segmentRepo.UpdateSegmentAsync(segment);
+            var updatedSegment = await _segmentRepo.UpdateSegmentAsync(segment);
 
-            if (updatedSegment != null)
+            if (updatedSegment != false)
             {
                 return Ok(updatedSegment);
 
@@ -74,12 +75,13 @@ namespace ValhallaVaultCyberAwareness.Controllers
             return BadRequest();
         }
 
-        [HttpDelete("{id}")]
-        public async Task<ActionResult<SegmentModel>> DeleteQuestion(int id)
+        [HttpDelete]
+        [Route("{id}")]
+        public async Task<ActionResult<SegmentModel>> DeleteSegment(int id)
         {
-            var segmentToDelete = _segmentRepo.RemoveSegmentAsync(id);
+            var segmentToDelete = await _segmentRepo.RemoveSegmentAsync(id);
 
-            if (segmentToDelete != null)
+            if (segmentToDelete != false)
             {
                 return Ok(segmentToDelete);
             }
@@ -94,6 +96,12 @@ namespace ValhallaVaultCyberAwareness.Controllers
             public int CategoryId { get; set; }
             public List<SubCategoryModel> SubCategories { get; set; } = new();
 
+            public List<QuestionModel> Questions { get; set; } = new();
+
+            public List<AnswerModel> Answers { get; set; } = new();
+
+            public List<UserAnswers> UserAnswers { get; set; } = new();
+
             public SegmentApiModel(SegmentModel segment)
             {
                 Id = segment.Id;
@@ -103,6 +111,18 @@ namespace ValhallaVaultCyberAwareness.Controllers
                 foreach (var subCategory in segment.SubCategories)
                 {
                     SubCategories.Add(subCategory);
+                    foreach (var question in subCategory.Questions)
+                    {
+                        Questions.Add(question);
+                        foreach (var answer in question.Answers)
+                        {
+                            Answers.Add(answer);
+                            foreach (var userAnswer in answer.UserAnswers)
+                            {
+                                UserAnswers.Add(userAnswer);
+                            }
+                        }
+                    }
                 }
             }
         }
