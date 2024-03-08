@@ -16,5 +16,6 @@ namespace ValhallaVaultCyberAwareness.Repositories
         public Task<SubCategoryModel> UpdateSubCategoryAsync(SubCategoryModel newSubCategory);
 
 
+
     }
 }
