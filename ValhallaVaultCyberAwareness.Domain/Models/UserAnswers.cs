@@ -12,12 +12,12 @@ namespace ValhallaVaultCyberAwareness.Domain.Models
         [Column("user_id")]
         public string UserId { get; set; } = null!;
 
-        public ApplicationUser User { get; set; } = null!;
+        public ApplicationUser? User { get; set; }
         [ForeignKey("Answer")]
         [Column("answer_id")]
         public int AnswerId { get; set; }
 
         //Navigation property
-        public AnswerModel Answer { get; set; } = null!;
+        public AnswerModel? Answer { get; set; }
     }
 }

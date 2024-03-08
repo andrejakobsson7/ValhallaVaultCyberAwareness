@@ -26,6 +26,7 @@ builder.Services.AddScoped<ISegmentRepository, SegmentRepository>();
 builder.Services.AddScoped<ICategoryRepository, CategoryRepository>();
 builder.Services.AddScoped<ISubCategoryRepository, SubCategoryRepository>();
 builder.Services.AddScoped<IQuestionRepository, QuestionRepository>();
+builder.Services.AddScoped<IUserAnswersRepository, UserAnswersRepository>();
 
 //Services
 builder.Services.AddScoped<ICategoryService, CategoryService>();
