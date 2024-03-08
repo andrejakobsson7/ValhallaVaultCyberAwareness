@@ -811,29 +811,6 @@ namespace ValhallaVaultCyberAwareness.Data
                     IsCorrect = true,
                     QuestionId = 14
                 });
-
-            builder.Entity<UserAnswers>()
-                .HasData(
-                new UserAnswers()
-                {
-                    UserId = "e547fd1c-ec07-49e1-b2ce-0d326f467c01",
-                    AnswerId = 2
-                },
-                new UserAnswers()
-                {
-                    UserId = "e547fd1c-ec07-49e1-b2ce-0d326f467c01",
-                    AnswerId = 4
-                },
-                new UserAnswers()
-                {
-                    UserId = "e547fd1c-ec07-49e1-b2ce-0d326f467c01",
-                    AnswerId = 8
-                },
-                new UserAnswers()
-                {
-                    UserId = "e547fd1c-ec07-49e1-b2ce-0d326f467c01",
-                    AnswerId = 11
-                });
         }
     }
 }
