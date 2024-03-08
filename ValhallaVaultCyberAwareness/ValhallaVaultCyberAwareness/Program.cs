@@ -34,6 +34,8 @@ builder.Services.AddScoped<ISegmentService, SegmentService>();
 builder.Services.AddScoped<ISubCategoryService, SubCategoryService>();
 builder.Services.AddScoped<IQuestionService, QuestionService>();
 builder.Services.AddScoped<IAnswerService, AnswerService>();
+
+builder.Services.AddScoped<AdminManager>();
 builder.Services.AddScoped<IUserAnswersService, UserAnswersService>();
 
 builder.Services.AddControllers();
