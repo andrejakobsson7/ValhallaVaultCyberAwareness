@@ -4,7 +4,7 @@ using ValhallaVaultCyberAwareness.Domain.Models;
 
 namespace ValhallaVaultCyberAwareness.Data
 {
-    public class ApplicationDbContext(DbContextOptions<ApplicationDbContextoptions) : IdentityDbContext<ApplicationUser>(options)
+    public class ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : IdentityDbContext<ApplicationUser>(options)
     {
         public DbSet<CategoryModel> Categories { get; set; }
         public DbSet<SegmentModel> Segments { get; set; }
