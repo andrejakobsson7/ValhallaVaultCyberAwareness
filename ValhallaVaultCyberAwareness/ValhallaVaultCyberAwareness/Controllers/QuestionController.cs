@@ -50,7 +50,7 @@ namespace ValhallaVaultCyberAwareness.Controllers
                 return Ok(questionToAdd);
             }
 
-            return NotFound();
+            return BadRequest();
         }
 
         [HttpPut]

@@ -1,0 +1,28 @@
+﻿@page "/Admin/Category/CategoryPage"
+@attribute [Authorize(Roles = "Admin")]
+@inject AdminManager manager
+
+
+<h3>Categories: </h3>
+
+<div class="flex-column">
+
+    @foreach(var category in categories)
+    {
+        <Category CurrentCategory="@category"></Category>
+    }
+
+    <AddCategoryForm></AddCategoryForm>
+
+</div>
+
+
+
+@code {
+    List<CategoryModel> categories = new();
+
+    protected override async Task OnInitializedAsync()
+    {
+        categories = await manager._categoryRepository.GetAllCategoriesWithInclude();
+    }
+}

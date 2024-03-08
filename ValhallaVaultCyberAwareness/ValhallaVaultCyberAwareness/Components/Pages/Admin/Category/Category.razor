@@ -1,0 +1,17 @@
+﻿
+<div class="card">
+    <div class="card-body">
+
+        <h5 class="card-title">@CurrentCategory.Name</h5>
+        <p class="card-text">@CurrentCategory.Description</p>
+        <a href="/Admin/Category/UpdateCategoryPage/@CurrentCategory.Id">
+            <button class="btn btn-primary">Edit</button>
+        </a>
+        <DeleteCategoryButton CategoryId="@CurrentCategory.Id"></DeleteCategoryButton>
+    </div>
+</div>
+
+@code {
+    [Parameter]
+    public CategoryModel CurrentCategory { get; set; } = new();
+}
