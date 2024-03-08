@@ -4,7 +4,7 @@ using ValhallaVaultCyberAwareness.Domain.Models;
 
 namespace ValhallaVaultCyberAwareness.Data
 {
-    public class ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : IdentityDbContext<ApplicationUser>(options)
+    public class ApplicationDbContext(DbContextOptions<ApplicationDbContextoptions) : IdentityDbContext<ApplicationUser>(options)
     {
         public DbSet<CategoryModel> Categories { get; set; }
         public DbSet<SegmentModel> Segments { get; set; }
@@ -66,12 +66,12 @@ namespace ValhallaVaultCyberAwareness.Data
             new CategoryModel()
             {
                 Id = 1,
-                Name = "Att skydda sig mot bedrägerier",
+                Name = "Att skydda sig mot bedrÃ¤gerier",
             },
             new CategoryModel()
             {
                 Id = 2,
-                Name = "Cybersäkerhet för företag"
+                Name = "CybersÃ¤kerhet fÃ¶r fÃ¶retag"
             },
             new CategoryModel()
             {
@@ -87,44 +87,44 @@ namespace ValhallaVaultCyberAwareness.Data
             new SegmentModel()
             {
                 Id = 1,
-                Name = "Del 1 - Att skydda sig mot bedrägerier",
+                Name = "Del 1 - Att skydda sig mot bedrÃ¤gerier",
                 CategoryId = 1,
             },
             new SegmentModel()
             {
                 Id = 2,
-                Name = "Del 2 - Att skydda sig mot bedrägerier",
+                Name = "Del 2 - Att skydda sig mot bedrÃ¤gerier",
                 CategoryId = 1,
             },
             new SegmentModel()
             {
                 Id = 3,
-                Name = "Del 3 - Att skydda sig mot bedrägerier",
+                Name = "Del 3 - Att skydda sig mot bedrÃ¤gerier",
                 CategoryId = 1,
             },
 
             new SegmentModel()
             {
                 Id = 4,
-                Name = "Del 1 - Cybersäkerhet för företag",
+                Name = "Del 1 - CybersÃ¤kerhet fÃ¶r fÃ¶retag",
                 CategoryId = 2,
             },
             new SegmentModel()
             {
                 Id = 5,
-                Name = "Del 2 - Cybersäkerhet för företag",
+                Name = "Del 2 - CybersÃ¤kerhet fÃ¶r fÃ¶retag",
                 CategoryId = 2,
             },
             new SegmentModel()
             {
                 Id = 6,
-                Name = "Del 3 - Cybersäkerhet för företag",
+                Name = "Del 3 - CybersÃ¤kerhet fÃ¶r fÃ¶retag",
                 CategoryId = 2,
             },
             new SegmentModel()
             {
                 Id = 7,
-                Name = "Del 4 - Cybersäkerhet för företag",
+                Name = "Del 4 - CybersÃ¤kerhet fÃ¶r fÃ¶retag",
                 CategoryId = 2,
             },
             new SegmentModel()
@@ -155,25 +155,25 @@ namespace ValhallaVaultCyberAwareness.Data
             new SubCategoryModel()
             {
                 Id = 1,
-                Name = "Kreditkortsbedrägeri",
+                Name = "KreditkortsbedrÃ¤geri",
                 SegmentId = 1
             },
             new SubCategoryModel()
             {
                 Id = 2,
-                Name = "Romansbedrägeri",
+                Name = "RomansbedrÃ¤geri",
                 SegmentId = 1
             },
             new SubCategoryModel()
             {
                 Id = 3,
-                Name = "Investeringsbedrägeri",
+                Name = "InvesteringsbedrÃ¤geri",
                 SegmentId = 1
             },
             new SubCategoryModel()
             {
                 Id = 4,
-                Name = "Telefonbedrägeri",
+                Name = "TelefonbedrÃ¤geri",
                 SegmentId = 1
             },
 
@@ -181,25 +181,25 @@ namespace ValhallaVaultCyberAwareness.Data
             new SubCategoryModel()
             {
                 Id = 5,
-                Name = "Bedrägerier i hemmet",
+                Name = "BedrÃ¤gerier i hemmet",
                 SegmentId = 2
             },
             new SubCategoryModel()
             {
                 Id = 6,
-                Name = "Identitetsstöld",
+                Name = "IdentitetsstÃ¶ld",
                 SegmentId = 2
             },
             new SubCategoryModel()
             {
                 Id = 7,
-                Name = "Nätfiske och bluffmejl",
+                Name = "NÃ¤tfiske och bluffmejl",
                 SegmentId = 2
             },
             new SubCategoryModel()
             {
                 Id = 8,
-                Name = "Investeringsbedrägeri på nätet",
+                Name = "InvesteringsbedrÃ¤geri pÃ¥ nÃ¤tet",
                 SegmentId = 2
             },
 
@@ -207,7 +207,7 @@ namespace ValhallaVaultCyberAwareness.Data
             new SubCategoryModel()
             {
                 Id = 9,
-                Name = "Abonnemangsfällor och falska fakturor",
+                Name = "AbonnemangsfÃ¤llor och falska fakturor",
                 SegmentId = 3
             },
             new SubCategoryModel()
@@ -219,7 +219,7 @@ namespace ValhallaVaultCyberAwareness.Data
             new SubCategoryModel()
             {
                 Id = 11,
-                Name = "Statistik och förhållningssätt",
+                Name = "Statistik och fÃ¶rhÃ¥llningssÃ¤tt",
                 SegmentId = 3
             },
 
@@ -227,7 +227,7 @@ namespace ValhallaVaultCyberAwareness.Data
             new SubCategoryModel()
             {
                 Id = 12,
-                Name = "Digital säkerhet på företag",
+                Name = "Digital sÃ¤kerhet pÃ¥ fÃ¶retag",
                 SegmentId = 4
             },
             new SubCategoryModel()
@@ -239,25 +239,25 @@ namespace ValhallaVaultCyberAwareness.Data
             new SubCategoryModel()
             {
                 Id = 14,
-                Name = "Aktörer inom cyberbrott",
+                Name = "AktÃ¶rer inom cyberbrott",
                 SegmentId = 4
             },
             new SubCategoryModel()
             {
                 Id = 15,
-                Name = "Ökad digital närvaro och distansarbete",
+                Name = "Ã–kad digital nÃ¤rvaro och distansarbete",
                 SegmentId = 4
             },
             new SubCategoryModel()
             {
                 Id = 16,
-                Name = "Cyberangrepp mot känsliga sektorer",
+                Name = "Cyberangrepp mot kÃ¤nsliga sektorer",
                 SegmentId = 4
             },
             new SubCategoryModel()
             {
                 Id = 17,
-                Name = "Cyberrånet mot Mersk",
+                Name = "CyberrÃ¥net mot Mersk",
                 SegmentId = 4
             },
 
@@ -272,7 +272,7 @@ namespace ValhallaVaultCyberAwareness.Data
             new SubCategoryModel()
             {
                 Id = 19,
-                Name = "Nätfiske och skräppost",
+                Name = "NÃ¤tfiske och skrÃ¤ppost",
                 SegmentId = 5,
             },
             new SubCategoryModel()
@@ -284,7 +284,7 @@ namespace ValhallaVaultCyberAwareness.Data
             new SubCategoryModel()
             {
                 Id = 21,
-                Name = "Varning för vishing",
+                Name = "Varning fÃ¶r vishing",
                 SegmentId = 5
             },
             new SubCategoryModel()
@@ -296,7 +296,7 @@ namespace ValhallaVaultCyberAwareness.Data
             new SubCategoryModel()
             {
                 Id = 23,
-                Name = "Öneangrepp och presentkortsbluffar",
+                Name = "Ã–neangrepp och presentkortsbluffar",
                 SegmentId = 5
             },
 
@@ -310,19 +310,19 @@ namespace ValhallaVaultCyberAwareness.Data
             new SubCategoryModel()
             {
                 Id = 25,
-                Name = "Så kan det gå till",
+                Name = "SÃ¥ kan det gÃ¥ till",
                 SegmentId = 6
             },
             new SubCategoryModel()
             {
                 Id = 26,
-                Name = "Nätverksintrång",
+                Name = "NÃ¤tverksintrÃ¥ng",
                 SegmentId = 6
             },
             new SubCategoryModel()
             {
                 Id = 27,
-                Name = "Dataintrång",
+                Name = "DataintrÃ¥ng",
                 SegmentId = 6
             },
             new SubCategoryModel()
@@ -334,7 +334,7 @@ namespace ValhallaVaultCyberAwareness.Data
             new SubCategoryModel()
             {
                 Id = 29,
-                Name = "Vägarna in",
+                Name = "VÃ¤garna in",
                 SegmentId = 6
             },
 
@@ -366,13 +366,13 @@ namespace ValhallaVaultCyberAwareness.Data
             new SubCategoryModel()
             {
                 Id = 34,
-                Name = "Mirai, Wannacry och fallet Düsseldorf",
+                Name = "Mirai, Wannacry och fallet DÃ¼sseldorf",
                 SegmentId = 7
             },
             new SubCategoryModel()
             {
                 Id = 35,
-                Name = "De sårbara molnen",
+                Name = "De sÃ¥rbara molnen",
                 SegmentId = 7
             },
 
@@ -380,25 +380,25 @@ namespace ValhallaVaultCyberAwareness.Data
             new SubCategoryModel
             {
                 Id = 36,
-                Name = "Allmänt om cyberspionage",
+                Name = "AllmÃ¤nt om cyberspionage",
                 SegmentId = 8
             },
             new SubCategoryModel
             {
                 Id = 37,
-                Name = "Metoder för cyberspionage",
+                Name = "Metoder fÃ¶r cyberspionage",
                 SegmentId = 8
             },
             new SubCategoryModel
             {
                 Id = 38,
-                Name = "Säkerhetsskyddslagen",
+                Name = "SÃ¤kerhetsskyddslagen",
                 SegmentId = 8
             },
             new SubCategoryModel
             {
                 Id = 39,
-                Name = "Cyberspionagets aktörer",
+                Name = "Cyberspionagets aktÃ¶rer",
                 SegmentId = 8
             },
 
@@ -406,19 +406,19 @@ namespace ValhallaVaultCyberAwareness.Data
             new SubCategoryModel
             {
                 Id = 40,
-                Name = "Värvningsförsök",
+                Name = "VÃ¤rvningsfÃ¶rsÃ¶k",
                 SegmentId = 9
             },
             new SubCategoryModel
             {
                 Id = 41,
-                Name = "Affärsspionage",
+                Name = "AffÃ¤rsspionage",
                 SegmentId = 9
             },
             new SubCategoryModel
             {
                 Id = 42,
-                Name = "Påverkanskampanjer",
+                Name = "PÃ¥verkanskampanjer",
                 SegmentId = 9
             },
 
@@ -426,13 +426,13 @@ namespace ValhallaVaultCyberAwareness.Data
             new SubCategoryModel
             {
                 Id = 43,
-                Name = "Svensk underrättelsetjänst och cyberförsvar",
+                Name = "Svensk underrÃ¤ttelsetjÃ¤nst och cyberfÃ¶rsvar",
                 SegmentId = 10
             },
             new SubCategoryModel
             {
                 Id = 44,
-                Name = "Signalspaning, informationssäkerhet och 5G",
+                Name = "Signalspaning, informationssÃ¤kerhet och 5G",
                 SegmentId = 10
             },
             new SubCategoryModel
@@ -449,204 +449,204 @@ namespace ValhallaVaultCyberAwareness.Data
             new QuestionModel()
             {
                 Id = 1,
-                Question = "Du får ett oväntat telefonsamtal från någon som påstår sig vara från din bank. Personen ber dig bekräfta ditt kontonummer och lösenord för att \"säkerställa din kontos säkerhet\" efter en påstådd säkerhetsincident. Hur bör du tolka denna situation?",
-                Explanation = "Banker och andra finansiella institutioner begär aldrig känslig information såsom kontonummer eller lösenord via telefon. Detta är ett klassiskt tecken på telefonbedrägeri.",
+                Question = "Du fÃ¥r ett ovÃ¤ntat telefonsamtal frÃ¥n nÃ¥gon som pÃ¥stÃ¥r sig vara frÃ¥n din bank. Personen ber dig bekrÃ¤fta ditt kontonummer och lÃ¶senord fÃ¶r att \"sÃ¤kerstÃ¤lla din kontos sÃ¤kerhet\" efter en pÃ¥stÃ¥dd sÃ¤kerhetsincident. Hur bÃ¶r du tolka denna situation?",
+                Explanation = "Banker och andra finansiella institutioner begÃ¤r aldrig kÃ¤nslig information sÃ¥som kontonummer eller lÃ¶senord via telefon. Detta Ã¤r ett klassiskt tecken pÃ¥ telefonbedrÃ¤geri.",
                 SubCategoryId = 1,
             },
             new QuestionModel()
             {
                 Id = 2,
-                Question = "Efter flera månader av daglig kommunikation med någon du träffade på en datingsida, börjar personen berätta om en plötslig finansiell kris och ber om din hjälp genom att överföra pengar. Vad indikerar detta mest sannolikt?",
-                Explanation = "Begäran om pengar, särskilt under omständigheter där två personer aldrig har träffats fysiskt, är ett vanligt tecken på romansbedrägeri.",
+                Question = "Efter flera mÃ¥nader av daglig kommunikation med nÃ¥gon du trÃ¤ffade pÃ¥ en datingsida, bÃ¶rjar personen berÃ¤tta om en plÃ¶tslig finansiell kris och ber om din hjÃ¤lp genom att Ã¶verfÃ¶ra pengar. Vad indikerar detta mest sannolikt?",
+                Explanation = "BegÃ¤ran om pengar, sÃ¤rskilt under omstÃ¤ndigheter dÃ¤r tvÃ¥ personer aldrig har trÃ¤ffats fysiskt, Ã¤r ett vanligt tecken pÃ¥ romansbedrÃ¤geri.",
                 SubCategoryId = 2,
             },
             new QuestionModel()
             {
                 Id = 3,
-                Question = "Du får ett e-postmeddelande/samtal om ett exklusivt erbjudande att investera i ett startup-företag som påstås ha en revolutionerande ny teknologi, med garantier om exceptionellt hög avkastning på mycket kort tid. Hur bör du förhålla dig till erbjudandet?",
-                Explanation = "Erbjudanden som lovar hög avkastning med liten eller ingen risk, särskilt via oönskade e-postmeddelanden, är ofta tecken på investeringsbedrägerier.",
+                Question = "Du fÃ¥r ett e-postmeddelande/samtal om ett exklusivt erbjudande att investera i ett startup-fÃ¶retag som pÃ¥stÃ¥s ha en revolutionerande ny teknologi, med garantier om exceptionellt hÃ¶g avkastning pÃ¥ mycket kort tid. Hur bÃ¶r du fÃ¶rhÃ¥lla dig till erbjudandet?",
+                Explanation = "Erbjudanden som lovar hÃ¶g avkastning med liten eller ingen risk, sÃ¤rskilt via oÃ¶nskade e-postmeddelanden, Ã¤r ofta tecken pÃ¥ investeringsbedrÃ¤gerier.",
                 SubCategoryId = 3,
             },
             new QuestionModel()
             {
                 Id = 4,
-                Question = "Efter en online-shoppingrunda märker du oidentifierade transaktioner på ditt kreditkortsutdrag från företag du aldrig handlat från. Vad indikerar detta mest sannolikt?",
-                Explanation = "Oidentifierade transaktioner på ditt kreditkortsutdrag är en stark indikation på att ditt kortnummer har komprometterats och använts för obehöriga köp, vilket är typiskt för kreditkortsbedrägeri.",
+                Question = "Efter en online-shoppingrunda mÃ¤rker du oidentifierade transaktioner pÃ¥ ditt kreditkortsutdrag frÃ¥n fÃ¶retag du aldrig handlat frÃ¥n. Vad indikerar detta mest sannolikt?",
+                Explanation = "Oidentifierade transaktioner pÃ¥ ditt kreditkortsutdrag Ã¤r en stark indikation pÃ¥ att ditt kortnummer har komprometterats och anvÃ¤nts fÃ¶r obehÃ¶riga kÃ¶p, vilket Ã¤r typiskt fÃ¶r kreditkortsbedrÃ¤geri.",
                 SubCategoryId = 4,
             },
             new QuestionModel()
             {
                 Id = 5,
-                Question = "Inom företaget märker man att konfidentiella dokument regelbundet läcker ut till konkurrenter. Efter en intern granskning upptäcks det att en anställd omedvetet har installerat skadlig programvara genom att klicka på en länk i ett phishing-e-postmeddelande. Vilken åtgärd bör prioriteras för att förhindra framtida incidenter?",
-                Explanation = "Utbildning i digital säkerhet är avgörande för att hjälpa anställda att känna igen och undvika säkerhetshot som phishing, vilket är en vanlig attackvektor.",
+                Question = "Inom fÃ¶retaget mÃ¤rker man att konfidentiella dokument regelbundet lÃ¤cker ut till konkurrenter. Efter en intern granskning upptÃ¤cks det att en anstÃ¤lld omedvetet har installerat skadlig programvara genom att klicka pÃ¥ en lÃ¤nk i ett phishing-e-postmeddelande. Vilken Ã¥tgÃ¤rd bÃ¶r prioriteras fÃ¶r att fÃ¶rhindra framtida incidenter?",
+                Explanation = "Utbildning i digital sÃ¤kerhet Ã¤r avgÃ¶rande fÃ¶r att hjÃ¤lpa anstÃ¤llda att kÃ¤nna igen och undvika sÃ¤kerhetshot som phishing, vilket Ã¤r en vanlig attackvektor.",
                 SubCategoryId = 5
             },
             new QuestionModel()
             {
                 Id = 6,
-                Question = "Inom företaget upptäckts det en sårbarhet i vår programvara som kunde möjliggöra obehörig åtkomst till användardata. Företaget har inte omedelbart en lösning. Vilken är den mest lämpliga första åtgärden?",
-                Explanation = "Transparent kommunikation och rådgivning om tillfälliga åtgärder är avgörande för att skydda användarna medan en permanent lösning utvecklas.",
+                Question = "Inom fÃ¶retaget upptÃ¤ckts det en sÃ¥rbarhet i vÃ¥r programvara som kunde mÃ¶jliggÃ¶ra obehÃ¶rig Ã¥tkomst till anvÃ¤ndardata. FÃ¶retaget har inte omedelbart en lÃ¶sning. Vilken Ã¤r den mest lÃ¤mpliga fÃ¶rsta Ã¥tgÃ¤rden?",
+                Explanation = "Transparent kommunikation och rÃ¥dgivning om tillfÃ¤lliga Ã¥tgÃ¤rder Ã¤r avgÃ¶rande fÃ¶r att skydda anvÃ¤ndarna medan en permanent lÃ¶sning utvecklas.",
                 SubCategoryId = 6
             },
             new QuestionModel()
             {
                 Id = 7,
-                Question = "Vårt företag blir måltavla för en DDoS-attack som överväldigar våra servrar och gör våra tjänster otillgängliga för kunder. Vilken typ av aktör är mest sannolikt ansvarig för denna typ av attack?",
-                Explanation = "DDoS-attacker kräver ofta betydande resurser och koordinering, vilket är karakteristiskt för organiserade cyberbrottsliga grupper.",
+                Question = "VÃ¥rt fÃ¶retag blir mÃ¥ltavla fÃ¶r en DDoS-attack som Ã¶vervÃ¤ldigar vÃ¥ra servrar och gÃ¶r vÃ¥ra tjÃ¤nster otillgÃ¤ngliga fÃ¶r kunder. Vilken typ av aktÃ¶r Ã¤r mest sannolikt ansvarig fÃ¶r denna typ av attack?",
+                Explanation = "DDoS-attacker krÃ¤ver ofta betydande resurser och koordinering, vilket Ã¤r karakteristiskt fÃ¶r organiserade cyberbrottsliga grupper.",
                 SubCategoryId = 7
             },
             new QuestionModel()
             {
                 Id = 8,
-                Question = "Med övergången till distansarbete upptäcker vårt företag en ökning av säkerhetsincidenter, inklusive obehörig åtkomst till företagsdata. Vilken åtgärd bör företaget vidta för att adressera denna nya riskmiljö?",
-                Explanation = "Stärkt autentisering är kritisk för att säkra fjärråtkomst och skydda mot obehörig åtkomst i en distribuerad arbetsmiljö.",
+                Question = "Med Ã¶vergÃ¥ngen till distansarbete upptÃ¤cker vÃ¥rt fÃ¶retag en Ã¶kning av sÃ¤kerhetsincidenter, inklusive obehÃ¶rig Ã¥tkomst till fÃ¶retagsdata. Vilken Ã¥tgÃ¤rd bÃ¶r fÃ¶retaget vidta fÃ¶r att adressera denna nya riskmiljÃ¶?",
+                Explanation = "StÃ¤rkt autentisering Ã¤r kritisk fÃ¶r att sÃ¤kra fjÃ¤rrÃ¥tkomst och skydda mot obehÃ¶rig Ã¥tkomst i en distribuerad arbetsmiljÃ¶.",
                 SubCategoryId = 8
             },
             new QuestionModel()
             {
                 Id = 9,
-                Question = "Hälsovårdsmyndigheten utsätts för ett cyberangrepp som krypterar patientdata och kräver lösen för att återställa åtkomsten. Vilken typ av angrepp har de sannolikt blivit utsatta för?",
-                Explanation = "Ransomware-angrepp involverar kryptering av offerdata och kräver lösen för dekryptering, vilket är särskilt skadligt för kritiska sektorer som hälsovård.",
+                Question = "HÃ¤lsovÃ¥rdsmyndigheten utsÃ¤tts fÃ¶r ett cyberangrepp som krypterar patientdata och krÃ¤ver lÃ¶sen fÃ¶r att Ã¥terstÃ¤lla Ã¥tkomsten. Vilken typ av angrepp har de sannolikt blivit utsatta fÃ¶r?",
+                Explanation = "Ransomware-angrepp involverar kryptering av offerdata och krÃ¤ver lÃ¶sen fÃ¶r dekryptering, vilket Ã¤r sÃ¤rskilt skadligt fÃ¶r kritiska sektorer som hÃ¤lsovÃ¥rd.",
                 SubCategoryId = 9
             },
             new QuestionModel()
             {
                 Id = 10,
-                Question = "Det globala fraktbolaget Maersk blev offer för ett omfattande cyberangrepp som avsevärt störde deras verksamhet världen över. Vilken typ av malware var primärt ansvarig för denna incident?",
-                Explanation = "Maersk utsattes för NotPetya ransomware-angreppet, som ledde till omfattande störningar och förluster genom att kryptera företagets globala system. \r\n\r\nMaersk rapporterade att företaget led ekonomiska förluster på grund av NotPetya ransomware-angreppet som uppskattades till cirka 300 miljoner USD. Denna siffra reflekterar de omfattande kostnaderna för störningar i deras globala verksamheter, återställande av system och data, samt förlust av affärer under tiden systemen var nere. NotPetya-angreppet anses vara ett av de mest kostsamma cyberangreppen mot ett enskilt företag och tjänar som en kraftfull påminnelse om de potentiella konsekvenserna av cyberhot. ",
+                Question = "Det globala fraktbolaget Maersk blev offer fÃ¶r ett omfattande cyberangrepp som avsevÃ¤rt stÃ¶rde deras verksamhet vÃ¤rlden Ã¶ver. Vilken typ av malware var primÃ¤rt ansvarig fÃ¶r denna incident?",
+                Explanation = "Maersk utsattes fÃ¶r NotPetya ransomware-angreppet, som ledde till omfattande stÃ¶rningar och fÃ¶rluster genom att kryptera fÃ¶retagets globala system. \r\n\r\nMaersk rapporterade att fÃ¶retaget led ekonomiska fÃ¶rluster pÃ¥ grund av NotPetya ransomware-angreppet som uppskattades till cirka 300 miljoner USD. Denna siffra reflekterar de omfattande kostnaderna fÃ¶r stÃ¶rningar i deras globala verksamheter, Ã¥terstÃ¤llande av system och data, samt fÃ¶rlust av affÃ¤rer under tiden systemen var nere. NotPetya-angreppet anses vara ett av de mest kostsamma cyberangreppen mot ett enskilt fÃ¶retag och tjÃ¤nar som en kraftfull pÃ¥minnelse om de potentiella konsekvenserna av cyberhot. ",
                 SubCategoryId = 10
             },
             new QuestionModel()
             {
                 Id = 11,
-                Question = "Regeringen upptäcker att känslig politisk kommunikation har läckt och misstänker elektronisk övervakning. Vilket fenomen beskriver bäst denna situation?",
-                Explanation = "Cyberspionage avser aktiviteter där aktörer, ofta statliga, engagerar sig i övervakning och datainsamling genom cybermedel för att erhålla hemlig information utan målets medgivande, typiskt för politiska, militära eller ekonomiska fördelar.",
+                Question = "Regeringen upptÃ¤cker att kÃ¤nslig politisk kommunikation har lÃ¤ckt och misstÃ¤nker elektronisk Ã¶vervakning. Vilket fenomen beskriver bÃ¤st denna situation?",
+                Explanation = "Cyberspionage avser aktiviteter dÃ¤r aktÃ¶rer, ofta statliga, engagerar sig i Ã¶vervakning och datainsamling genom cybermedel fÃ¶r att erhÃ¥lla hemlig information utan mÃ¥lets medgivande, typiskt fÃ¶r politiska, militÃ¤ra eller ekonomiska fÃ¶rdelar.",
                 SubCategoryId = 36
             },
             new QuestionModel()
             {
                 Id = 12,
-                Question = "Regeringen blir varse om en sofistikerad skadeprogramskampanj som utnyttjar Zero-day sårbarheter för att infiltrera deras nätverk och stjäla oerhört viktig data. Vilken metod för cyberspionage används sannolikt här?",
-                Explanation = "Riktade cyberattacker som utnyttjar noll-dagars Zero-day sårbarheter är en avancerad metod för cyberspionage där angriparen specifikt riktar in sig på ett mål för att komma åt känslig information eller data genom att utnyttja tidigare okända sårbarheter i programvara.",
+                Question = "Regeringen blir varse om en sofistikerad skadeprogramskampanj som utnyttjar Zero-day sÃ¥rbarheter fÃ¶r att infiltrera deras nÃ¤tverk och stjÃ¤la oerhÃ¶rt viktig data. Vilken metod fÃ¶r cyberspionage anvÃ¤nds sannolikt hÃ¤r?",
+                Explanation = "Riktade cyberattacker som utnyttjar noll-dagars Zero-day sÃ¥rbarheter Ã¤r en avancerad metod fÃ¶r cyberspionage dÃ¤r angriparen specifikt riktar in sig pÃ¥ ett mÃ¥l fÃ¶r att komma Ã¥t kÃ¤nslig information eller data genom att utnyttja tidigare okÃ¤nda sÃ¥rbarheter i programvara.",
                 SubCategoryId = 37
             },
             new QuestionModel()
             {
                 Id = 13,
-                Question = "Regeringen i Sverige ökar sitt interna säkerhetsprotokoll för att skydda sig mot utländska underrättelsetjänsters infiltration. Vilken lagstiftning ger ramverket för detta skydd?",
-                Explanation = "Säkerhetsskyddslagen är en svensk lagstiftning som syftar till att skydda nationellt känslig information från spioneri, sabotage, terroristbrott och andra säkerhetshot. Lagen ställer krav på säkerhetsskyddsåtgärder för verksamheter av betydelse för Sveriges säkerhet.",
+                Question = "Regeringen i Sverige Ã¶kar sitt interna sÃ¤kerhetsprotokoll fÃ¶r att skydda sig mot utlÃ¤ndska underrÃ¤ttelsetjÃ¤nsters infiltration. Vilken lagstiftning ger ramverket fÃ¶r detta skydd?",
+                Explanation = "SÃ¤kerhetsskyddslagen Ã¤r en svensk lagstiftning som syftar till att skydda nationellt kÃ¤nslig information frÃ¥n spioneri, sabotage, terroristbrott och andra sÃ¤kerhetshot. Lagen stÃ¤ller krav pÃ¥ sÃ¤kerhetsskyddsÃ¥tgÃ¤rder fÃ¶r verksamheter av betydelse fÃ¶r Sveriges sÃ¤kerhet.",
                 SubCategoryId = 38
             },
             new QuestionModel()
             {
                 Id = 14,
-                Question = "Lunds universitet upptäcker att forskningsdata om ny teknologi har stulits. Undersökningar tyder på en välorganiserad grupp med kopplingar till en utländsk stat. Vilken typ av aktör ligger sannolikt bakom detta?",
-                Explanation = "Statssponsrade hackers är aktörer som arbetar på uppdrag av eller med stöd från en regering för att genomföra cyberspionage, ofta riktat mot utländska intressen, organisationer eller regeringar för att få strategiska fördelar.",
+                Question = "Lunds universitet upptÃ¤cker att forskningsdata om ny teknologi har stulits. UndersÃ¶kningar tyder pÃ¥ en vÃ¤lorganiserad grupp med kopplingar till en utlÃ¤ndsk stat. Vilken typ av aktÃ¶r ligger sannolikt bakom detta?",
+                Explanation = "Statssponsrade hackers Ã¤r aktÃ¶rer som arbetar pÃ¥ uppdrag av eller med stÃ¶d frÃ¥n en regering fÃ¶r att genomfÃ¶ra cyberspionage, ofta riktat mot utlÃ¤ndska intressen, organisationer eller regeringar fÃ¶r att fÃ¥ strategiska fÃ¶rdelar.",
                 SubCategoryId = 39
             },
             new QuestionModel()
             {
                 Id = 15,
-                Question = "Du får ett e-postmeddelande som ser ut att komma från din bank. Det ber dig klicka på en länk och logga in på ditt konto för att “uppdatera din information”. Vad bör du göra?",
-                Explanation = "Klicka aldrig på länkar som uppges komma från banker via e-post.",
+                Question = "Du fÃ¥r ett e-postmeddelande som ser ut att komma frÃ¥n din bank. Det ber dig klicka pÃ¥ en lÃ¤nk och logga in pÃ¥ ditt konto fÃ¶r att Â“uppdatera din informationÂ”. Vad bÃ¶r du gÃ¶ra?",
+                Explanation = "Klicka aldrig pÃ¥ lÃ¤nkar som uppges komma frÃ¥n banker via e-post.",
                 SubCategoryId = 1
             },
             new QuestionModel()
             {
                 Id = 16,
-                Question = "Du använder din kreditkort på en betalterminal i en butik. Någon har placerat en skimming-enhet på terminalen för att stjäla kortinformation. Vad bör du vara vaksam på?",
-                Explanation = "Skimming är en metod där bedragare placerar en enhet på en betalterminal för att stjäla kortinformation. Genom att inspektera terminalen kan du upptäcka ovanliga tillbehör eller lösa delar som kan indikera att skimming-enheten är närvarande.",
+                Question = "Du anvÃ¤nder din kreditkort pÃ¥ en betalterminal i en butik. NÃ¥gon har placerat en skimming-enhet pÃ¥ terminalen fÃ¶r att stjÃ¤la kortinformation. Vad bÃ¶r du vara vaksam pÃ¥?",
+                Explanation = "Skimming Ã¤r en metod dÃ¤r bedragare placerar en enhet pÃ¥ en betalterminal fÃ¶r att stjÃ¤la kortinformation. Genom att inspektera terminalen kan du upptÃ¤cka ovanliga tillbehÃ¶r eller lÃ¶sa delar som kan indikera att skimming-enheten Ã¤r nÃ¤rvarande.",
                 SubCategoryId = 1
             },
             new QuestionModel()
             {
                 Id = 17,
-                Question = "Du får ett meddelande om en större transaktion på ditt kreditkort som du inte har gjort. Vad bör du göra?",
-                Explanation = "Om du ser en större transaktion på ditt kreditkort som du inte har gjort, bör du agera snabbt. Att kontakta din kreditkortsutgivare direkt hjälper till att förhindra ytterligare skada och identifiera eventuellt bedrägeri.",
+                Question = "Du fÃ¥r ett meddelande om en stÃ¶rre transaktion pÃ¥ ditt kreditkort som du inte har gjort. Vad bÃ¶r du gÃ¶ra?",
+                Explanation = "Om du ser en stÃ¶rre transaktion pÃ¥ ditt kreditkort som du inte har gjort, bÃ¶r du agera snabbt. Att kontakta din kreditkortsutgivare direkt hjÃ¤lper till att fÃ¶rhindra ytterligare skada och identifiera eventuellt bedrÃ¤geri.",
                 SubCategoryId = 1
             },
             new QuestionModel()
             {
                 Id = 18,
-                Question = "Du får en e-post med en bifogad faktura från ett företag du inte känner till. Vad bör du göra?",
-                Explanation = "Att öppna bifogade fakturor från okända avsändare kan vara farligt. Radera e-postmeddelandet för att undvika att utsätta dig för skadlig kod eller bedrägeriförsök.",
+                Question = "Du fÃ¥r en e-post med en bifogad faktura frÃ¥n ett fÃ¶retag du inte kÃ¤nner till. Vad bÃ¶r du gÃ¶ra?",
+                Explanation = "Att Ã¶ppna bifogade fakturor frÃ¥n okÃ¤nda avsÃ¤ndare kan vara farligt. Radera e-postmeddelandet fÃ¶r att undvika att utsÃ¤tta dig fÃ¶r skadlig kod eller bedrÃ¤gerifÃ¶rsÃ¶k.",
                 SubCategoryId = 1
             },
             new QuestionModel()
             {
                 Id = 19,
-                Question = "Du ser någon slarvigt lämna sitt kreditkort på ett cafébord. Vad bör du göra?",
-                Explanation = "Att ta någon annans kreditkort och använda det är olagligt och oetiskt. Lämna kortet där du hittade det eller ge det till personalen för att returnera det till ägaren.",
+                Question = "Du ser nÃ¥gon slarvigt lÃ¤mna sitt kreditkort pÃ¥ ett cafÃ©bord. Vad bÃ¶r du gÃ¶ra?",
+                Explanation = "Att ta nÃ¥gon annans kreditkort och anvÃ¤nda det Ã¤r olagligt och oetiskt. LÃ¤mna kortet dÃ¤r du hittade det eller ge det till personalen fÃ¶r att returnera det till Ã¤garen.",
                 SubCategoryId = 1
             },
             new QuestionModel
             {
                 Id = 20,
-                Question = "Du har flera automatiska betalningar kopplade till ditt kreditkort. Vad bör du göra om du byter kreditkort?",
-                Explanation = "Om du byter kreditkort är det viktigt att uppdatera betalningsuppgifterna för alla automatiska betalningar. Annars kan du missa betalningar och få påminnelser eller avgifter.",
+                Question = "Du har flera automatiska betalningar kopplade till ditt kreditkort. Vad bÃ¶r du gÃ¶ra om du byter kreditkort?",
+                Explanation = "Om du byter kreditkort Ã¤r det viktigt att uppdatera betalningsuppgifterna fÃ¶r alla automatiska betalningar. Annars kan du missa betalningar och fÃ¥ pÃ¥minnelser eller avgifter.",
                 SubCategoryId = 1
             },
             new QuestionModel()
             {
                 Id = 21,
-                Question = "Vad är ett romansbedrägeri?",
-                Explanation = "Ett romansbedrägeri är när en bedragare inleder en romantisk relation med någon i syfte att lura hen på pengar. Det sker oftast på internet, till exempel på sociala medier samt dejtingsidor och dejtingappar.",
+                Question = "Vad Ã¤r ett romansbedrÃ¤geri?",
+                Explanation = "Ett romansbedrÃ¤geri Ã¤r nÃ¤r en bedragare inleder en romantisk relation med nÃ¥gon i syfte att lura hen pÃ¥ pengar. Det sker oftast pÃ¥ internet, till exempel pÃ¥ sociala medier samt dejtingsidor och dejtingappar.",
                 SubCategoryId = 2
             },
             new QuestionModel()
             {
                 Id = 22,
-                Question = "Vilka typiska drag bör du vara uppmärksam på hos en romansbedragare?",
-                Explanation = "Uppmärksamma typiska drag för en romansbedragare, såsom statusyrken, konstlade formuleringar eller slarvigt språkbruk.",
+                Question = "Vilka typiska drag bÃ¶r du vara uppmÃ¤rksam pÃ¥ hos en romansbedragare?",
+                Explanation = "UppmÃ¤rksamma typiska drag fÃ¶r en romansbedragare, sÃ¥som statusyrken, konstlade formuleringar eller slarvigt sprÃ¥kbruk.",
                 SubCategoryId = 2
             },
             new QuestionModel()
             {
                 Id = 23,
-                Question = "Vad krävs för att någon ska åtalas för romansbedrägeri?",
-                Explanation = "Romansbedrägeri är brottsligt när någon inleder en kärleksrelation med dig för att lura dig på pengar. Åtal kan väckas om det finns bevis för detta bedrägeri.",
+                Question = "Vad krÃ¤vs fÃ¶r att nÃ¥gon ska Ã¥talas fÃ¶r romansbedrÃ¤geri?",
+                Explanation = "RomansbedrÃ¤geri Ã¤r brottsligt nÃ¤r nÃ¥gon inleder en kÃ¤rleksrelation med dig fÃ¶r att lura dig pÃ¥ pengar. Ã…tal kan vÃ¤ckas om det finns bevis fÃ¶r detta bedrÃ¤geri.",
                 SubCategoryId = 2
             },
             new QuestionModel()
             {
                 Id = 24,
-                Question = "Vad bör du göra om du misstänker att du blivit utsatt för romansbedrägeri på nätet?",
-                Explanation = "Om du blivit lurad av kärleken du träffat på nätet bör du lista ut vad du ska göra när du blivit utsatt och vart du ska vända dig för hjälp.",
+                Question = "Vad bÃ¶r du gÃ¶ra om du misstÃ¤nker att du blivit utsatt fÃ¶r romansbedrÃ¤geri pÃ¥ nÃ¤tet?",
+                Explanation = "Om du blivit lurad av kÃ¤rleken du trÃ¤ffat pÃ¥ nÃ¤tet bÃ¶r du lista ut vad du ska gÃ¶ra nÃ¤r du blivit utsatt och vart du ska vÃ¤nda dig fÃ¶r hjÃ¤lp.",
                 SubCategoryId = 2
             },
             new QuestionModel()
             {
                 Id = 25,
-                Question = "Hur skyddar du dig mot romansbedrägeri?",
-                Explanation = "Det finns flera saker du kan göra för att skydda dig mot romansbedrägeri. Följ tips och råd om hur du kan undvika att bli lurad.",
+                Question = "Hur skyddar du dig mot romansbedrÃ¤geri?",
+                Explanation = "Det finns flera saker du kan gÃ¶ra fÃ¶r att skydda dig mot romansbedrÃ¤geri. FÃ¶lj tips och rÃ¥d om hur du kan undvika att bli lurad.",
                 SubCategoryId = 2
             },
             new QuestionModel()
             {
                 Id = 26,
-                Question = "Vad är ett investeringsbedrägeri?",
-                Explanation = "Ett investeringsbedrägeri innebär att någon lurar andra att köpa värdepapper som egentligen inte har något värde eller som är väldigt svåra att värdera. Det kan handla om investeringar i fonder, aktier, kryptovalutor samt metaller och ädelstenar.",
+                Question = "Vad Ã¤r ett investeringsbedrÃ¤geri?",
+                Explanation = "Ett investeringsbedrÃ¤geri innebÃ¤r att nÃ¥gon lurar andra att kÃ¶pa vÃ¤rdepapper som egentligen inte har nÃ¥got vÃ¤rde eller som Ã¤r vÃ¤ldigt svÃ¥ra att vÃ¤rdera. Det kan handla om investeringar i fonder, aktier, kryptovalutor samt metaller och Ã¤delstenar.",
                 SubCategoryId = 3
             },
             new QuestionModel()
             {
                 Id = 27,
-                Question = "Vilka varningssignaler bör du vara uppmärksam på vid investeringserbjudanden?",
-                Explanation = "Var uppmärksam på varningssignaler som hög avkastning utan risk, bristande dokumentation, och orealistiska löften. Bedragare lockar ofta med snabba vinster och undviker att ge tydlig information om investeringen.",
+                Question = "Vilka varningssignaler bÃ¶r du vara uppmÃ¤rksam pÃ¥ vid investeringserbjudanden?",
+                Explanation = "Var uppmÃ¤rksam pÃ¥ varningssignaler som hÃ¶g avkastning utan risk, bristande dokumentation, och orealistiska lÃ¶ften. Bedragare lockar ofta med snabba vinster och undviker att ge tydlig information om investeringen.",
                 SubCategoryId = 3
             },
             new QuestionModel()
             {
                 Id = 28,
-                Question = "Hur kan du skydda dig mot investeringsbedrägeri?",
-                Explanation = "För att skydda dig mot investeringsbedrägeri bör du vara skeptisk mot orealistiska löften, göra grundlig research om investeringen, och undvika att agera impulsivt. Kontrollera även att företaget har tillstånd från Finansinspektionen.",
+                Question = "Hur kan du skydda dig mot investeringsbedrÃ¤geri?",
+                Explanation = "FÃ¶r att skydda dig mot investeringsbedrÃ¤geri bÃ¶r du vara skeptisk mot orealistiska lÃ¶ften, gÃ¶ra grundlig research om investeringen, och undvika att agera impulsivt. Kontrollera Ã¤ven att fÃ¶retaget har tillstÃ¥nd frÃ¥n Finansinspektionen.",
                 SubCategoryId = 3
             },
             new QuestionModel()
             {
                 Id = 29,
-                Question = "Vad bör du göra om du misstänker att du blivit utsatt för investeringsbedrägeri?",
-                Explanation = "Om du misstänker att du blivit utsatt för investeringsbedrägeri bör du omedelbart kontakta Polisen och Finansinspektionen. Samla all relevant information och undvik att göra fler transaktioner med bedragaren.",
+                Question = "Vad bÃ¶r du gÃ¶ra om du misstÃ¤nker att du blivit utsatt fÃ¶r investeringsbedrÃ¤geri?",
+                Explanation = "Om du misstÃ¤nker att du blivit utsatt fÃ¶r investeringsbedrÃ¤geri bÃ¶r du omedelbart kontakta Polisen och Finansinspektionen. Samla all relevant information och undvik att gÃ¶ra fler transaktioner med bedragaren.",
                 SubCategoryId = 3
             });
         }
@@ -657,7 +657,7 @@ namespace ValhallaVaultCyberAwareness.Data
                 new AnswerModel()
                 {
                     Id = 1,
-                    Answer = "Ett legitimt försök från banken att skydda ditt konto",
+                    Answer = "Ett legitimt fÃ¶rsÃ¶k frÃ¥n banken att skydda ditt konto",
                     IsCorrect = false,
                     QuestionId = 1
 
@@ -665,91 +665,91 @@ namespace ValhallaVaultCyberAwareness.Data
                 new AnswerModel()
                 {
                     Id = 2,
-                    Answer = "En informationsinsamling för en marknadsundersökning",
+                    Answer = "En informationsinsamling fÃ¶r en marknadsundersÃ¶kning",
                     IsCorrect = false,
                     QuestionId = 1
                 },
                 new AnswerModel()
                 {
                     Id = 3,
-                    Answer = "Ett potentiellt telefonbedrägeri",
+                    Answer = "Ett potentiellt telefonbedrÃ¤geri",
                     IsCorrect = true,
                     QuestionId = 1
                 },
                 new AnswerModel()
                 {
                     Id = 4,
-                    Answer = "En legitim begäran om hjälp från en person i nöd",
+                    Answer = "En legitim begÃ¤ran om hjÃ¤lp frÃ¥n en person i nÃ¶d",
                     IsCorrect = false,
                     QuestionId = 2
                 },
                 new AnswerModel()
                 {
                     Id = 5,
-                    Answer = "Ett romansbedrägeri",
+                    Answer = "Ett romansbedrÃ¤geri",
                     IsCorrect = true,
                     QuestionId = 2
                 },
                 new AnswerModel()
                 {
                     Id = 6,
-                    Answer = "En tillfällig ekonomisk svårighet",
+                    Answer = "En tillfÃ¤llig ekonomisk svÃ¥righet",
                     IsCorrect = false,
                     QuestionId = 2
                 },
                 new AnswerModel()
                 {
                     Id = 7,
-                    Answer = "Genomföra omedelbar investering för att inte missa möjligheten",
+                    Answer = "GenomfÃ¶ra omedelbar investering fÃ¶r att inte missa mÃ¶jligheten",
                     IsCorrect = false,
                     QuestionId = 3
                 },
                 new AnswerModel()
                 {
                     Id = 8,
-                    Answer = "Investeringsbedrägeri",
+                    Answer = "InvesteringsbedrÃ¤geri",
                     IsCorrect = true,
                     QuestionId = 3
                 },
                 new AnswerModel()
                 {
                     Id = 9,
-                    Answer = "Begära mer information för att utföra en noggrann \"due diligence\"",
+                    Answer = "BegÃ¤ra mer information fÃ¶r att utfÃ¶ra en noggrann \"due diligence\"",
                     IsCorrect = false,
                     QuestionId = 3
                 },
                 new AnswerModel()
                 {
                     Id = 10,
-                    Answer = "Ett misstag av kreditkortsföretaget",
+                    Answer = "Ett misstag av kreditkortsfÃ¶retaget",
                     IsCorrect = false,
                     QuestionId = 4
                 },
                 new AnswerModel()
                 {
                     Id = 11,
-                    Answer = "Kreditkortsbedrägeri",
+                    Answer = "KreditkortsbedrÃ¤geri",
                     IsCorrect = true,
                     QuestionId = 4
                 },
                 new AnswerModel()
                 {
                     Id = 12,
-                    Answer = "Obehöriga köp av en familjemedlem",
+                    Answer = "ObehÃ¶riga kÃ¶p av en familjemedlem",
                     IsCorrect = false,
                     QuestionId = 4
                 },
                 new AnswerModel()
                 {
                     Id = 13,
-                    Answer = "Utbildning i digital säkerhet för alla anställda",
+                    Answer = "Utbildning i digital sÃ¤kerhet fÃ¶r alla anstÃ¤llda",
                     IsCorrect = true,
                     QuestionId = 5
                 },
                 new AnswerModel()
                 {
                     Id = 14,
-                    Answer = "Installera en starkare brandvägg",
+                    Answer = "Installera en starkare brandvÃ¤gg",
                     IsCorrect = false,
                     QuestionId = 5
                 },
@@ -763,7 +763,7 @@ namespace ValhallaVaultCyberAwareness.Data
                 new AnswerModel()
                 {
                     Id = 16,
-                    Answer = "Informera alla användare om sårbarheten och rekommendera temporära skyddsåtgärder",
+                    Answer = "Informera alla anvÃ¤ndare om sÃ¥rbarheten och rekommendera temporÃ¤ra skyddsÃ¥tgÃ¤rder",
                     IsCorrect = true,
                     QuestionId = 6
                 },
@@ -777,7 +777,7 @@ namespace ValhallaVaultCyberAwareness.Data
                 new AnswerModel()
                 {
                     Id = 18,
-                    Answer = "Stänga ner tjänsten tillfälligt",
+                    Answer = "StÃ¤nga ner tjÃ¤nsten tillfÃ¤lligt",
                     IsCorrect = false,
                     QuestionId = 6
                 },
@@ -791,7 +791,7 @@ namespace ValhallaVaultCyberAwareness.Data
                 new AnswerModel()
                 {
                     Id = 20,
-                    Answer = "En konkurrerande företagsentitet",
+                    Answer = "En konkurrerande fÃ¶retagsentitet",
                     IsCorrect = false,
                     QuestionId = 7
                 },
@@ -805,21 +805,21 @@ namespace ValhallaVaultCyberAwareness.Data
                 new AnswerModel()
                 {
                     Id = 22,
-                    Answer = "Återgå till kontorsarbete",
+                    Answer = "Ã…tergÃ¥ till kontorsarbete",
                     IsCorrect = false,
                     QuestionId = 8
                 },
                 new AnswerModel()
                 {
                     Id = 23,
-                    Answer = "Införa striktare lösenordspolicyer och tvåfaktorsautentisering för fjärråtkomst",
+                    Answer = "InfÃ¶ra striktare lÃ¶senordspolicyer och tvÃ¥faktorsautentisering fÃ¶r fjÃ¤rrÃ¥tkomst",
                     IsCorrect = true,
                     QuestionId = 8
                 },
                 new AnswerModel()
                 {
                     Id = 24,
-                    Answer = "Förbjuda användning av personliga enheter för arbete",
+                    Answer = "FÃ¶rbjuda anvÃ¤ndning av personliga enheter fÃ¶r arbete",
                     IsCorrect = false,
                     QuestionId = 8
                 },
@@ -889,14 +889,14 @@ namespace ValhallaVaultCyberAwareness.Data
                 new AnswerModel
                 {
                     Id = 34,
-                    Answer = "Social ingenjörskonst",
+                    Answer = "Social ingenjÃ¶rskonst",
                     IsCorrect = false,
                     QuestionId = 12
                 },
                 new AnswerModel
                 {
                     Id = 35,
-                    Answer = "Massövervakning",
+                    Answer = "MassÃ¶vervakning",
                     IsCorrect = false,
                     QuestionId = 12
                 },
@@ -917,14 +917,14 @@ namespace ValhallaVaultCyberAwareness.Data
                 new AnswerModel
                 {
                     Id = 38,
-                    Answer = "Säkerhetsskyddslagen",
+                    Answer = "SÃ¤kerhetsskyddslagen",
                     IsCorrect = true,
                     QuestionId = 13
                 },
                 new AnswerModel
                 {
                     Id = 39,
-                    Answer = "IT-säkerhetslagen",
+                    Answer = "IT-sÃ¤kerhetslagen",
                     IsCorrect = false,
                     QuestionId = 13
                 },
@@ -952,7 +952,7 @@ namespace ValhallaVaultCyberAwareness.Data
                 new AnswerModel()
                 {
                     Id = 43,
-                    Answer = "Klicka på länken och logga in för att uppdatera din information.",
+                    Answer = "Klicka pÃ¥ lÃ¤nken och logga in fÃ¶r att uppdatera din information.",
                     IsCorrect = false,
                     QuestionId = 15
                 },
@@ -966,105 +966,105 @@ namespace ValhallaVaultCyberAwareness.Data
                 new AnswerModel()
                 {
                     Id = 45,
-                    Answer = "Skicka ditt kontonummer och lösenord som begärt.",
+                    Answer = "Skicka ditt kontonummer och lÃ¶senord som begÃ¤rt.",
                     IsCorrect = false,
                     QuestionId = 15
                 },
                 new AnswerModel()
                 {
                     Id = 46,
-                    Answer = "Kontrollera att PIN-koden är synlig för andra.",
+                    Answer = "Kontrollera att PIN-koden Ã¤r synlig fÃ¶r andra.",
                     IsCorrect = false,
                     QuestionId = 16
                 },
                 new AnswerModel()
                 {
                     Id = 47,
-                    Answer = "Inspektera terminalen för ovanliga tillbehör eller lösa delar.",
+                    Answer = "Inspektera terminalen fÃ¶r ovanliga tillbehÃ¶r eller lÃ¶sa delar.",
                     IsCorrect = true,
                     QuestionId = 16
                 },
                 new AnswerModel()
                 {
                     Id = 48,
-                    Answer = "Använd kortet utan att oroa dig.",
+                    Answer = "AnvÃ¤nd kortet utan att oroa dig.",
                     IsCorrect = false,
                     QuestionId = 16
                 },
                 new AnswerModel()
                 {
                     Id = 49,
-                    Answer = "Ignorera det och anta att det är en felaktighet.",
+                    Answer = "Ignorera det och anta att det Ã¤r en felaktighet.",
                     IsCorrect = false,
                     QuestionId = 17
                 },
                 new AnswerModel()
                 {
                     Id = 50,
-                    Answer = "Kontakta din kreditkortsutgivare omedelbart för att rapportera misstänkt bedrägeri.",
+                    Answer = "Kontakta din kreditkortsutgivare omedelbart fÃ¶r att rapportera misstÃ¤nkt bedrÃ¤geri.",
                     IsCorrect = true,
                     QuestionId = 17
                 },
                 new AnswerModel()
                 {
                     Id = 51,
-                    Answer = "Vänta och se om det löser sig av sig självt.",
+                    Answer = "VÃ¤nta och se om det lÃ¶ser sig av sig sjÃ¤lvt.",
                     IsCorrect = false,
                     QuestionId = 17
                 },
                 new AnswerModel()
                 {
                     Id = 52,
-                    Answer = "Öppna fakturan och betala den om den verkar legitim.",
+                    Answer = "Ã–ppna fakturan och betala den om den verkar legitim.",
                     IsCorrect = false,
                     QuestionId = 18
                 },
                 new AnswerModel()
                 {
                     Id = 53,
-                    Answer = "Kontakta din kreditkortsutgivare omedelbart för att rapportera misstänkt bedrägeri.",
+                    Answer = "Kontakta din kreditkortsutgivare omedelbart fÃ¶r att rapportera misstÃ¤nkt bedrÃ¤geri.",
                     IsCorrect = true,
                     QuestionId = 18
                 },
                 new AnswerModel()
                 {
                     Id = 54,
-                    Answer = "Vänta och se om det löser sig av sig självt.",
+                    Answer = "VÃ¤nta och se om det lÃ¶ser sig av sig sjÃ¤lvt.",
                     IsCorrect = false,
                     QuestionId = 18
                 },
                 new AnswerModel()
                 {
                     Id = 55,
-                    Answer = "Ta kortet och använd det för egna inköp.",
+                    Answer = "Ta kortet och anvÃ¤nd det fÃ¶r egna inkÃ¶p.",
                     IsCorrect = false,
                     QuestionId = 19
                 },
                 new AnswerModel()
                 {
                     Id = 56,
-                    Answer = "Ge kortet till personalen på caféet.",
+                    Answer = "Ge kortet till personalen pÃ¥ cafÃ©et.",
                     IsCorrect = true,
                     QuestionId = 19
                 },
                 new AnswerModel()
                 {
                     Id = 57,
-                    Answer = "Klipp sönder kortet.",
+                    Answer = "Klipp sÃ¶nder kortet.",
                     IsCorrect = false,
                     QuestionId = 19
                 },
                 new AnswerModel()
                 {
                     Id = 58,
-                    Answer = "Glöm bort det och låt betalningarna fortsätta.",
+                    Answer = "GlÃ¶m bort det och lÃ¥t betalningarna fortsÃ¤tta.",
                     IsCorrect = false,
                     QuestionId = 20
                 },
                 new AnswerModel()
                 {
                     Id = 59,
-                    Answer = "Uppdatera betalningsuppgifterna hos varje tjänsteleverantör.",
+                    Answer = "Uppdatera betalningsuppgifterna hos varje tjÃ¤nsteleverantÃ¶r.",
                     IsCorrect = true,
                     QuestionId = 20
                 },
@@ -1078,70 +1078,70 @@ namespace ValhallaVaultCyberAwareness.Data
                 new AnswerModel()
                 {
                     Id = 61,
-                    Answer = "Ett romansbedrägeri är när en bedragare inleder en romantisk relation med någon i syfte att lura hen på pengar. Det sker oftast på internet, till exempel på sociala medier samt dejtingsidor och dejtingappar.",
+                    Answer = "Ett romansbedrÃ¤geri Ã¤r nÃ¤r en bedragare inleder en romantisk relation med nÃ¥gon i syfte att lura hen pÃ¥ pengar. Det sker oftast pÃ¥ internet, till exempel pÃ¥ sociala medier samt dejtingsidor och dejtingappar.",
                     IsCorrect = true,
                     QuestionId = 21
                 },
                 new AnswerModel()
                 {
                     Id = 62,
-                    Answer = "Det är när två personer fejkar en romantisk relation för att lura andra.",
+                    Answer = "Det Ã¤r nÃ¤r tvÃ¥ personer fejkar en romantisk relation fÃ¶r att lura andra.",
                     IsCorrect = false,
                     QuestionId = 21
                 },
                 new AnswerModel()
                 {
                     Id = 63,
-                    Answer = "Det handlar om att skapa en falsk identitet för att vinna någon annans förtroende.",
+                    Answer = "Det handlar om att skapa en falsk identitet fÃ¶r att vinna nÃ¥gon annans fÃ¶rtroende.",
                     IsCorrect = false,
                     QuestionId = 21
                 },
                 new AnswerModel()
                 {
                     Id = 64,
-                    Answer = "Statusyrken, konstlade formuleringar eller slarvigt språkbruk.",
+                    Answer = "Statusyrken, konstlade formuleringar eller slarvigt sprÃ¥kbruk.",
                     IsCorrect = true,
                     QuestionId = 22
                 },
                 new AnswerModel()
                 {
                     Id = 65,
-                    Answer = "Generös gåva av blommor eller choklad.",
+                    Answer = "GenerÃ¶s gÃ¥va av blommor eller choklad.",
                     IsCorrect = false,
                     QuestionId = 22
                 },
                 new AnswerModel()
                 {
                     Id = 66,
-                    Answer = "Överdriven romantik och kärleksgestikulering.",
+                    Answer = "Ã–verdriven romantik och kÃ¤rleksgestikulering.",
                     IsCorrect = false,
                     QuestionId = 22
                 },
                 new AnswerModel()
                 {
                     Id = 67,
-                    Answer = "Bevis för att personen inlett en kärleksrelation för att lura på pengar.",
+                    Answer = "Bevis fÃ¶r att personen inlett en kÃ¤rleksrelation fÃ¶r att lura pÃ¥ pengar.",
                     IsCorrect = true,
                     QuestionId = 23
                 },
                 new AnswerModel()
                 {
                     Id = 68,
-                    Answer = "Att personen har skickat kärleksbrev eller romantiska meddelanden.",
+                    Answer = "Att personen har skickat kÃ¤rleksbrev eller romantiska meddelanden.",
                     IsCorrect = false,
                     QuestionId = 23
                 },
                 new AnswerModel()
                 {
                     Id = 69,
-                    Answer = "Att personen har använt falsk identitet på sociala medier.",
+                    Answer = "Att personen har anvÃ¤nt falsk identitet pÃ¥ sociala medier.",
                     IsCorrect = false,
                     QuestionId = 23
                 },
                 new AnswerModel()
                 {
                     Id = 70,
-                    Answer = "Fortsätta kommunicera för att samla mer bevis.",
+                    Answer = "FortsÃ¤tta kommunicera fÃ¶r att samla mer bevis.",
                     IsCorrect = false,
                     QuestionId = 24
                 },
@@ -1155,14 +1155,14 @@ namespace ValhallaVaultCyberAwareness.Data
                 new AnswerModel()
                 {
                     Id = 72,
-                    Answer = "Dela personlig information för att testa deras äkthet.",
+                    Answer = "Dela personlig information fÃ¶r att testa deras Ã¤kthet.",
                     IsCorrect = false,
                     QuestionId = 24
                 },
                 new AnswerModel()
                 {
                     Id = 73,
-                    Answer = "Öppet dela dina känslor och livshistoria med okända personer.",
+                    Answer = "Ã–ppet dela dina kÃ¤nslor och livshistoria med okÃ¤nda personer.",
                     IsCorrect = false,
                     QuestionId = 25
                 },
@@ -1176,21 +1176,21 @@ namespace ValhallaVaultCyberAwareness.Data
                 new AnswerModel()
                 {
                     Id = 75,
-                    Answer = "Var skeptisk mot snabba kärleksförklaringar och ekonomiska problem.",
+                    Answer = "Var skeptisk mot snabba kÃ¤rleksfÃ¶rklaringar och ekonomiska problem.",
                     IsCorrect = true,
                     QuestionId = 25
                 },
                 new AnswerModel()
                 {
                     Id = 76,
-                    Answer = "Ett investeringsbedrägeri kan handla om investeringar i fonder, aktier, kryptovalutor samt metaller och ädelstenar.",
+                    Answer = "Ett investeringsbedrÃ¤geri kan handla om investeringar i fonder, aktier, kryptovalutor samt metaller och Ã¤delstenar.",
                     IsCorrect = false,
                     QuestionId = 26
                 },
                 new AnswerModel()
                 {
                     Id = 77,
-                    Answer = "Det är när någon lurar andra att köpa värdepapper som egentligen inte har något värde eller är svåra att värdera.",
+                    Answer = "Det Ã¤r nÃ¤r nÃ¥gon lurar andra att kÃ¶pa vÃ¤rdepapper som egentligen inte har nÃ¥got vÃ¤rde eller Ã¤r svÃ¥ra att vÃ¤rdera.",
                     IsCorrect = true,
                     QuestionId = 26
                 },
@@ -1204,14 +1204,14 @@ namespace ValhallaVaultCyberAwareness.Data
                 new AnswerModel()
                 {
                     Id = 79,
-                    Answer = "Hög avkastning utan risk, bristande dokumentation, orealistiska löften.",
+                    Answer = "HÃ¶g avkastning utan risk, bristande dokumentation, orealistiska lÃ¶ften.",
                     IsCorrect = true,
                     QuestionId = 27
                 },
                 new AnswerModel()
                 {
                     Id = 80,
-                    Answer = "Tydlig information om investeringen, seriösa företag.",
+                    Answer = "Tydlig information om investeringen, seriÃ¶sa fÃ¶retag.",
                     IsCorrect = false,
                     QuestionId = 27
                 },
@@ -1225,7 +1225,7 @@ namespace ValhallaVaultCyberAwareness.Data
                 new AnswerModel()
                 {
                     Id = 82,
-                    Answer = "Var skeptisk mot orealistiska löften, gör grundlig research, undvik impulsiva beslut.",
+                    Answer = "Var skeptisk mot orealistiska lÃ¶ften, gÃ¶r grundlig research, undvik impulsiva beslut.",
                     IsCorrect = true,
                     QuestionId = 28
                 },
@@ -1239,21 +1239,21 @@ namespace ValhallaVaultCyberAwareness.Data
                 new AnswerModel()
                 {
                     Id = 84,
-                    Answer = "Lita på alla investeringsmöjligheter utan att kontrollera företaget.",
+                    Answer = "Lita pÃ¥ alla investeringsmÃ¶jligheter utan att kontrollera fÃ¶retaget.",
                     IsCorrect = false,
                     QuestionId = 28
                 },
                 new AnswerModel()
                 {
                     Id = 85,
-                    Answer = "Dela personlig information för att testa deras äkthet.",
+                    Answer = "Dela personlig information fÃ¶r att testa deras Ã¤kthet.",
                     IsCorrect = false,
                     QuestionId = 29
                 },
                 new AnswerModel()
                 {
                     Id = 86,
-                    Answer = "Fortsätta kommunicera för att samla mer bevis.",
+                    Answer = "FortsÃ¤tta kommunicera fÃ¶r att samla mer bevis.",
                     IsCorrect = false,
                     QuestionId = 29
                 },
