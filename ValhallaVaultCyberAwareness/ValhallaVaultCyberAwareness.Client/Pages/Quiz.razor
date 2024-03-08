@@ -1,0 +1,135 @@
+﻿@page "/quiz/{SubCategoryId:int}"
+
+@using ValhallaVaultCyberAwareness.Client.Services
+@using ValhallaVaultCyberAwareness.Domain.Models
+
+@inject ISegmentService SegmentService
+
+
+<h3>Quiz</h3>
+
+@if (questions == null)
+{
+    <p>Loading...</p>
+}
+else
+{
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-10">
+                <div class="card border-dark text-center">
+                    <div class="card-body">
+                        <h4>QuizTitle</h4>
+                        <h5>Question:  0 / 0</h5>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row justify-content-center mt-5">
+            <div class="col-7">
+                <div class="card border-dark text-center">
+                    <div class="card-body">
+                        <h5 class="card-title">QuestionHeader</h5>
+                    </div>
+                    <div class="card-body">
+                        <p>
+                            Lorem ipsum dolor sit amet, consectetur adipiscing elit,
+                            sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+                            Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris
+                            nisi ut aliquip ex ea commodo consequat.
+                            Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore
+                            eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident,
+                            sunt in culpa qui officia deserunt mollit anim id est laborum.
+                        </p>
+                    </div>
+                    <div class="card-body">
+                        @if (questions.FirstOrDefault()?.Answers.Count(a => !string.IsNullOrEmpty(a.AnswerText)) == 1)
+                        {
+                            <div class="row justify-content-center">
+                                <div class="col-3">
+                                    <button class="btn border-dark mx-auto">Yes</button>
+                                </div>
+                                <div class="col-3">
+                                    <button class="btn border-dark mx-auto">No</button>
+                                </div>
+                            </div>
+                        }
+                        else
+                        {
+                            <div class="row justify-content-center">
+                                @foreach (var answerItem in questions.FirstOrDefault()?.Answers)
+                                {
+                                    <div class="col-3">
+                                        <button class="btn border-dark mx-auto">@answerItem.AnswerText</button>
+                                    </div>
+                                }
+                            </div>
+                        }
+                    </div>
+                    <div class="card-bottom">
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+
+@code {
+    [Parameter]
+    public int SubCategoryId { get; set; }
+
+
+    private List<QuestionModel>? questions;
+
+
+
+    protected override async Task OnInitializedAsync()
+    {
+        questions = GetDummyData();
+    }
+    private List<QuestionModel> GetDummyData()
+    {
+        var dummyData = new List<QuestionModel>();
+
+        for (int i = 1; i <= 5; i++)
+        {
+            var question = new QuestionModel
+                {
+                    QuestionText = $"Question {i}",
+                    Answers = GetDummyAnswers()
+                };
+
+            dummyData.Add(question);
+        }
+
+        return dummyData;
+    }
+    private List<AnswerModel> GetDummyAnswers()
+    {
+        var dummyAnswers = new List<AnswerModel>();
+
+        // Generating between 1 to 3 dummy answers for each question
+        var numAnswers = new Random().Next(0, 2) * 2 + 1;
+        for (int i = 1; i <= numAnswers; i++)
+        {
+            var answer = new AnswerModel
+                {
+                    AnswerText = $"Answer {i}"
+                };
+
+            dummyAnswers.Add(answer);
+        }
+
+        return dummyAnswers;
+    }
+    public class QuestionModel
+    {
+        public string QuestionText { get; set; }
+        public List<AnswerModel> Answers { get; set; } = new List<AnswerModel>();
+    }
+    public class AnswerModel
+    {
+        public string AnswerText { get; set; }
+    }
+}
