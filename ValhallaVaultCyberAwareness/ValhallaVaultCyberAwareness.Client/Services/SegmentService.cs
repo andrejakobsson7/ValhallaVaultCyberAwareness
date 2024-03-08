@@ -1,5 +1,6 @@
 ﻿using Newtonsoft.Json;
 using System.Net.Http.Json;
+using ValhallaVaultCyberAwareness.Client.ViewModels;
 using ValhallaVaultCyberAwareness.Domain.Models;
 
 namespace ValhallaVaultCyberAwareness.Client.Services
@@ -19,7 +20,7 @@ namespace ValhallaVaultCyberAwareness.Client.Services
             if (apiResponse.IsSuccessStatusCode)
             {
                 string jsonSegment = await apiResponse.Content.ReadAsStringAsync();
-                List<SegmentModel> segments = JsonConvert.DeserializeObject<List<SegmentModel>>(jsonSegment);
+                List<SegmentModel>? segments = JsonConvert.DeserializeObject<List<SegmentModel>>(jsonSegment);
                 if (segments == null)
                 {
                     throw new JsonException();
@@ -27,6 +28,27 @@ namespace ValhallaVaultCyberAwareness.Client.Services
                 else
                 {
                     return segments;
+                }
+            }
+            throw new HttpRequestException();
+        }
+
+        public async Task<List<SegmentUserScoreViewModel>> ImprovedGetSegmentsByCategoryIdAsync(int categoryId, string userId)
+        {
+
+            var apiResponse = await Client.GetAsync($"/api/segment/{categoryId}/{userId}");
+            if (apiResponse.IsSuccessStatusCode)
+            {
+                string jsonSegment = await apiResponse.Content.ReadAsStringAsync();
+                List<SegmentModel>? segments = JsonConvert.DeserializeObject<List<SegmentModel>>(jsonSegment);
+                if (segments == null)
+                {
+                    throw new JsonException();
+                }
+                else
+                {
+                    List<SegmentUserScoreViewModel> userScores = segments.Select(s => new SegmentUserScoreViewModel(s)).ToList();
+                    return userScores;
                 }
             }
             throw new HttpRequestException();

@@ -40,9 +40,13 @@ else
                                      3. Count the amount of Questions contained within a SubCategory.
                                 -->
                                 <li>@SubCategoryItem.Name - 
+
+                                    
+                                    <!-- COUNT CORRECT ANSWERS FROM USER, NEEDS FIXING! -->
                                     @(SubCategoryItem.Questions.FirstOrDefault()?
-                                    .Answers.Count(a => a.IsCorrect == true) ?? 0) / 
-                                    @SubCategoryItem.Questions.Count
+                                    .Answers.Count(a => a.IsCorrect == true) ?? 0)
+                                    
+                                    / @SubCategoryItem.Questions.Count
                                 </li>
                             }
                         </ul>
@@ -75,6 +79,10 @@ else
 
                             <!-- Count the amount of SubCategories contained in each Segment-->
                             @segmentItem.SubCategories.Count </h5>
+
+                            <!-- TEST, REMOVE LATER-->
+                            <p>TEST @(segmentItem.SubCategories.FirstOrDefault()?.Questions.FirstOrDefault()?.Answers.FirstOrDefault()?.UserAnswers.FirstOrDefault()?.UserId ?? "Default") TEST</p>
+
                     </div>
                     <a href="@($"https://localhost:7107/quizpage/{segmentItem.Id}")" class="stretched-link"></a>
                 </div>
@@ -90,6 +98,6 @@ else
     protected override async Task OnInitializedAsync()
     {
         // Use the Category Id and User Id to fetch the corresponding Segment and the user information tied to it.
-        segments = await SegmentService.GetSegmentsByCategoryIdAsync(1 , "e547fd1c-ec07-49e1-b2ce-0d326f467c01");
+        segments = await SegmentService.GetSegmentsByCategoryIdAsync(1, "1872fec2-27e0-4aa2-b876-5de387b62fbc");
     }
 }
