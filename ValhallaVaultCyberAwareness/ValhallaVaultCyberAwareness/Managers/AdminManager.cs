@@ -15,10 +15,10 @@ namespace ValhallaVaultCyberAwareness.Managers
             ISegmentRepository segmentRepository,
             IQuestionRepository questionRepository)
         {
-            categoryRepository = _categoryRepository;
-            subcategoryRepository = _subcategoryRepository;
-            segmentRepository = _segmentRepository;
-            questionRepository = _questionRepository;
+            _categoryRepository = categoryRepository;
+            _subcategoryRepository = subcategoryRepository;
+            _segmentRepository = segmentRepository;
+            _questionRepository = questionRepository;
         }
 
     }

@@ -1,0 +1,45 @@
+﻿@page "/Admin/Category/UpdateCategoryPage/{id:int}"
+@rendermode InteractiveServer
+@inject AdminManager manager;
+@inject NavigationManager navManager
+
+<h1>Edit category:</h1>
+
+<EditForm Model="CurrentCategory" OnSubmit="HandleSubmit" FormName="Name" class="card w-50">
+
+    <label>
+        Name
+    </label>
+
+    <InputText @bind-Value="@CurrentCategory.Name"></InputText>
+
+    <label>
+        Description
+    </label>
+
+    <InputText @bind-Value="@CurrentCategory.Description"></InputText>
+
+    <input type="submit" value="Update" />
+
+</EditForm>
+
+@code {
+    [Parameter]
+    public CategoryModel CurrentCategory { get; set; } = new();
+
+    [Parameter]
+    public int id { get; set; }
+
+    protected override async Task OnInitializedAsync()
+    {
+        CurrentCategory = await manager._categoryRepository.GetCategoryById(id);
+    }
+
+    private async Task HandleSubmit()
+    {
+        await manager._categoryRepository.UpdateCategoryAsync(CurrentCategory);
+        navManager.NavigateTo("/Admin/Category/CategoryPage");
+    }
+
+    
+}

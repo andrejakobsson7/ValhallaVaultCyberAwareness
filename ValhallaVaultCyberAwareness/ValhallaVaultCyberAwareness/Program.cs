@@ -5,6 +5,7 @@ using ValhallaVaultCyberAwareness.Client.Services;
 using ValhallaVaultCyberAwareness.Components;
 using ValhallaVaultCyberAwareness.Components.Account;
 using ValhallaVaultCyberAwareness.Data;
+using ValhallaVaultCyberAwareness.Managers;
 using ValhallaVaultCyberAwareness.Repositories;
 
 
@@ -25,6 +26,7 @@ builder.Services.AddScoped<ISegmentRepository, SegmentRepository>();
 builder.Services.AddScoped<ICategoryRepository, CategoryRepository>();
 builder.Services.AddScoped<ISubCategoryRepository, SubCategoryRepository>();
 builder.Services.AddScoped<IQuestionRepository, QuestionRepository>();
+builder.Services.AddScoped<IUserAnswersRepository, UserAnswersRepository>();
 
 //Services
 builder.Services.AddScoped<ICategoryService, CategoryService>();
@@ -33,6 +35,7 @@ builder.Services.AddScoped<ISubCategoryService, SubCategoryService>();
 builder.Services.AddScoped<IQuestionService, QuestionService>();
 builder.Services.AddScoped<IAnswerService, AnswerService>();
 builder.Services.AddScoped<IUserAnswersService, UserAnswerService>();
+builder.Services.AddScoped<AdminManager>();
 
 builder.Services.AddControllers();
 

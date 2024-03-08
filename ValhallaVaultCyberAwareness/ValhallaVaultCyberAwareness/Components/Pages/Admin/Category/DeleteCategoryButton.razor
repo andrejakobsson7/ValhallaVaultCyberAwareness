@@ -1,0 +1,16 @@
+﻿@rendermode InteractiveServer
+@inject AdminManager manager
+
+<button class="btn btn-primary" @onclick="async () => await DeleteCategory(CategoryId)">Delete</button>
+
+
+@code {
+
+    [Parameter]
+    public int CategoryId { get; set; }
+
+    async Task DeleteCategory(int id)
+    {
+        await manager._categoryRepository.DeleteCategoryAsync(CategoryId);
+    }
+}

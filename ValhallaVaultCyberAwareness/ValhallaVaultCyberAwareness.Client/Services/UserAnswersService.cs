@@ -3,18 +3,18 @@ using ValhallaVaultCyberAwareness.Domain.Models;
 
 namespace ValhallaVaultCyberAwareness.Client.Services
 {
-    public class UserAnswerService : IUserAnswersService
+    public class UserAnswersService : IUserAnswersService
     {
         public HttpClient Client { get; set; }
 
-        public UserAnswerService(HttpClient client)
+        public UserAnswersService(HttpClient client)
         {
             Client = client;
         }
 
-        public async Task<bool> AddUserAnswerAsync(UserAnswers newUserAnswer)
+        public async Task<bool> AddUserAnswersAsync(List<UserAnswers> newUserAnswers)
         {
-            var apiResponse = await Client.PostAsJsonAsync<UserAnswers>("/api/UserAnswers/", newUserAnswer);
+            var apiResponse = await Client.PostAsJsonAsync("/api/useranswers/", newUserAnswers);
             if (apiResponse.IsSuccessStatusCode)
             {
                 return true;
