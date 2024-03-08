@@ -27,10 +27,10 @@ namespace ValhallaVaultCyberAwareness.Migrations
                 columns: new[] { "answer_id", "user_id" },
                 values: new object[,]
                 {
-                    { 2, "e547fd1c-ec07-49e1-b2ce-0d326f467c01" },
-                    { 4, "e547fd1c-ec07-49e1-b2ce-0d326f467c01" },
-                    { 8, "e547fd1c-ec07-49e1-b2ce-0d326f467c01" },
-                    { 11, "e547fd1c-ec07-49e1-b2ce-0d326f467c01" }
+                    { 2, "1872fec2-27e0-4aa2-b876-5de387b62fbc" },
+                    { 4, "1872fec2-27e0-4aa2-b876-5de387b62fbc" },
+                    { 8, "1872fec2-27e0-4aa2-b876-5de387b62fbc" },
+                    { 11, "1872fec2-27e0-4aa2-b876-5de387b62fbc" }
                 });
 
             migrationBuilder.InsertData(
@@ -177,22 +177,22 @@ namespace ValhallaVaultCyberAwareness.Migrations
             migrationBuilder.DeleteData(
                 table: "UserAnswers",
                 keyColumns: new[] { "answer_id", "user_id" },
-                keyValues: new object[] { 2, "e547fd1c-ec07-49e1-b2ce-0d326f467c01" });
+                keyValues: new object[] { 2, "1872fec2-27e0-4aa2-b876-5de387b62fbc" });
 
             migrationBuilder.DeleteData(
                 table: "UserAnswers",
                 keyColumns: new[] { "answer_id", "user_id" },
-                keyValues: new object[] { 4, "e547fd1c-ec07-49e1-b2ce-0d326f467c01" });
+                keyValues: new object[] { 4, "1872fec2-27e0-4aa2-b876-5de387b62fbc" });
 
             migrationBuilder.DeleteData(
                 table: "UserAnswers",
                 keyColumns: new[] { "answer_id", "user_id" },
-                keyValues: new object[] { 8, "e547fd1c-ec07-49e1-b2ce-0d326f467c01" });
+                keyValues: new object[] { 8, "1872fec2-27e0-4aa2-b876-5de387b62fbc" });
 
             migrationBuilder.DeleteData(
                 table: "UserAnswers",
                 keyColumns: new[] { "answer_id", "user_id" },
-                keyValues: new object[] { 11, "e547fd1c-ec07-49e1-b2ce-0d326f467c01" });
+                keyValues: new object[] { 11, "1872fec2-27e0-4aa2-b876-5de387b62fbc" });
 
             migrationBuilder.DeleteData(
                 table: "Questions",
