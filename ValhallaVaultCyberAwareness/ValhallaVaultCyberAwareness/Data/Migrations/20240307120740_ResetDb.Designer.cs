@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using ValhallaVaultCyberAwareness.Data;
 
@@ -11,9 +12,11 @@ using ValhallaVaultCyberAwareness.Data;
 namespace ValhallaVaultCyberAwareness.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240307120740_ResetDb")]
+    partial class ResetDb
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -542,321 +545,6 @@ namespace ValhallaVaultCyberAwareness.Migrations
                             Answer = "Statssponsrade hackers",
                             IsCorrect = true,
                             QuestionId = 14
-                        },
-                        new
-                        {
-                            Id = 43,
-                            Answer = "Klicka på länken och logga in för att uppdatera din information.",
-                            IsCorrect = false,
-                            QuestionId = 15
-                        },
-                        new
-                        {
-                            Id = 44,
-                            Answer = "Ignorera e-postmeddelandet och radera det omedelbart.",
-                            IsCorrect = true,
-                            QuestionId = 15
-                        },
-                        new
-                        {
-                            Id = 45,
-                            Answer = "Skicka ditt kontonummer och lösenord som begärt.",
-                            IsCorrect = false,
-                            QuestionId = 15
-                        },
-                        new
-                        {
-                            Id = 46,
-                            Answer = "Kontrollera att PIN-koden är synlig för andra.",
-                            IsCorrect = false,
-                            QuestionId = 16
-                        },
-                        new
-                        {
-                            Id = 47,
-                            Answer = "Inspektera terminalen för ovanliga tillbehör eller lösa delar.",
-                            IsCorrect = true,
-                            QuestionId = 16
-                        },
-                        new
-                        {
-                            Id = 48,
-                            Answer = "Använd kortet utan att oroa dig.",
-                            IsCorrect = false,
-                            QuestionId = 16
-                        },
-                        new
-                        {
-                            Id = 49,
-                            Answer = "Ignorera det och anta att det är en felaktighet.",
-                            IsCorrect = false,
-                            QuestionId = 17
-                        },
-                        new
-                        {
-                            Id = 50,
-                            Answer = "Kontakta din kreditkortsutgivare omedelbart för att rapportera misstänkt bedrägeri.",
-                            IsCorrect = true,
-                            QuestionId = 17
-                        },
-                        new
-                        {
-                            Id = 51,
-                            Answer = "Vänta och se om det löser sig av sig självt.",
-                            IsCorrect = false,
-                            QuestionId = 17
-                        },
-                        new
-                        {
-                            Id = 52,
-                            Answer = "Öppna fakturan och betala den om den verkar legitim.",
-                            IsCorrect = false,
-                            QuestionId = 18
-                        },
-                        new
-                        {
-                            Id = 53,
-                            Answer = "Kontakta din kreditkortsutgivare omedelbart för att rapportera misstänkt bedrägeri.",
-                            IsCorrect = true,
-                            QuestionId = 18
-                        },
-                        new
-                        {
-                            Id = 54,
-                            Answer = "Vänta och se om det löser sig av sig självt.",
-                            IsCorrect = false,
-                            QuestionId = 18
-                        },
-                        new
-                        {
-                            Id = 55,
-                            Answer = "Ta kortet och använd det för egna inköp.",
-                            IsCorrect = false,
-                            QuestionId = 19
-                        },
-                        new
-                        {
-                            Id = 56,
-                            Answer = "Ge kortet till personalen på caféet.",
-                            IsCorrect = true,
-                            QuestionId = 19
-                        },
-                        new
-                        {
-                            Id = 57,
-                            Answer = "Klipp sönder kortet.",
-                            IsCorrect = false,
-                            QuestionId = 19
-                        },
-                        new
-                        {
-                            Id = 58,
-                            Answer = "Glöm bort det och låt betalningarna fortsätta.",
-                            IsCorrect = false,
-                            QuestionId = 20
-                        },
-                        new
-                        {
-                            Id = 59,
-                            Answer = "Uppdatera betalningsuppgifterna hos varje tjänsteleverantör.",
-                            IsCorrect = true,
-                            QuestionId = 20
-                        },
-                        new
-                        {
-                            Id = 60,
-                            Answer = "Avbryt alla automatiska betalningar.",
-                            IsCorrect = false,
-                            QuestionId = 20
-                        },
-                        new
-                        {
-                            Id = 61,
-                            Answer = "Ett romansbedrägeri är när en bedragare inleder en romantisk relation med någon i syfte att lura hen på pengar. Det sker oftast på internet, till exempel på sociala medier samt dejtingsidor och dejtingappar.",
-                            IsCorrect = true,
-                            QuestionId = 21
-                        },
-                        new
-                        {
-                            Id = 62,
-                            Answer = "Det är när två personer fejkar en romantisk relation för att lura andra.",
-                            IsCorrect = false,
-                            QuestionId = 21
-                        },
-                        new
-                        {
-                            Id = 63,
-                            Answer = "Det handlar om att skapa en falsk identitet för att vinna någon annans förtroende.",
-                            IsCorrect = false,
-                            QuestionId = 21
-                        },
-                        new
-                        {
-                            Id = 64,
-                            Answer = "Statusyrken, konstlade formuleringar eller slarvigt språkbruk.",
-                            IsCorrect = true,
-                            QuestionId = 22
-                        },
-                        new
-                        {
-                            Id = 65,
-                            Answer = "Generös gåva av blommor eller choklad.",
-                            IsCorrect = false,
-                            QuestionId = 22
-                        },
-                        new
-                        {
-                            Id = 66,
-                            Answer = "Överdriven romantik och kärleksgestikulering.",
-                            IsCorrect = false,
-                            QuestionId = 22
-                        },
-                        new
-                        {
-                            Id = 67,
-                            Answer = "Bevis för att personen inlett en kärleksrelation för att lura på pengar.",
-                            IsCorrect = true,
-                            QuestionId = 23
-                        },
-                        new
-                        {
-                            Id = 68,
-                            Answer = "Att personen har skickat kärleksbrev eller romantiska meddelanden.",
-                            IsCorrect = false,
-                            QuestionId = 23
-                        },
-                        new
-                        {
-                            Id = 69,
-                            Answer = "Att personen har använt falsk identitet på sociala medier.",
-                            IsCorrect = false,
-                            QuestionId = 23
-                        },
-                        new
-                        {
-                            Id = 70,
-                            Answer = "Fortsätta kommunicera för att samla mer bevis.",
-                            IsCorrect = false,
-                            QuestionId = 24
-                        },
-                        new
-                        {
-                            Id = 71,
-                            Answer = "Avsluta all kontakt med personen och blockera dem.",
-                            IsCorrect = true,
-                            QuestionId = 24
-                        },
-                        new
-                        {
-                            Id = 72,
-                            Answer = "Dela personlig information för att testa deras äkthet.",
-                            IsCorrect = false,
-                            QuestionId = 24
-                        },
-                        new
-                        {
-                            Id = 73,
-                            Answer = "Öppet dela dina känslor och livshistoria med okända personer.",
-                            IsCorrect = false,
-                            QuestionId = 25
-                        },
-                        new
-                        {
-                            Id = 74,
-                            Answer = "Dela personlig information och bankuppgifter direkt.",
-                            IsCorrect = false,
-                            QuestionId = 25
-                        },
-                        new
-                        {
-                            Id = 75,
-                            Answer = "Var skeptisk mot snabba kärleksförklaringar och ekonomiska problem.",
-                            IsCorrect = true,
-                            QuestionId = 25
-                        },
-                        new
-                        {
-                            Id = 76,
-                            Answer = "Ett investeringsbedrägeri kan handla om investeringar i fonder, aktier, kryptovalutor samt metaller och ädelstenar.",
-                            IsCorrect = false,
-                            QuestionId = 26
-                        },
-                        new
-                        {
-                            Id = 77,
-                            Answer = "Det är när någon lurar andra att köpa värdepapper som egentligen inte har något värde eller är svåra att värdera.",
-                            IsCorrect = true,
-                            QuestionId = 26
-                        },
-                        new
-                        {
-                            Id = 78,
-                            Answer = "Investeringar som garanterar snabba vinster utan risk.",
-                            IsCorrect = false,
-                            QuestionId = 26
-                        },
-                        new
-                        {
-                            Id = 79,
-                            Answer = "Hög avkastning utan risk, bristande dokumentation, orealistiska löften.",
-                            IsCorrect = true,
-                            QuestionId = 27
-                        },
-                        new
-                        {
-                            Id = 80,
-                            Answer = "Tydlig information om investeringen, seriösa företag.",
-                            IsCorrect = false,
-                            QuestionId = 27
-                        },
-                        new
-                        {
-                            Id = 81,
-                            Answer = "Snabba vinster och impulsivt agerande.",
-                            IsCorrect = false,
-                            QuestionId = 27
-                        },
-                        new
-                        {
-                            Id = 82,
-                            Answer = "Var skeptisk mot orealistiska löften, gör grundlig research, undvik impulsiva beslut.",
-                            IsCorrect = true,
-                            QuestionId = 28
-                        },
-                        new
-                        {
-                            Id = 83,
-                            Answer = "Dela personlig information och bankuppgifter direkt.",
-                            IsCorrect = false,
-                            QuestionId = 28
-                        },
-                        new
-                        {
-                            Id = 84,
-                            Answer = "Lita på alla investeringsmöjligheter utan att kontrollera företaget.",
-                            IsCorrect = false,
-                            QuestionId = 28
-                        },
-                        new
-                        {
-                            Id = 85,
-                            Answer = "Dela personlig information för att testa deras äkthet.",
-                            IsCorrect = false,
-                            QuestionId = 29
-                        },
-                        new
-                        {
-                            Id = 86,
-                            Answer = "Fortsätta kommunicera för att samla mer bevis.",
-                            IsCorrect = false,
-                            QuestionId = 29
-                        },
-                        new
-                        {
-                            Id = 87,
-                            Answer = "Avsluta all kontakt med personen och blockera dem.",
-                            IsCorrect = true,
-                            QuestionId = 29
                         });
                 });
 
@@ -909,11 +597,6 @@ namespace ValhallaVaultCyberAwareness.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<string>("Explanation")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)")
-                        .HasColumnName("explanation");
-
                     b.Property<string>("Question")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)")
@@ -933,205 +616,86 @@ namespace ValhallaVaultCyberAwareness.Migrations
                         new
                         {
                             Id = 1,
-                            Explanation = "Banker och andra finansiella institutioner begär aldrig känslig information såsom kontonummer eller lösenord via telefon. Detta är ett klassiskt tecken på telefonbedrägeri.",
                             Question = "Du får ett oväntat telefonsamtal från någon som påstår sig vara från din bank. Personen ber dig bekräfta ditt kontonummer och lösenord för att \"säkerställa din kontos säkerhet\" efter en påstådd säkerhetsincident. Hur bör du tolka denna situation?",
                             SubCategoryId = 1
                         },
                         new
                         {
                             Id = 2,
-                            Explanation = "Begäran om pengar, särskilt under omständigheter där två personer aldrig har träffats fysiskt, är ett vanligt tecken på romansbedrägeri.",
                             Question = "Efter flera månader av daglig kommunikation med någon du träffade på en datingsida, börjar personen berätta om en plötslig finansiell kris och ber om din hjälp genom att överföra pengar. Vad indikerar detta mest sannolikt?",
                             SubCategoryId = 2
                         },
                         new
                         {
                             Id = 3,
-                            Explanation = "Erbjudanden som lovar hög avkastning med liten eller ingen risk, särskilt via oönskade e-postmeddelanden, är ofta tecken på investeringsbedrägerier.",
                             Question = "Du får ett e-postmeddelande/samtal om ett exklusivt erbjudande att investera i ett startup-företag som påstås ha en revolutionerande ny teknologi, med garantier om exceptionellt hög avkastning på mycket kort tid. Hur bör du förhålla dig till erbjudandet?",
                             SubCategoryId = 3
                         },
                         new
                         {
                             Id = 4,
-                            Explanation = "Oidentifierade transaktioner på ditt kreditkortsutdrag är en stark indikation på att ditt kortnummer har komprometterats och använts för obehöriga köp, vilket är typiskt för kreditkortsbedrägeri.",
                             Question = "Efter en online-shoppingrunda märker du oidentifierade transaktioner på ditt kreditkortsutdrag från företag du aldrig handlat från. Vad indikerar detta mest sannolikt?",
                             SubCategoryId = 4
                         },
                         new
                         {
                             Id = 5,
-                            Explanation = "Utbildning i digital säkerhet är avgörande för att hjälpa anställda att känna igen och undvika säkerhetshot som phishing, vilket är en vanlig attackvektor.",
                             Question = "Inom företaget märker man att konfidentiella dokument regelbundet läcker ut till konkurrenter. Efter en intern granskning upptäcks det att en anställd omedvetet har installerat skadlig programvara genom att klicka på en länk i ett phishing-e-postmeddelande. Vilken åtgärd bör prioriteras för att förhindra framtida incidenter?",
                             SubCategoryId = 5
                         },
                         new
                         {
                             Id = 6,
-                            Explanation = "Transparent kommunikation och rådgivning om tillfälliga åtgärder är avgörande för att skydda användarna medan en permanent lösning utvecklas.",
                             Question = "Inom företaget upptäckts det en sårbarhet i vår programvara som kunde möjliggöra obehörig åtkomst till användardata. Företaget har inte omedelbart en lösning. Vilken är den mest lämpliga första åtgärden?",
                             SubCategoryId = 6
                         },
                         new
                         {
                             Id = 7,
-                            Explanation = "DDoS-attacker kräver ofta betydande resurser och koordinering, vilket är karakteristiskt för organiserade cyberbrottsliga grupper.",
                             Question = "Vårt företag blir måltavla för en DDoS-attack som överväldigar våra servrar och gör våra tjänster otillgängliga för kunder. Vilken typ av aktör är mest sannolikt ansvarig för denna typ av attack?",
                             SubCategoryId = 7
                         },
                         new
                         {
                             Id = 8,
-                            Explanation = "Stärkt autentisering är kritisk för att säkra fjärråtkomst och skydda mot obehörig åtkomst i en distribuerad arbetsmiljö.",
                             Question = "Med övergången till distansarbete upptäcker vårt företag en ökning av säkerhetsincidenter, inklusive obehörig åtkomst till företagsdata. Vilken åtgärd bör företaget vidta för att adressera denna nya riskmiljö?",
                             SubCategoryId = 8
                         },
                         new
                         {
                             Id = 9,
-                            Explanation = "Ransomware-angrepp involverar kryptering av offerdata och kräver lösen för dekryptering, vilket är särskilt skadligt för kritiska sektorer som hälsovård.",
                             Question = "Hälsovårdsmyndigheten utsätts för ett cyberangrepp som krypterar patientdata och kräver lösen för att återställa åtkomsten. Vilken typ av angrepp har de sannolikt blivit utsatta för?",
                             SubCategoryId = 9
                         },
                         new
                         {
                             Id = 10,
-                            Explanation = "Maersk utsattes för NotPetya ransomware-angreppet, som ledde till omfattande störningar och förluster genom att kryptera företagets globala system. \r\n\r\nMaersk rapporterade att företaget led ekonomiska förluster på grund av NotPetya ransomware-angreppet som uppskattades till cirka 300 miljoner USD. Denna siffra reflekterar de omfattande kostnaderna för störningar i deras globala verksamheter, återställande av system och data, samt förlust av affärer under tiden systemen var nere. NotPetya-angreppet anses vara ett av de mest kostsamma cyberangreppen mot ett enskilt företag och tjänar som en kraftfull påminnelse om de potentiella konsekvenserna av cyberhot. ",
                             Question = "Det globala fraktbolaget Maersk blev offer för ett omfattande cyberangrepp som avsevärt störde deras verksamhet världen över. Vilken typ av malware var primärt ansvarig för denna incident?",
                             SubCategoryId = 10
                         },
                         new
                         {
                             Id = 11,
-                            Explanation = "Cyberspionage avser aktiviteter där aktörer, ofta statliga, engagerar sig i övervakning och datainsamling genom cybermedel för att erhålla hemlig information utan målets medgivande, typiskt för politiska, militära eller ekonomiska fördelar.",
                             Question = "Regeringen upptäcker att känslig politisk kommunikation har läckt och misstänker elektronisk övervakning. Vilket fenomen beskriver bäst denna situation?",
                             SubCategoryId = 36
                         },
                         new
                         {
                             Id = 12,
-                            Explanation = "Riktade cyberattacker som utnyttjar noll-dagars Zero-day sårbarheter är en avancerad metod för cyberspionage där angriparen specifikt riktar in sig på ett mål för att komma åt känslig information eller data genom att utnyttja tidigare okända sårbarheter i programvara.",
                             Question = "Regeringen blir varse om en sofistikerad skadeprogramskampanj som utnyttjar Zero-day sårbarheter för att infiltrera deras nätverk och stjäla oerhört viktig data. Vilken metod för cyberspionage används sannolikt här?",
                             SubCategoryId = 37
                         },
                         new
                         {
                             Id = 13,
-                            Explanation = "Säkerhetsskyddslagen är en svensk lagstiftning som syftar till att skydda nationellt känslig information från spioneri, sabotage, terroristbrott och andra säkerhetshot. Lagen ställer krav på säkerhetsskyddsåtgärder för verksamheter av betydelse för Sveriges säkerhet.",
                             Question = "Regeringen i Sverige ökar sitt interna säkerhetsprotokoll för att skydda sig mot utländska underrättelsetjänsters infiltration. Vilken lagstiftning ger ramverket för detta skydd?",
                             SubCategoryId = 38
                         },
                         new
                         {
                             Id = 14,
-                            Explanation = "Statssponsrade hackers är aktörer som arbetar på uppdrag av eller med stöd från en regering för att genomföra cyberspionage, ofta riktat mot utländska intressen, organisationer eller regeringar för att få strategiska fördelar.",
                             Question = "Lunds universitet upptäcker att forskningsdata om ny teknologi har stulits. Undersökningar tyder på en välorganiserad grupp med kopplingar till en utländsk stat. Vilken typ av aktör ligger sannolikt bakom detta?",
                             SubCategoryId = 39
-                        },
-                        new
-                        {
-                            Id = 15,
-                            Explanation = "Klicka aldrig på länkar som uppges komma från banker via e-post.",
-                            Question = "Du får ett e-postmeddelande som ser ut att komma från din bank. Det ber dig klicka på en länk och logga in på ditt konto för att “uppdatera din information”. Vad bör du göra?",
-                            SubCategoryId = 1
-                        },
-                        new
-                        {
-                            Id = 16,
-                            Explanation = "Skimming är en metod där bedragare placerar en enhet på en betalterminal för att stjäla kortinformation. Genom att inspektera terminalen kan du upptäcka ovanliga tillbehör eller lösa delar som kan indikera att skimming-enheten är närvarande.",
-                            Question = "Du använder din kreditkort på en betalterminal i en butik. Någon har placerat en skimming-enhet på terminalen för att stjäla kortinformation. Vad bör du vara vaksam på?",
-                            SubCategoryId = 1
-                        },
-                        new
-                        {
-                            Id = 17,
-                            Explanation = "Om du ser en större transaktion på ditt kreditkort som du inte har gjort, bör du agera snabbt. Att kontakta din kreditkortsutgivare direkt hjälper till att förhindra ytterligare skada och identifiera eventuellt bedrägeri.",
-                            Question = "Du får ett meddelande om en större transaktion på ditt kreditkort som du inte har gjort. Vad bör du göra?",
-                            SubCategoryId = 1
-                        },
-                        new
-                        {
-                            Id = 18,
-                            Explanation = "Att öppna bifogade fakturor från okända avsändare kan vara farligt. Radera e-postmeddelandet för att undvika att utsätta dig för skadlig kod eller bedrägeriförsök.",
-                            Question = "Du får en e-post med en bifogad faktura från ett företag du inte känner till. Vad bör du göra?",
-                            SubCategoryId = 1
-                        },
-                        new
-                        {
-                            Id = 19,
-                            Explanation = "Att ta någon annans kreditkort och använda det är olagligt och oetiskt. Lämna kortet där du hittade det eller ge det till personalen för att returnera det till ägaren.",
-                            Question = "Du ser någon slarvigt lämna sitt kreditkort på ett cafébord. Vad bör du göra?",
-                            SubCategoryId = 1
-                        },
-                        new
-                        {
-                            Id = 20,
-                            Explanation = "Om du byter kreditkort är det viktigt att uppdatera betalningsuppgifterna för alla automatiska betalningar. Annars kan du missa betalningar och få påminnelser eller avgifter.",
-                            Question = "Du har flera automatiska betalningar kopplade till ditt kreditkort. Vad bör du göra om du byter kreditkort?",
-                            SubCategoryId = 1
-                        },
-                        new
-                        {
-                            Id = 21,
-                            Explanation = "Ett romansbedrägeri är när en bedragare inleder en romantisk relation med någon i syfte att lura hen på pengar. Det sker oftast på internet, till exempel på sociala medier samt dejtingsidor och dejtingappar.",
-                            Question = "Vad är ett romansbedrägeri?",
-                            SubCategoryId = 2
-                        },
-                        new
-                        {
-                            Id = 22,
-                            Explanation = "Uppmärksamma typiska drag för en romansbedragare, såsom statusyrken, konstlade formuleringar eller slarvigt språkbruk.",
-                            Question = "Vilka typiska drag bör du vara uppmärksam på hos en romansbedragare?",
-                            SubCategoryId = 2
-                        },
-                        new
-                        {
-                            Id = 23,
-                            Explanation = "Romansbedrägeri är brottsligt när någon inleder en kärleksrelation med dig för att lura dig på pengar. Åtal kan väckas om det finns bevis för detta bedrägeri.",
-                            Question = "Vad krävs för att någon ska åtalas för romansbedrägeri?",
-                            SubCategoryId = 2
-                        },
-                        new
-                        {
-                            Id = 24,
-                            Explanation = "Om du blivit lurad av kärleken du träffat på nätet bör du lista ut vad du ska göra när du blivit utsatt och vart du ska vända dig för hjälp.",
-                            Question = "Vad bör du göra om du misstänker att du blivit utsatt för romansbedrägeri på nätet?",
-                            SubCategoryId = 2
-                        },
-                        new
-                        {
-                            Id = 25,
-                            Explanation = "Det finns flera saker du kan göra för att skydda dig mot romansbedrägeri. Följ tips och råd om hur du kan undvika att bli lurad.",
-                            Question = "Hur skyddar du dig mot romansbedrägeri?",
-                            SubCategoryId = 2
-                        },
-                        new
-                        {
-                            Id = 26,
-                            Explanation = "Ett investeringsbedrägeri innebär att någon lurar andra att köpa värdepapper som egentligen inte har något värde eller som är väldigt svåra att värdera. Det kan handla om investeringar i fonder, aktier, kryptovalutor samt metaller och ädelstenar.",
-                            Question = "Vad är ett investeringsbedrägeri?",
-                            SubCategoryId = 3
-                        },
-                        new
-                        {
-                            Id = 27,
-                            Explanation = "Var uppmärksam på varningssignaler som hög avkastning utan risk, bristande dokumentation, och orealistiska löften. Bedragare lockar ofta med snabba vinster och undviker att ge tydlig information om investeringen.",
-                            Question = "Vilka varningssignaler bör du vara uppmärksam på vid investeringserbjudanden?",
-                            SubCategoryId = 3
-                        },
-                        new
-                        {
-                            Id = 28,
-                            Explanation = "För att skydda dig mot investeringsbedrägeri bör du vara skeptisk mot orealistiska löften, göra grundlig research om investeringen, och undvika att agera impulsivt. Kontrollera även att företaget har tillstånd från Finansinspektionen.",
-                            Question = "Hur kan du skydda dig mot investeringsbedrägeri?",
-                            SubCategoryId = 3
-                        },
-                        new
-                        {
-                            Id = 29,
-                            Explanation = "Om du misstänker att du blivit utsatt för investeringsbedrägeri bör du omedelbart kontakta Polisen och Finansinspektionen. Samla all relevant information och undvik att göra fler transaktioner med bedragaren.",
-                            Question = "Vad bör du göra om du misstänker att du blivit utsatt för investeringsbedrägeri?",
-                            SubCategoryId = 3
                         });
                 });
 

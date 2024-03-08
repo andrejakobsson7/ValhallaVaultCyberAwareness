@@ -56,6 +56,10 @@ namespace ValhallaVaultCyberAwareness.Repositories
                 categoryToUpdate.Name = category.Name;
                 categoryToUpdate.Description = category.Description;
 
+                _context.Attach(categoryToUpdate);
+                _context.Entry(categoryToUpdate).Property(p => p.Name).IsModified = true;
+                _context.Entry(categoryToUpdate).Property(p => p.Description).IsModified = true;
+
                 await _context.SaveChangesAsync();
 
                 return categoryToUpdate;
@@ -64,8 +68,6 @@ namespace ValhallaVaultCyberAwareness.Repositories
             throw new Exception("Category not found");
 
         }
-
-
 
     }
 }

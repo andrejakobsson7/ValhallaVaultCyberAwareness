@@ -15,6 +15,9 @@ namespace ValhallaVaultCyberAwareness.Domain.Models
         [Column("subcategory_id")]
         public int SubCategoryId { get; set; }
 
+        [Column("explanation")]
+        public string Explanation { get; set; } = null!;
+
         //Navigation properties
 
         public SubCategoryModel? SubCategory { get; set; }
