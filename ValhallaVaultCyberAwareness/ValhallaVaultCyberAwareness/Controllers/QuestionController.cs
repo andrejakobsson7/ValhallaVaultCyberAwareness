@@ -1,4 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using System.Text.Json;
+using System.Text.Json.Serialization;
 using ValhallaVaultCyberAwareness.Domain.Models;
 using ValhallaVaultCyberAwareness.Repositories;
 
@@ -10,6 +12,10 @@ namespace ValhallaVaultCyberAwareness.Controllers
     public class QuestionController : ControllerBase
     {
         public IQuestionRepository _questionRepo { get; set; }
+        private JsonSerializerOptions _jsonSerializerOptions = new()
+        {
+            ReferenceHandler = ReferenceHandler.Preserve
+        };
 
         public QuestionController(IQuestionRepository questionRepo)
         {
@@ -17,13 +23,14 @@ namespace ValhallaVaultCyberAwareness.Controllers
         }
 
         [HttpGet("{subCategoryId}")]
-        public async Task<ActionResult<List<QuestionModel>>> GetAllQuestionsPerSubCategoryAsync(int subCategoryId)
+        public async Task<ActionResult<List<QuestionModel>>> GetQuestionsBySubCategoryIdAsync(int subCategoryId)
         {
-            var questions = await _questionRepo.GetAllQuestionsSubCategoryAsync(subCategoryId);
+            var questions = await _questionRepo.GetQuestionsBySubCategoryIdAsync(subCategoryId);
 
             if (questions != null)
             {
-                return Ok(questions);
+                var questionsJson = JsonSerializer.Serialize(questions, _jsonSerializerOptions);
+                return Ok(questionsJson);
             }
             return BadRequest();
         }

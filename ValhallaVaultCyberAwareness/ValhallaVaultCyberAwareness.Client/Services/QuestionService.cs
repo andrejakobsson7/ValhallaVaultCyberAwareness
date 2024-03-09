@@ -12,7 +12,7 @@ namespace ValhallaVaultCyberAwareness.Client.Services
             Client = client;
         }
 
-        public async Task<List<QuestionModel>> GetAllQuestionsBySubCategoryId(int subCategoryId)
+        public async Task<List<QuestionModel>> GetQuestionsBySubCategoryId(int subCategoryId)
         {
             var apiResponse = await Client.GetAsync($"/api/Question/{subCategoryId}/");
             if (apiResponse.IsSuccessStatusCode)
