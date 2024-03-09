@@ -6,7 +6,7 @@ namespace ValhallaVaultCyberAwareness.Repositories
     public interface ICategoryRepository
     {
         public ApplicationDbContext _context { get; set; }
-
+        public Task<List<CategoryModel>> GetAllCategoriesAsync();
         public Task<List<CategoryModel>> GetAllCategoriesWithInclude();
 
         public Task<CategoryModel> GetCategoryById(int categoryId);

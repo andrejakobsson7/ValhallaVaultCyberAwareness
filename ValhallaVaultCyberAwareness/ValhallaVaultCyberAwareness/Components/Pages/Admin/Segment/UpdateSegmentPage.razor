@@ -1,0 +1,30 @@
+﻿@page "/Admin/Segment/UpdateSegmentPage/{id:int}"
+@attribute [Authorize(Roles = "Admin")]
+@rendermode InteractiveServer
+@inject AdminManager manager;
+@inject NavigationManager navManager
+
+
+<h3>UpdateSegmentPage</h3>
+
+<EditSegmentForm></EditSegmentForm>
+
+@code {
+    [Parameter]
+    public SegmentModel CurrentSegment { get; set; } = new();
+
+    [Parameter]
+    public int id { get; set; }
+
+    protected override async Task OnInitializedAsync()
+    {
+        CurrentSegment = await manager._segmentRepository.GetSegmentByIdAsync(id);
+    }
+
+    private async Task HandleSubmit()
+    {
+        // await manager._categoryRepository.UpdateCategoryAsync(CurrentCategory);
+        // navManager.NavigateTo("/Admin/Category/CategoryPage");
+    }
+
+}

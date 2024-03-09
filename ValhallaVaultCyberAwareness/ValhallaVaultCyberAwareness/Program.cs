@@ -7,6 +7,7 @@ using ValhallaVaultCyberAwareness.Components.Account;
 using ValhallaVaultCyberAwareness.Data;
 using ValhallaVaultCyberAwareness.Managers;
 using ValhallaVaultCyberAwareness.Repositories;
+using ValhallaVaultCyberAwareness.Repositories.Interfaces;
 
 
 var builder = WebApplication.CreateBuilder(args);
@@ -37,6 +38,7 @@ builder.Services.AddScoped<IAnswerService, AnswerService>();
 
 builder.Services.AddScoped<AdminManager>();
 builder.Services.AddScoped<IUserAnswersService, UserAnswersService>();
+builder.Services.AddScoped<AdminManager>();
 
 builder.Services.AddControllers();
 

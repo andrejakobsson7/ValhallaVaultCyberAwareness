@@ -1,0 +1,33 @@
+﻿@page "/Admin/Segment/SegmentPage"
+@attribute [Authorize(Roles = "Admin")]
+@attribute [StreamRendering(true)]
+
+@inject AdminManager manager
+
+<h3>Segments: </h3>
+
+@if(Segments.Any())
+{
+    <div class="flex-column">
+
+        @foreach (var segment in Segments)
+        {
+            <Segment CurrentSegment="@segment"></Segment>
+        }
+        <EditSegmentForm></EditSegmentForm>
+    </div>
+}
+else
+{
+    <h3>Loading...</h3>
+
+}
+
+@code {
+    List<SegmentModel> Segments = new();
+
+    protected override async Task OnInitializedAsync()
+    {
+        Segments = await manager._segmentRepository.GetAllSegmentsWithIncludeAsync();
+    }
+}

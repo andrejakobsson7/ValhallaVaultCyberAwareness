@@ -1,20 +1,30 @@
 ﻿@page "/Admin/Category/CategoryPage"
 @attribute [Authorize(Roles = "Admin")]
 @inject AdminManager manager
+@attribute [StreamRendering(true)]
 
 
 <h3>Categories: </h3>
 
-<div class="flex-column">
+@if(categories == null)
+{
+    <h3>Loading...</h3>
+}
+else
+{
 
-    @foreach(var category in categories)
-    {
-        <Category CurrentCategory="@category"></Category>
-    }
+    <div class="flex-column">
 
-    <AddCategoryForm></AddCategoryForm>
+        @foreach (var category in categories)
+        {
+            <Category CurrentCategory="@category"></Category>
+        }
 
-</div>
+        <AddCategoryForm></AddCategoryForm>
+
+    </div>
+
+}
 
 
 

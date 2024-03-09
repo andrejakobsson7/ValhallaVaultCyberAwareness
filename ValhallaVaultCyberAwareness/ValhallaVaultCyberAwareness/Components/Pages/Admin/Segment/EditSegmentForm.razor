@@ -1,0 +1,58 @@
+﻿@inject AdminManager manager
+
+<h3>Create a segment</h3>
+
+<EditForm Model="segment" OnSubmit="HandleSubmit" FormName="name" class="card w-50">
+
+    <label>
+        Name
+    </label>
+
+    <InputText @bind-Value="segment.Name"></InputText>
+
+    <label>
+        Description
+    </label>
+
+    <InputText @bind-Value="segment.Description"></InputText>
+
+    <label>
+        Category:
+    </label>
+
+    <InputSelect @bind-Value="segment.CategoryId">
+        @foreach (var category in Categories)
+        {
+            <option value="@category.Id">@category.Name</option>
+        }
+    </InputSelect>
+
+
+    <input type="submit" value="Create a segment" />
+
+</EditForm>
+
+
+@code {
+    [Parameter]
+    public SegmentModel segment { get; set; } = new();
+
+    [Parameter]
+    public List<CategoryModel> Categories { get; set; } = new();
+
+    private async Task HandleSubmit()
+    {
+        // await manager._categoryRepository.AddCategoryAsync(Category);
+
+        await manager._segmentRepository.AddSegmentAsync(segment);
+    }
+
+    private void HandleCategorySelection(ChangeEventArgs args)
+    {
+        // Parse the selected value from the event args
+        int selectedId = Convert.ToInt32(args.Value);
+
+        // Set the SelectedCategoryId
+        // SelectedCategoryId = selectedId;
+    }
+}

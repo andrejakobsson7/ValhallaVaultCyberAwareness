@@ -2,7 +2,7 @@
 using System.Text.Json;
 using System.Text.Json.Serialization;
 using ValhallaVaultCyberAwareness.Domain.Models;
-using ValhallaVaultCyberAwareness.Repositories;
+using ValhallaVaultCyberAwareness.Repositories.Interfaces;
 
 namespace ValhallaVaultCyberAwareness.Controllers
 {
@@ -48,18 +48,18 @@ namespace ValhallaVaultCyberAwareness.Controllers
             return BadRequest();
         }
 
-        [HttpPost]
-        public async Task<ActionResult<SegmentModel>> AddSegment(SegmentModel newSegment)
-        {
-            var segmentToAdd = await _segmentRepo.AddSegmentAsync(newSegment);
+        //[HttpPost]
+        //public async Task<ActionResult<SegmentModel>> AddSegment(SegmentModel newSegment)
+        //{
+        //    var segmentToAdd = await _segmentRepo.AddSegmentAsync(newSegment);
 
-            if (segmentToAdd != false)
-            {
-                return Ok(segmentToAdd);
-            }
+        //    if (segmentToAdd != false)
+        //    {
+        //        return Ok(segmentToAdd);
+        //    }
 
-            return BadRequest();
-        }
+        //    return BadRequest();
+        //}
 
         [HttpPut]
         [Route("{id}")]
