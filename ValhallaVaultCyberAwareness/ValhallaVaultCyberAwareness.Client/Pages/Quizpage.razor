@@ -4,8 +4,6 @@
 
 @inject ISegmentService SegmentService
 
-<h3>Quiz @SegmentId</h3>
-
 @if (Segment == null)
 {
     <p>Loading...</p>
@@ -15,7 +13,7 @@ else
     <div id="frontPage" class="row">
         @foreach (var SegmentItem in Segment)
         {
-            <div class="col-3 ">
+            <div class="col-3 mt-3">
                 <div class="card border-dark text-center w-100">
                     <div class="card-body">
                         <h5 class="card-title">@SegmentItem.SubCategories.FirstOrDefault()?.Name</h5>
