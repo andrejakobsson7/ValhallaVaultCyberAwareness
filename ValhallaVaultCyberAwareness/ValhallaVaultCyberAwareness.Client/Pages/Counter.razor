@@ -9,6 +9,7 @@
 @inject ISegmentService segmentService;
 @inject IQuestionService questionService
 @inject ISubCategoryService subCategoryService;
+@inject IUserAnswersService userAnswersService;
 @* @inject UserManager<ApplicationUser> UserManager
  *@
 <PageTitle>Counter</PageTitle>
@@ -21,7 +22,7 @@
 
 @* DEMO TO TEST CONCEPT WITH VIEWMODELS *@
 
-@foreach(SegmentUserScoreViewModel segmentUserScore in SegmentUserScores)
+@* @foreach(SegmentUserScoreViewModel segmentUserScore in SegmentUserScores)
 {
     //Access the segment name
     <p>Segment name: @segmentUserScore.SegmentName</p>
@@ -46,15 +47,49 @@
         //Access if the user has completed this subcategory (true/false)
         <p>User has completed subcategory: @subcategory.UserHasCompletedSubCategory</p>
     }
-}
+} *@
+
+@* DEMO TO TEST CONCEPT WITH VIEWMODELS FOR QUESTIONS
+ *@<EditForm Model="@allQuestionsAndAnswers" OnValidSubmit="HandleSubmit">
+    @foreach(var questionAnswer in allQuestionsAndAnswers)
+    {
+        <p>Question: @questionAnswer.Question</p>
+        <InputRadioGroup Name="@questionAnswer.QuestionId.ToString()" @bind-Value="questionAnswer.UserAnswerId">
+            @foreach(var answer in questionAnswer.Answers)
+            {
+                <InputRadio Value="@answer.Id" ></InputRadio>
+                @answer.Answer <br />
+            }
+        </InputRadioGroup>
+    }
+    <button type="submit">Submit answers</button>
+ </EditForm>
+
 
 @code {
     private int currentCount = 0;
     private List<SegmentUserScoreViewModel> SegmentUserScores = new();
+    private List<QuestionAnswerViewModel> allQuestionsAndAnswers = new();
 
     private void IncrementCount()
     {
         currentCount++;
+    }
+
+    private async void HandleSubmit()
+    {
+        List<UserAnswers> userAnswers = new();
+        //Loop through each qa-viewmodel and extract answer id and userid
+        foreach(var questionAnswer in allQuestionsAndAnswers)
+        {
+            userAnswers.Add(new UserAnswers()
+                {
+                    AnswerId = questionAnswer.UserAnswerId,
+                    UserId = "3de3f363-9b6f-47e5-b6df-4f43baa4a70d",
+                });
+        }
+        //Add to db
+        bool isSuccessfullyRegistered = await userAnswersService.AddUserAnswersAsync(userAnswers);
     }
 
     protected override async Task OnInitializedAsync()
@@ -92,7 +127,7 @@
         //TEST CALL QUESTIONS
         // List<QuestionModel> allQuestions = await questionService.GetAllQuestionsBySubCategoryId(1);
 
-        var allQuestionViewModels = await questionService.ImprovedGetQuestionsBySubCategoryId(1);
+        allQuestionsAndAnswers = await questionService.ImprovedGetQuestionsBySubCategoryId(1);
 
         //TEST ADD NEW QUESTION
         // QuestionModel newQuestion = new QuestionModel
@@ -169,7 +204,7 @@
         //    });
 
         //TEST IMPROVED SERVICE CALL FOR SEGMENTS
-        SegmentUserScores = await segmentService.ImprovedGetSegmentsByCategoryIdAsync(1, "3de3f363-9b6f-47e5-b6df-4f43baa4a70d");
+        // SegmentUserScores = await segmentService.ImprovedGetSegmentsByCategoryIdAsync(1, "3de3f363-9b6f-47e5-b6df-4f43baa4a70d");
 
     }
 }
