@@ -7,9 +7,6 @@
 
 @rendermode InteractiveAuto
 
-
-<h3>Quiz</h3>
-
 @if (questions == null)
 {
     <p>Loading...</p>
@@ -22,8 +19,8 @@ else
             <div class="col-10">
                 <div class="card border-dark text-center">
                     <div class="card-body">
-                        <h4>QuizTitle</h4>
-                        <h5>@($"Question: {currentQuestionIndex + 1} / {questions.Count}")</h5>
+                        <h4>@questions.FirstOrDefault()?.SubCategory</h4>
+                        <h5>Question: @($"{ currentQuestionIndex + 1}") / @questions.Count</h5>
                     </div>
                 </div>
             </div>
@@ -32,7 +29,7 @@ else
             <div class="col-7">
                 <div class="card border-dark text-center">
                     <div class="card-body">
-                        <h5 class="card-title">QuestionHeader</h5>
+                        <h5 class="card-title">Question: @($"{currentQuestionIndex + 1}")</h5>
                     </div>
                     <div class="card-body">
                         <p>@questions[currentQuestionIndex].Question</p>
@@ -51,11 +48,11 @@ else
                         }
                         else
                         {
-                            <div class="row justify-content-center">
+                            <div>
                                 @foreach (var answerItem in questions.FirstOrDefault()?.Answers)
                                 {
-                                    <div class="col-3">
-                                        <button class="btn border-dark mx-auto">@answerItem.Answer</button>
+                                    <div class="mt-1">
+                                        <button class="btn border-dark">@answerItem.Answer</button>
                                     </div>
                                 }
                             </div>
@@ -67,9 +64,8 @@ else
                         </div>
                         <div class="mt-2">
                             <p>CORRECT! / INCORRECT!</p>
-                            <p class="mt-1">Explanation: nnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnn
-                                nnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnn
-                                nnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnn
+                            <p class="mt-1">
+                                Explanation: @questions.FirstOrDefault()?.Explanation
                             </p>
                             <button @onclick="NextQuestion">Next Question</button>
                         </div>
