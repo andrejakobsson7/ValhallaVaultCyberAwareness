@@ -1,5 +1,6 @@
 ﻿using Newtonsoft.Json;
 using System.Net.Http.Json;
+using ValhallaVaultCyberAwareness.Client.ViewModels;
 using ValhallaVaultCyberAwareness.Domain.Models;
 
 namespace ValhallaVaultCyberAwareness.Client.Services
@@ -30,6 +31,29 @@ namespace ValhallaVaultCyberAwareness.Client.Services
             }
             throw new HttpRequestException();
         }
+
+        public async Task<List<QuestionAnswerViewModel>> ImprovedGetQuestionsBySubCategoryId(int subCategoryId)
+        {
+            var apiResponse = await Client.GetAsync($"/api/Question/{subCategoryId}/");
+            if (apiResponse.IsSuccessStatusCode)
+            {
+                string jsonQuestions = await apiResponse.Content.ReadAsStringAsync();
+                List<QuestionModel>? allQuestions = JsonConvert.DeserializeObject<List<QuestionModel>>(jsonQuestions);
+                if (allQuestions == null)
+                {
+                    throw new JsonException();
+                }
+                else
+                {
+                    //The following projects the database model to a viewmodel that holds all relevant information first hand.
+                    List<QuestionAnswerViewModel> allQuestionAnswers = allQuestions.Select(q => new QuestionAnswerViewModel(q)).ToList();
+                    return allQuestionAnswers;
+                }
+            }
+            throw new HttpRequestException();
+        }
+
+
         public async Task<QuestionModel> GetQuestionByIdAsync(int questionId)
         {
             var apiResponse = await Client.GetAsync($"/api/Question/{questionId}/");
