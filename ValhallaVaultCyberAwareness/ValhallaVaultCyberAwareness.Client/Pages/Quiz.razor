@@ -3,7 +3,9 @@
 @using ValhallaVaultCyberAwareness.Client.Services
 @using ValhallaVaultCyberAwareness.Domain.Models
 
-@inject ISegmentService SegmentService
+@inject IQuestionService questionService
+
+@rendermode InteractiveAuto
 
 
 <h3>Quiz</h3>
@@ -14,13 +16,14 @@
 }
 else
 {
+    
     <div class="container">
         <div class="row justify-content-center">
             <div class="col-10">
                 <div class="card border-dark text-center">
                     <div class="card-body">
                         <h4>QuizTitle</h4>
-                        <h5>Question:  0 / 0</h5>
+                        <h5>@($"Question: {currentQuestionIndex + 1} / {questions.Count}")</h5>
                     </div>
                 </div>
             </div>
@@ -32,18 +35,10 @@ else
                         <h5 class="card-title">QuestionHeader</h5>
                     </div>
                     <div class="card-body">
-                        <p>
-                            Lorem ipsum dolor sit amet, consectetur adipiscing elit,
-                            sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
-                            Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris
-                            nisi ut aliquip ex ea commodo consequat.
-                            Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore
-                            eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident,
-                            sunt in culpa qui officia deserunt mollit anim id est laborum.
-                        </p>
+                        <p>@questions[currentQuestionIndex].Question</p>
                     </div>
                     <div class="card-body">
-                        @if (questions.FirstOrDefault()?.Answers.Count(a => !string.IsNullOrEmpty(a.AnswerText)) == 1)
+                        @if (questions.FirstOrDefault()?.Answers.Count(a => !string.IsNullOrEmpty(a.Answer)) == 1)
                         {
                             <div class="row justify-content-center">
                                 <div class="col-3">
@@ -60,18 +55,31 @@ else
                                 @foreach (var answerItem in questions.FirstOrDefault()?.Answers)
                                 {
                                     <div class="col-3">
-                                        <button class="btn border-dark mx-auto">@answerItem.AnswerText</button>
+                                        <button class="btn border-dark mx-auto">@answerItem.Answer</button>
                                     </div>
                                 }
                             </div>
                         }
                     </div>
-                    <div class="card-bottom">
-
+                    <div class="card-body mt-1">
+                        <div>
+                            <button @onclick="SubmitAnswer">Submit Answer</button>
+                        </div>
+                        <div class="mt-2">
+                            <p>CORRECT! / INCORRECT!</p>
+                            <p class="mt-1">Explanation: nnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnn
+                                nnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnn
+                                nnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnn
+                            </p>
+                            <button @onclick="NextQuestion">Next Question</button>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
+    </div>
+    <div class="mt-5">
+
     </div>
 }
 
@@ -82,12 +90,15 @@ else
 
     private List<QuestionModel>? questions;
 
+    private int currentQuestionIndex = 0;
+
 
 
     protected override async Task OnInitializedAsync()
     {
-        questions = GetDummyData();
+        questions = await questionService.GetQuestionsBySubCategoryId(1);
     }
+    /*/
     private List<QuestionModel> GetDummyData()
     {
         var dummyData = new List<QuestionModel>();
@@ -105,18 +116,40 @@ else
 
         return dummyData;
     }
-    private List<AnswerModel> GetDummyAnswers()
+    */
+    private async Task SubmitAnswer()
     {
+        
+    }
+    private async Task NextQuestion()
+    {
+        currentQuestionIndex++;
+
+        // Check if there are more questions
+        if (currentQuestionIndex < questions?.Count)
+        {
+            StateHasChanged();
+        }
+        else
+        {
+            
+        }
+    }
+    /*
+      
+     
+    private List<AnswerModel> GetDummyAnswers()
+        {
         var dummyAnswers = new List<AnswerModel>();
 
         // Generating between 1 to 3 dummy answers for each question
         var numAnswers = new Random().Next(0, 2) * 2 + 1;
         for (int i = 1; i <= numAnswers; i++)
-        {
+            {
             var answer = new AnswerModel
-                {
+                    {
                     AnswerText = $"Answer {i}"
-                };
+            };
 
             dummyAnswers.Add(answer);
         }
@@ -124,12 +157,13 @@ else
         return dummyAnswers;
     }
     public class QuestionModel
-    {
-        public string QuestionText { get; set; }
+        {
+        public string? QuestionText { get; set; }
         public List<AnswerModel> Answers { get; set; } = new List<AnswerModel>();
     }
     public class AnswerModel
-    {
-        public string AnswerText { get; set; }
+        {
+        public string? AnswerText { get; set; }
     }
+    */
 }
