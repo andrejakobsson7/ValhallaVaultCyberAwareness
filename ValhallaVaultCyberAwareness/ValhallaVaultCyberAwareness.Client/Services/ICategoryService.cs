@@ -12,5 +12,6 @@ namespace ValhallaVaultCyberAwareness.Client.Services
 
         public Task<bool> RemoveCategoryAsync(int categoryId);
         public Task<bool> UpdateCategoryAsync(CategoryModel category);
+
     }
 }

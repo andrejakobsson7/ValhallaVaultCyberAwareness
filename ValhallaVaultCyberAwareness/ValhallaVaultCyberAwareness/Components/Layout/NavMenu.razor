@@ -1,128 +1,68 @@
-﻿@implements IDisposable
-
-@inject NavigationManager NavigationManager
-
-<div class="top-row ps-3 navbar navbar-dark">
+﻿<nav class="navbar navbar-expand navbar-dark bg-dark"> 
     <div class="container-fluid">
-        <a class="navbar-brand" href="">ValhallaVaultCyberAwareness</a>
+        <a class="navbar-brand" href="#">VVCA</a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <div class="navbar-nav me-auto mb-2 mb-lg-0">
+                <a class="nav-link active" aria-current="page" href="/hem">Home</a>
+                <a class="nav-link" href="/WelcomePage">Welcome</a>
+                <a class="nav-link" href="/Account/Login">Login</a>
+                <a class="nav-link" href="/Account/Register">Register</a>
+                <a class="nav-link" href="/UserPage">User</a>
+                <a class="nav-link" href="/Admin/AdminPage">Admin</a>
+                <div class="dropdown">
+                    <a class="nav-link dropdown-toggle" href="#">Categories</a>
+                    <div class="dropdown-content">
+                        <a href="/SubCategoryPage">SubCategory</a>
+                        <a href="/SegmentPage">Segments</a>
+                        <a href="/QuestionsPage">Questions</a>
+                        <a href="/score">score</a>
+                    </div>
+                </div>
+            </div>
+            <form class="d-flex" role="search">
+                <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
+                <button class="btn btn-outline-success" type="submit">Search</button>
+            </form>
+        </div>
     </div>
-</div>
+</nav>
 
-<input type="checkbox" title="Navigation menu" class="navbar-toggler" />
-
-<div class="nav-scrollable" onclick="document.querySelector('.navbar-toggler').click()">
-    <nav class="flex-column">
-        <div class="nav-item px-3">
-            <NavLink class="nav-link" href="WelcomePage">
-                <span class="bi bi-house-door-fill-nav-menu" aria-hidden="true"></span> Welcome
-            </NavLink>
-        </div>
-
-                <div class="nav-item px-3">
-            <NavLink class="nav-link" href="" Match="NavLinkMatch.All">
-                <span class="bi bi-house-door-fill-nav-menu" aria-hidden="true"></span> Home
-            </NavLink>
-        </div>
-
-        <div class="nav-item px-3">
-            <NavLink class="nav-link" href="CategoryPage">
-                <span class="bi bi-list-nested-nav-menu" aria-hidden="true"></span> Category
-            </NavLink>
-        </div>
-
-        <div class="nav-item px-3">
-            <NavLink class="nav-link" href="QuestionsPage">
-                <span class="bi bi-list-nested-nav-menu" aria-hidden="true"></span> Questions
-            </NavLink>
-        </div>
-
-        <div class="nav-item px-3">
-            <NavLink class="nav-link" href="SegmentPage">
-                <span class="bi bi-list-nested-nav-menu" aria-hidden="true"></span> Segments
-            </NavLink>
-        </div>
-
-        <div class="nav-item px-3">
-            <NavLink class="nav-link" href="SubCategoryPage">
-                <span class="bi bi-list-nested-nav-menu" aria-hidden="true"></span> SubCategory
-            </NavLink>
-        </div>
-
-        <div class="nav-item px-3">
-            <NavLink class="nav-link" href="UserPage">
-                <span class="bi bi-list-nested-nav-menu" aria-hidden="true"></span> User
-            </NavLink>
-        </div>
-
-        <div class="nav-item px-3">
-            <NavLink class="nav-link" href="Admin/AdminPage">
-                <span class="bi bi-list-nested-nav-menu" aria-hidden="true"></span> Admin
-            </NavLink>
-        </div>
-
-        <div class="nav-item px-3">
-            <NavLink class="nav-link" href="score">
-                <span class="bi bi-list-nested-nav-menu" aria-hidden="true"></span> Score
-            </NavLink>
-        </div>
-
-        <div class="nav-item px-3">
-            <NavLink class="nav-link" href="auth">
-                <span class="bi bi-lock-nav-menu" aria-hidden="true"></span> Auth Required
-            </NavLink>
-        </div>
-
-        <AuthorizeView>
-            <Authorized>
-                <div class="nav-item px-3">
-                    <NavLink class="nav-link" href="Account/Manage">
-                        <span class="bi bi-person-fill-nav-menu" aria-hidden="true"></span> @context.User.Identity?.Name
-                    </NavLink>
-                </div>
-                <div class="nav-item px-3">
-                    <form action="Account/Logout" method="post">
-                        <AntiforgeryToken />
-                        <input type="hidden" name="ReturnUrl" value="@currentUrl" />
-                        <button type="submit" class="nav-link">
-                            <span class="bi bi-arrow-bar-left-nav-menu" aria-hidden="true"></span> Logout
-                        </button>
-                    </form>
-                </div>
-            </Authorized>
-            <NotAuthorized>
-                <div class="nav-item px-3">
-                    <NavLink class="nav-link" href="Account/Register">
-                        <span class="bi bi-person-nav-menu" aria-hidden="true"></span> Register
-                    </NavLink>
-                </div>
-                <div class="nav-item px-3">
-                    <NavLink class="nav-link" href="Account/Login">
-                        <span class="bi bi-person-badge-nav-menu" aria-hidden="true"></span> Login
-                    </NavLink>
-                </div>
-            </NotAuthorized>
-        </AuthorizeView>
-    </nav>
-</div>
-
-@code {
-    private string? currentUrl;
-
-    protected override void OnInitialized()
-    {
-        currentUrl = NavigationManager.ToBaseRelativePath(NavigationManager.Uri);
-        NavigationManager.LocationChanged += OnLocationChanged;
+<style>
+    /* For dropdown select */
+    .dropdown {
+        position: relative;
+        display: inline-block;
     }
 
-    private void OnLocationChanged(object? sender, LocationChangedEventArgs e)
-    {
-        currentUrl = NavigationManager.ToBaseRelativePath(e.Location);
-        StateHasChanged();
+    .dropdown-content {
+        display: none;
+        position: absolute;
+        background-color: #f9f9f9;
+        min-width: 160px;
+        box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+        z-index: 1;
     }
 
-    public void Dispose()
-    {
-        NavigationManager.LocationChanged -= OnLocationChanged;
-    }
-}
+        .dropdown-content a {
+            color: black;
+            padding: 12px 16px;
+            text-decoration: none;
+            display: block;
+        }
 
+    .dropdown:hover .dropdown-content {
+        display: block;
+    }
+
+    .dropdown-content a:hover {
+        background-color: #ddd;
+    }
+
+    .dropdown:hover .dropdown-toggle {
+        background-color: #3e8e41;
+    }
+
+</style>
