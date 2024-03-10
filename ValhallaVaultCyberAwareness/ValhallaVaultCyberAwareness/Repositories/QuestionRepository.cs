@@ -19,10 +19,12 @@ namespace ValhallaVaultCyberAwareness.Repositories
             var questions = await _context.Questions.ToListAsync();
             return questions;
         }
-        public async Task<List<QuestionModel>> GetAllQuestionsSubCategoryAsync(int subCategoryId)
+        public async Task<List<QuestionModel>> GetQuestionsBySubCategoryIdAsync(int subCategoryId)
         {
-            var questions = await _context.Questions.Where(q => q.SubCategoryId == subCategoryId).ToListAsync();
-            return questions;
+            return await _context.Questions
+                .Include(q => q.Answers)
+                .Where(q => q.SubCategoryId == subCategoryId)
+                .ToListAsync();
         }
 
         public async Task<QuestionModel> AddQuestionAsync(QuestionModel newQuestion)
@@ -54,6 +56,7 @@ namespace ValhallaVaultCyberAwareness.Repositories
             if (questionToUpdate != null)
             {
                 questionToUpdate.Question = question.Question;
+                questionToUpdate.Explanation = question.Explanation;
                 await _context.SaveChangesAsync();
                 return questionToUpdate;
             }

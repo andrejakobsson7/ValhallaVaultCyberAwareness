@@ -1,5 +1,6 @@
 ﻿@page "/Score"
 @using ValhallaVaultCyberAwareness.Client.Services
+@using ValhallaVaultCyberAwareness.Client.ViewModels
 @using ValhallaVaultCyberAwareness.Domain.Models
 
 @inject ISegmentService SegmentService
@@ -24,13 +25,13 @@ else
                 <div class="card border-dark text-center w-100 h-300">
                     <img class="card-img-top" src="https://variety.com/wp-content/uploads/2023/04/Twitter-Logo-Doge-Dogecoin.png" alt="Card image cap" />
                     <div class="card-img-overlay">
-                        <h2 class="card-title">@segmentItem.Name</h2>
+                        <h2 class="card-title">@segmentItem.SegmentName</h2>
                     </div>
                     <div class="card-footer">
-                        <p>@segmentItem.Description</p>
+                        <p>@segmentItem.SegmentDescription</p>
                         <ul>
                            
-                            @foreach (var SubCategoryItem in segmentItem.SubCategories)
+                            @foreach (var SubCategoryItem in segmentItem.SubCategoryScores)
                             {
                                 <!-- 1. List the name of every SubCategory contained in each Segment
 
@@ -39,14 +40,22 @@ else
 
                                      3. Count the amount of Questions contained within a SubCategory.
                                 -->
-                                <li>@SubCategoryItem.Name - 
+                                <li>@SubCategoryItem.SubCategoryName - 
+
+                                    
+                                    <!-- COUNT CORRECT ANSWERS FROM USER, NEEDS FIXING! -->
+                                    @SubCategoryItem.CorrectUserAnswers
+
+                                    <!--
                                     @(SubCategoryItem.Questions.FirstOrDefault()?
-                                    .Answers.Count(a => a.IsCorrect == true) ?? 0) / 
-                                    @SubCategoryItem.Questions.Count
+                                    .Answers.Count(a => a.IsCorrect == true) ?? 0)
+                                    -->
+                                    
+                                    / @SubCategoryItem.TotalQuestions
                                 </li>
                             }
                         </ul>
-                        <p class="card-description">@segmentItem.Description</p>
+                        <p class="card-description">@segmentItem.SegmentDescription</p>
                     </div>
                     <div class="card-footer bg-secondary">
                         <h5 >Completed SubCategories: 
@@ -56,7 +65,7 @@ else
                                  If the amount of TRUE booleans is >= 80% of the amount of booleans,
                                  it counts that as a completed SubCategory and is counted to the max amount of SubCategories.
                             -->
-                            @(segmentItem.SubCategories.Count(SubCategory => SubCategory
+                            @(segmentItem.SegmentSubCategories.Count(SubCategory => SubCategory
                             .Questions.FirstOrDefault()?
                             .Answers.Count(a => a.IsCorrect) > 0.8 * 
                             SubCategory.Questions.FirstOrDefault()?
@@ -74,9 +83,13 @@ else
                             -->
 
                             <!-- Count the amount of SubCategories contained in each Segment-->
-                            @segmentItem.SubCategories.Count </h5>
+                            @segmentItem.SegmentSubCategories.Count </h5>
+
+                            <!-- TEST, REMOVE LATER-->
+                            <p>TEST @(segmentItem.SegmentSubCategories.FirstOrDefault()?.Questions.FirstOrDefault()?.Answers.FirstOrDefault()?.UserAnswers.FirstOrDefault()?.UserId ?? "Default") TEST</p>
+
                     </div>
-                    <a href="@($"https://localhost:7107/quizpage/{segmentItem.Id}")" class="stretched-link"></a>
+                    <a href="@($"https://localhost:7107/quizpage/{segmentItem.SegmentId}")" class="stretched-link"></a>
                 </div>
             </div>
         }
@@ -85,11 +98,11 @@ else
 
 @code {
     // Create a list of all segments using GetSegments();
-    private List<SegmentModel>? segments;
+    private List<SegmentUserScoreViewModel>? segments;
 
     protected override async Task OnInitializedAsync()
     {
         // Use the Category Id and User Id to fetch the corresponding Segment and the user information tied to it.
-        segments = await SegmentService.GetSegmentsByCategoryIdAsync(1 , "e547fd1c-ec07-49e1-b2ce-0d326f467c01");
+        segments = await SegmentService.ImprovedGetSegmentsByCategoryIdAsync(1, "1872fec2-27e0-4aa2-b876-5de387b62fbc");
     }
 }

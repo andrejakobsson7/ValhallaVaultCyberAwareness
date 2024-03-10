@@ -12,13 +12,13 @@ namespace ValhallaVaultCyberAwareness.Client.Services
             Client = client;
         }
 
-        public async Task<List<QuestionModel>> GetAllQuestionsBySubCategoryId(int subCategoryId)
+        public async Task<List<QuestionModel>> GetQuestionsBySubCategoryId(int subCategoryId)
         {
             var apiResponse = await Client.GetAsync($"/api/Question/{subCategoryId}/");
             if (apiResponse.IsSuccessStatusCode)
             {
                 string jsonQuestions = await apiResponse.Content.ReadAsStringAsync();
-                List<QuestionModel> allQuestions = JsonConvert.DeserializeObject<List<QuestionModel>>(jsonQuestions);
+                List<QuestionModel>? allQuestions = JsonConvert.DeserializeObject<List<QuestionModel>>(jsonQuestions);
                 if (allQuestions == null)
                 {
                     throw new JsonException();
@@ -36,7 +36,7 @@ namespace ValhallaVaultCyberAwareness.Client.Services
             if (apiResponse.IsSuccessStatusCode)
             {
                 string jsonQuestion = await apiResponse.Content.ReadAsStringAsync();
-                QuestionModel question = JsonConvert.DeserializeObject<QuestionModel>(jsonQuestion);
+                QuestionModel? question = JsonConvert.DeserializeObject<QuestionModel>(jsonQuestion);
                 if (question == null)
                 {
                     throw new JsonException();
@@ -53,9 +53,9 @@ namespace ValhallaVaultCyberAwareness.Client.Services
         {
             var apiResponse = await Client.PostAsJsonAsync("/api/question/", newQuestion);
             if (apiResponse.IsSuccessStatusCode)
-             {
+            {
                 string jsonQuestion = await apiResponse.Content.ReadAsStringAsync();
-                QuestionModel question = JsonConvert.DeserializeObject<QuestionModel>(jsonQuestion);
+                QuestionModel? question = JsonConvert.DeserializeObject<QuestionModel>(jsonQuestion);
                 return question;
             }
             throw new HttpRequestException();
