@@ -43,6 +43,7 @@
     private async Task HandleSubmit()
     {
         await manager._segmentRepository.AddSegmentAsync(segment);
+        StateHasChanged();
     }
 
 }

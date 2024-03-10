@@ -40,7 +40,10 @@ namespace ValhallaVaultCyberAwareness.Repositories
                 .Where(s => s.CategoryId == categoryId)
                 .ToListAsync();
         }
-
+        public async Task<List<SegmentModel>> GetAllSegmentsAsync()
+        {
+            return await _context.Segments.ToListAsync();
+        }
         public async Task<List<SegmentModel>> GetAllSegmentsWithIncludeAsync()
         {
             return await _context.Segments.Include(s => s.Category).ToListAsync();
@@ -107,6 +110,5 @@ namespace ValhallaVaultCyberAwareness.Repositories
             }
 
         }
-
     }
 }

@@ -1,6 +1,6 @@
 ﻿@page "/Admin/Segment/SegmentPage"
 @attribute [Authorize(Roles = "Admin")]
-@attribute [StreamRendering(true)]
+@rendermode InteractiveServer
 
 @inject AdminManager manager
 
@@ -34,5 +34,10 @@ else
 
         Categories = await manager._categoryRepository.GetAllCategoriesAsync();
 
+    }
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        StateHasChanged();
     }
 }
