@@ -47,20 +47,7 @@ namespace ValhallaVaultCyberAwareness.Client.Services
                 {
                     //The following projects the database model to a viewmodel that holds all relevant information first hand.
                     List<QuestionAnswerViewModel> allQuestionAnswers = allQuestions.Select(q => new QuestionAnswerViewModel(q)).ToList();
-                    //To make sure a question really does have a correct answer, we loop through and check and return just the filtered list.
-                    List<QuestionAnswerViewModel> verifiedQuestionAnswers = new();
-                    foreach (var questionAnswer in allQuestionAnswers)
-                    {
-                        if (questionAnswer.CorrectAnswerId == -1)
-                        {
-                            continue;
-                        }
-                        else
-                        {
-                            verifiedQuestionAnswers.Add(questionAnswer);
-                        }
-                    }
-                    return verifiedQuestionAnswers;
+                    return allQuestionAnswers;
                 }
             }
             throw new HttpRequestException();

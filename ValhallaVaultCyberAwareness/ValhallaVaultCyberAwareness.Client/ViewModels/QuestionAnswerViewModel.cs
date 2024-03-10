@@ -18,17 +18,10 @@ namespace ValhallaVaultCyberAwareness.Client.ViewModels
             Question = question.Question;
             Explanation = question.Explanation;
             Answers = question.Answers;
-            var correctAnswer = question.Answers.FirstOrDefault(a => a.IsCorrect);
-            if (correctAnswer == null)
-            {
-                CorrectAnswerId = -1;
-                CorrectAnswer = "Unfortunately there is no correct answer registered for this question.";
-            }
-            else
-            {
-                CorrectAnswerId = correctAnswer.Id;
-                CorrectAnswer = correctAnswer.Answer;
-            }
+            //Since the repository filters out invalid questions that doesn't have a correct answer registered, all questions that the service receives will have at least one correct answer.
+            AnswerModel correctAnswer = question.Answers.First(a => a.IsCorrect);
+            CorrectAnswerId = correctAnswer.Id;
+            CorrectAnswer = correctAnswer.Answer;
         }
     }
 }
