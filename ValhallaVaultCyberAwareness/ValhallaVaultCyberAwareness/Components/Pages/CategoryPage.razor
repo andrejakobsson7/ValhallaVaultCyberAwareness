@@ -1,8 +1,8 @@
 ﻿@page "/CategoryPage"
+
 @using ValhallaVaultCyberAwareness.Client.Services
 @using ValhallaVaultCyberAwareness.Domain.Models
 @inject ICategoryService CategoryService
-@inject NavigationManager NavigationManager
 
 <h3>All Categories</h3>
 
@@ -17,6 +17,7 @@ else
             <tr>
                 <th>Id</th>
                 <th>Name</th>
+                <th></th>
             </tr>
         </thead>
         <tbody>
@@ -24,7 +25,7 @@ else
             {
                 <tr>
                     <td>@category.Id</td>
-                    <td><a href="javascript:void(0);" @onclick="() => NavigateToScorePage(category.Id)">@category.Name</a></td>
+                    <td>@category.Name</td>
                 </tr>
             }
         </tbody>
@@ -38,13 +39,4 @@ else
     {
         categories = await CategoryService.GetAllCategoriesAsync();
     }
-
-    private void NavigateToScorePage(int categoryId)
-    {
-        NavigationManager.NavigateTo($"Pages/Score/{categoryId}");
-    }
 }
-
-
-
-

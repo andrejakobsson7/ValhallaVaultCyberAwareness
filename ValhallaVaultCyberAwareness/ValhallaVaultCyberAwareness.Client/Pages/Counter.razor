@@ -92,6 +92,8 @@
         //TEST CALL QUESTIONS
         // List<QuestionModel> allQuestions = await questionService.GetAllQuestionsBySubCategoryId(1);
 
+        var allQuestionViewModels = await questionService.ImprovedGetQuestionsBySubCategoryId(1);
+
         //TEST ADD NEW QUESTION
         // QuestionModel newQuestion = new QuestionModel
         //  {

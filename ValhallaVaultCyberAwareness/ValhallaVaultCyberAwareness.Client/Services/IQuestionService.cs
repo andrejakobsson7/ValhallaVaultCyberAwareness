@@ -1,4 +1,5 @@
-﻿using ValhallaVaultCyberAwareness.Domain.Models;
+﻿using ValhallaVaultCyberAwareness.Client.ViewModels;
+using ValhallaVaultCyberAwareness.Domain.Models;
 
 namespace ValhallaVaultCyberAwareness.Client.Services
 {
@@ -7,6 +8,9 @@ namespace ValhallaVaultCyberAwareness.Client.Services
         public HttpClient Client { get; set; }
 
         public Task<List<QuestionModel>> GetQuestionsBySubCategoryId(int subCategoryId);
+
+        public Task<List<QuestionAnswerViewModel>> ImprovedGetQuestionsBySubCategoryId(int subCategoryId);
+
         public Task<QuestionModel> GetQuestionByIdAsync(int questionId);
 
         public Task<QuestionModel> AddQuestionAsync(QuestionModel newQuestion);

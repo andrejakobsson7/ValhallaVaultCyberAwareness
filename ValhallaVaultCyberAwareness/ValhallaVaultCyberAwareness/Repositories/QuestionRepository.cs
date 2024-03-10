@@ -19,11 +19,16 @@ namespace ValhallaVaultCyberAwareness.Repositories
             var questions = await _context.Questions.ToListAsync();
             return questions;
         }
+        /// <summary>
+        /// Method used to retrieve all questions in a subcategory. There is a safety check that verifies that all questions have a correct answer registered.
+        /// </summary>
+        /// <param name="subCategoryId"></param>
+        /// <returns>A list of questions along with it's answers</returns>
         public async Task<List<QuestionModel>> GetQuestionsBySubCategoryIdAsync(int subCategoryId)
         {
             return await _context.Questions
+                .Where(q => q.SubCategoryId == subCategoryId && q.Answers.Any(a => a.IsCorrect))
                 .Include(q => q.Answers)
-                .Where(q => q.SubCategoryId == subCategoryId)
                 .ToListAsync();
         }
 
