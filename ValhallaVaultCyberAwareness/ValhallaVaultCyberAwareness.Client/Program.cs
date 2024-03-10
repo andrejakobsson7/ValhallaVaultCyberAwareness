@@ -10,6 +10,7 @@ builder.Services.AddScoped(http => new HttpClient
     BaseAddress = new Uri("https://localhost:7107/"),
 });
 
+//Services
 builder.Services.AddScoped<ICategoryService, CategoryService>();
 builder.Services.AddScoped<ISegmentService, SegmentService>();
 builder.Services.AddScoped<ISubCategoryService, SubCategoryService>();
