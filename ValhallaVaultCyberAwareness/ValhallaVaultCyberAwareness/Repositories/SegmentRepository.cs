@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using ValhallaVaultCyberAwareness.Data;
 using ValhallaVaultCyberAwareness.Domain.Models;
+using ValhallaVaultCyberAwareness.Repositories.Interfaces;
 
 namespace ValhallaVaultCyberAwareness.Repositories
 {
@@ -39,24 +40,27 @@ namespace ValhallaVaultCyberAwareness.Repositories
                 .Where(s => s.CategoryId == categoryId)
                 .ToListAsync();
         }
+        public async Task<List<SegmentModel>> GetAllSegmentsAsync()
+        {
+            return await _context.Segments.ToListAsync();
+        }
+        public async Task<List<SegmentModel>> GetAllSegmentsWithIncludeAsync()
+        {
+            return await _context.Segments.Include(s => s.Category).ToListAsync();
+        }
 
         private async Task<SegmentModel?> GetSegmentByIdWithoutIncludedDataAsync(int segmentId)
         {
             return await _context.Segments.FirstOrDefaultAsync(s => s.Id == segmentId);
         }
 
-        public async Task<bool> AddSegmentAsync(SegmentModel newSegment)
+        public async Task<SegmentModel> AddSegmentAsync(SegmentModel newSegment)
         {
-            try
-            {
-                await _context.Segments.AddAsync(newSegment);
-                await _context.SaveChangesAsync();
-                return true;
-            }
-            catch (Exception)
-            {
-                return false;
-            }
+            _context.Attach(newSegment);
+            await _context.Segments.AddAsync(newSegment);
+            await _context.SaveChangesAsync();
+
+            return newSegment;
         }
 
         public async Task<bool> RemoveSegmentAsync(int segmentId)
@@ -92,6 +96,7 @@ namespace ValhallaVaultCyberAwareness.Repositories
             {
                 try
                 {
+                    _context.Attach(segmentToUpdate);
                     segmentToUpdate.Name = segment.Name;
                     segmentToUpdate.Description = segment.Description;
                     segmentToUpdate.CategoryId = segment.CategoryId;

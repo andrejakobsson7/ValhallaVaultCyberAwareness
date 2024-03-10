@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using ValhallaVaultCyberAwareness.Data;
 using ValhallaVaultCyberAwareness.Domain.Models;
+using ValhallaVaultCyberAwareness.Repositories.Interfaces;
 
 namespace ValhallaVaultCyberAwareness.Repositories
 {
@@ -12,7 +13,10 @@ namespace ValhallaVaultCyberAwareness.Repositories
         {
             _context = context;
         }
-
+        public async Task<List<SubCategoryModel>> GetSubCategoriesWithIncludeAsync()
+        {
+            return await _context.SubCategories.Include(s => s.Segment).ToListAsync();
+        }
         public async Task<List<SubCategoryModel>> GetSubCategoriesBySegmentId(int segmentId)
         {
             var subCategories = await _context.SubCategories.Where(s => s.SegmentId == segmentId).ToListAsync();
@@ -47,8 +51,11 @@ namespace ValhallaVaultCyberAwareness.Repositories
 
             if (subCategoryToUpdate != null)
             {
+                _context.Attach(subCategoryToUpdate);
+
                 subCategoryToUpdate.Name = newSubCategory.Name;
                 subCategoryToUpdate.Description = newSubCategory.Description;
+                subCategoryToUpdate.SegmentId = newSubCategory.SegmentId;
 
                 await _context.SaveChangesAsync();
 
@@ -58,5 +65,6 @@ namespace ValhallaVaultCyberAwareness.Repositories
             throw new Exception("Sub category not found");
 
         }
+
     }
 }

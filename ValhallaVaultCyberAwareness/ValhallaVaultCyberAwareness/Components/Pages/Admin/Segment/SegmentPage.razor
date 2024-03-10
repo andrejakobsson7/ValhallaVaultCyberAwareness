@@ -1,0 +1,43 @@
+﻿@page "/Admin/Segment/SegmentPage"
+@attribute [Authorize(Roles = "Admin")]
+@rendermode InteractiveServer
+
+@inject AdminManager manager
+
+<h3>Segments: </h3>
+
+@if(Segments.Any())
+{
+    <div class="flex-column">
+
+        @foreach (var segment in Segments)
+        {
+            <Segment CurrentSegment="@segment"></Segment>
+        }
+        <AddSegmentForm Categories="Categories"></AddSegmentForm>
+     </div>
+}
+else
+{
+    <h3>Loading...</h3>
+
+}
+
+@code {
+    List<SegmentModel> Segments = new();
+
+    List<CategoryModel> Categories = new();
+
+    protected override async Task OnInitializedAsync()
+    {
+        Segments = await manager._segmentRepository.GetAllSegmentsWithIncludeAsync();
+
+        Categories = await manager._categoryRepository.GetAllCategoriesAsync();
+
+    }
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        StateHasChanged();
+    }
+}

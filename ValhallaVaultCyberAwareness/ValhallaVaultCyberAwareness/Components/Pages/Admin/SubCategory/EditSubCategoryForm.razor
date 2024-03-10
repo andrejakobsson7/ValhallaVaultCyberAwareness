@@ -1,0 +1,50 @@
+﻿@inject AdminManager manager
+
+<EditForm Model="SubCategory" OnSubmit="HandleSubmit" FormName="name" class="card w-50">
+
+    <label>
+        Name
+    </label>
+
+    <InputText @bind-Value="SubCategory.Name"></InputText>
+
+    <label>
+        Description
+    </label>
+
+    <InputText @bind-Value="SubCategory.Description"></InputText>
+
+    <label>
+        Segment:
+    </label>
+
+    <InputSelect @bind-Value="SubCategory.SegmentId">
+        @foreach (var segment in Segments)
+        {
+            <option value="@segment.Id">@segment.Name</option>
+        }
+    </InputSelect>
+
+    <input type="submit" value="Update" />
+
+</EditForm>
+
+
+@code {
+    [Parameter]
+    public SubCategoryModel SubCategory { get; set; } = new();
+
+    public List<SegmentModel> Segments { get; set; } = new();
+
+    protected override async Task OnInitializedAsync()
+    {
+        Segments = await manager._segmentRepository.GetAllSegmentsAsync();
+
+    }
+
+    private async Task HandleSubmit()
+    {
+        await manager._subcategoryRepository.UpdateSubCategoryAsync(SubCategory);
+    }
+
+}

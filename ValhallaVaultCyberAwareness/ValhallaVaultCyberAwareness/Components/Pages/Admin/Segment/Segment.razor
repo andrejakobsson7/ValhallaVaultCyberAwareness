@@ -1,0 +1,24 @@
+﻿@rendermode InteractiveServer
+@inject AdminManager manager
+
+<div class="card">
+    <div class="card-body">
+
+        <h5 class="card-title">@CurrentSegment.Name</h5>
+        <h5 class="card-text">Category: @CurrentSegment.Category.Name</h5>
+        <p class="card-text">@CurrentSegment.Description</p>
+        <button class="btn btn-primary" @onclick="async () => await DeleteSegment()">Delete</button>
+        <a href="/Admin/Segment/UpdateSegmentPage/@CurrentSegment.Id">
+            <button class="btn btn-primary">Edit</button>
+        </a>
+     </div>
+</div>
+@code {
+    [Parameter]
+    public SegmentModel CurrentSegment { get; set; }
+
+    async Task DeleteSegment()
+    {
+        await manager._segmentRepository.RemoveSegmentAsync(CurrentSegment.Id);
+    }
+}

@@ -1,0 +1,39 @@
+﻿@rendermode InteractiveServer
+@inject AdminManager manager
+
+<div class="card">
+    <div class="card-body">
+
+        <h5 class="card-title">@CurrentSubCategory.Name</h5>
+         <h5 class="card-text">Segment: @CurrentSubCategory.Segment.Name</h5>
+         <p class="card-text">@CurrentSubCategory.Description</p>
+        <button class="btn btn-primary" @onclick="async () => await DeleteSubCategory()">Delete</button>
+       @*  <a href="/Admin/Segment/UpdateSegmentPage/@CurrentSubCategory.Id">
+            <button class="btn btn-primary">Edit</button>
+        </a>
+ *@
+        <button class="btn btn-primary" @onclick="Toggle">Edit</button>
+
+        @if(Hide == false)
+        {
+            <EditSubCategoryForm SubCategory="CurrentSubCategory"></EditSubCategoryForm>
+        }
+
+    </div>
+</div>
+@code {
+    [Parameter]
+    public SubCategoryModel CurrentSubCategory { get; set; }
+
+    async Task DeleteSubCategory()
+    {
+        await manager._segmentRepository.RemoveSegmentAsync(CurrentSubCategory.Id);
+    }
+
+    private bool Hide { get; set; } = true;
+
+    private void Toggle()
+    {
+        Hide = !Hide;
+    }
+}

@@ -1,4 +1,5 @@
 ﻿using ValhallaVaultCyberAwareness.Repositories;
+using ValhallaVaultCyberAwareness.Repositories.Interfaces;
 
 namespace ValhallaVaultCyberAwareness.Managers
 {

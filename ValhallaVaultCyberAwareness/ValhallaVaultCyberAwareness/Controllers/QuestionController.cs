@@ -2,7 +2,7 @@
 using System.Text.Json;
 using System.Text.Json.Serialization;
 using ValhallaVaultCyberAwareness.Domain.Models;
-using ValhallaVaultCyberAwareness.Repositories;
+using ValhallaVaultCyberAwareness.Repositories.Interfaces;
 
 
 namespace ValhallaVaultCyberAwareness.Controllers
