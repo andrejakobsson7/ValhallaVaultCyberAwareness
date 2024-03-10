@@ -34,7 +34,7 @@
 
 
 @code {
-    [Parameter]
+    [SupplyParameterFromForm]
     public SegmentModel segment { get; set; } = new();
 
     [Parameter]
@@ -42,17 +42,7 @@
 
     private async Task HandleSubmit()
     {
-        // await manager._categoryRepository.AddCategoryAsync(Category);
-
         await manager._segmentRepository.AddSegmentAsync(segment);
     }
 
-    private void HandleCategorySelection(ChangeEventArgs args)
-    {
-        // Parse the selected value from the event args
-        int selectedId = Convert.ToInt32(args.Value);
-
-        // Set the SelectedCategoryId
-        // SelectedCategoryId = selectedId;
-    }
 }

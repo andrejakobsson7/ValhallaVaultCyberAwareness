@@ -1,7 +1,7 @@
 ﻿using ValhallaVaultCyberAwareness.Data;
 using ValhallaVaultCyberAwareness.Domain.Models;
 
-namespace ValhallaVaultCyberAwareness.Repositories
+namespace ValhallaVaultCyberAwareness.Repositories.Interfaces
 {
     public interface ISubCategoryRepository
     {

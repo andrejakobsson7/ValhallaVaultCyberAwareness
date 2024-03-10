@@ -93,6 +93,7 @@ namespace ValhallaVaultCyberAwareness.Repositories
             {
                 try
                 {
+                    _context.Attach(segmentToUpdate);
                     segmentToUpdate.Name = segment.Name;
                     segmentToUpdate.Description = segment.Description;
                     segmentToUpdate.CategoryId = segment.CategoryId;

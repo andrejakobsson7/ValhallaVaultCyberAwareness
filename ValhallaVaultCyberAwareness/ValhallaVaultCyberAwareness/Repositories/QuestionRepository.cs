@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using ValhallaVaultCyberAwareness.Data;
 using ValhallaVaultCyberAwareness.Domain.Models;
+using ValhallaVaultCyberAwareness.Repositories.Interfaces;
 
 namespace ValhallaVaultCyberAwareness.Repositories
 {

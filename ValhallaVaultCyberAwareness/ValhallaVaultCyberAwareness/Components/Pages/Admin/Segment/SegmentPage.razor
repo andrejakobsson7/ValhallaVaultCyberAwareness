@@ -14,8 +14,8 @@
         {
             <Segment CurrentSegment="@segment"></Segment>
         }
-        <EditSegmentForm></EditSegmentForm>
-    </div>
+        <AddSegmentForm Categories="Categories"></AddSegmentForm>
+     </div>
 }
 else
 {
@@ -26,8 +26,13 @@ else
 @code {
     List<SegmentModel> Segments = new();
 
+    List<CategoryModel> Categories = new();
+
     protected override async Task OnInitializedAsync()
     {
         Segments = await manager._segmentRepository.GetAllSegmentsWithIncludeAsync();
+
+        Categories = await manager._categoryRepository.GetAllCategoriesAsync();
+
     }
 }

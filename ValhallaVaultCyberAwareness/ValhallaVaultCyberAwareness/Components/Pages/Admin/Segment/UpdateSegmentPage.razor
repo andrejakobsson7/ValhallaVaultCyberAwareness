@@ -4,27 +4,65 @@
 @inject AdminManager manager;
 @inject NavigationManager navManager
 
-
 <h3>UpdateSegmentPage</h3>
 
-<EditSegmentForm></EditSegmentForm>
+@if(CurrentSegment != null)
+{
+    <EditForm Model="CurrentSegment" OnSubmit="HandleSubmit" FormName="name" class="card w-50">
 
+        <label>
+            Name
+        </label>
+
+        <InputText @bind-Value="CurrentSegment.Name"></InputText>
+
+        <label>
+            Description
+        </label>
+
+        <InputText @bind-Value="CurrentSegment.Description"></InputText>
+
+        <label>
+            Category:
+        </label>
+
+        <InputSelect @bind-Value="CurrentSegment.CategoryId">
+            @foreach (var category in Categories)
+            {
+                <option value="@category.Id">@category.Name</option>
+            }
+        </InputSelect>
+
+
+        <input type="submit" value="Update segment" />
+
+    </EditForm>
+}
+else
+{
+    <h3>Loading...</h3>
+}
+
+ 
 @code {
-    [Parameter]
-    public SegmentModel CurrentSegment { get; set; } = new();
 
     [Parameter]
     public int id { get; set; }
 
+    public SegmentModel CurrentSegment { get; set; } = new();
+
+    List<CategoryModel> Categories = new();
+
     protected override async Task OnInitializedAsync()
     {
         CurrentSegment = await manager._segmentRepository.GetSegmentByIdAsync(id);
+        Categories =  await manager._categoryRepository.GetAllCategoriesAsync();
     }
 
     private async Task HandleSubmit()
     {
-        // await manager._categoryRepository.UpdateCategoryAsync(CurrentCategory);
-        // navManager.NavigateTo("/Admin/Category/CategoryPage");
+        await manager._segmentRepository.UpdateSegmentAsync(CurrentSegment);
+        navManager.NavigateTo("/Admin/Segment/SegmentPage");
     }
 
 }

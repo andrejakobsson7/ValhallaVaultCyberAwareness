@@ -11,30 +11,14 @@
         <a href="/Admin/Segment/UpdateSegmentPage/@CurrentSegment.Id">
             <button class="btn btn-primary">Edit</button>
         </a>
-@*         <EditSegmentForm segment="CurrentSegment" Categories="@Categories" hidden="@HideLabel" ></EditSegmentForm>
- *@    </div>
+     </div>
 </div>
 @code {
     [Parameter]
     public SegmentModel CurrentSegment { get; set; }
 
-    public List<CategoryModel> Categories { get; set; } = new();
-
-    private bool HideLabel { get; set; } = false;
-
-    protected override async Task OnInitializedAsync()
-    {
-        Categories = await manager._categoryRepository.GetAllCategoriesAsync();
-    }
-
     async Task DeleteSegment()
     {
         await manager._segmentRepository.RemoveSegmentAsync(CurrentSegment.Id);
-    }
-
-    private void Toggle()
-    {
-        HideLabel = !HideLabel;
-
     }
 }

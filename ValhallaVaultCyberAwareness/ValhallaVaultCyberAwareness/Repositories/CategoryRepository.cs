@@ -17,6 +17,7 @@ namespace ValhallaVaultCyberAwareness.Repositories
         {
             return await _context.Categories.ToListAsync();
         }
+
         public async Task<List<CategoryModel>> GetAllCategoriesWithInclude()
         {
             var categories = await _context.Categories.Include(c => c.Segments).ThenInclude(c => c.SubCategories).ToListAsync();
