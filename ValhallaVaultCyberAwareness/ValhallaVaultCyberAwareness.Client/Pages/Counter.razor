@@ -50,43 +50,113 @@
 } *@
 
 @* DEMO TO TEST CONCEPT WITH VIEWMODELS FOR QUESTIONS
- *@<EditForm Model="@allQuestionsAndAnswers" OnValidSubmit="HandleSubmit">
-    @foreach(var questionAnswer in allQuestionsAndAnswers)
-    {
-        <p>Question: @questionAnswer.Question</p>
-        <InputRadioGroup Name="@questionAnswer.QuestionId.ToString()" @bind-Value="questionAnswer.UserAnswerId">
-            @foreach(var answer in questionAnswer.Answers)
+ *@
+<EditForm Model="@allQuestionsAndAnswers" OnValidSubmit="SubmitQuiz" Context="QuestionAnswerForm">
+    <p>Fråga @(questionIdToDisplay + 1) / @allQuestionsAndAnswers.Count</p>
+    <p>@currentQuestion.Question</p>
+    <EditForm Model="@currentQuestion" OnValidSubmit="SubmitQuestionAnswer" Context="UserAnswerForm">
+        <DataAnnotationsValidator />
+        <ValidationSummary />
+        <InputRadioGroup Name="@currentQuestion.QuestionId.ToString()" @bind-Value="currentQuestion.UserAnswerId">
+            @foreach (var answer in currentQuestion.Answers)
             {
-                <InputRadio Value="@answer.Id" ></InputRadio>
-                @answer.Answer <br />
+                //Disable options if the user has submitted the answer.
+                if(currentQuestion.IsAnswerSubmitted == false)
+                {
+                    <InputRadio Value="@answer.Id" id="@answer.Id"></InputRadio>
+                    <label for="@answer.Id"> @answer.Answer</label>
+                    <br />
+                }
+                else
+                {
+                    //Disable options and set correct answer to green and the rest to red.
+                    <InputRadio Value="@answer.Id" id="@answer.Id" disabled></InputRadio>
+                    @if(answer.Id == currentQuestion.CorrectAnswerId)
+                    {
+                        <label class="text-success" for="@answer.Id"> @answer.Answer</label>
+                    }
+                    else
+                    {
+                        <label class="text-danger" for="@answer.Id"> @answer.Answer</label>
+                    }
+                    <br />
+                }
             }
         </InputRadioGroup>
+
+        @if(currentQuestion.IsAnswerSubmitted == false)
+        {
+            <button class="btn btn-warning" type="submit">Submit answer</button>
+        }
+        else
+        {
+            @if (currentQuestion.CorrectAnswerId == currentQuestion.UserAnswerId)
+            {
+                <p>You answered correctly!</p>
+            }
+            else
+            {
+                <p>You answered wrong!</p>
+            }
+            <p>@currentQuestion.Explanation</p>
+        }
+    </EditForm>
+    @if (allQuestionsAndAnswers.All(q => q.IsAnswerSubmitted))
+    {
+        <button class="btn btn-primary" type="submit">Submit quiz</button>
     }
-    <button type="submit">Submit answers</button>
- </EditForm>
+    else if(currentQuestion.IsAnswerSubmitted)
+    {
+        <button class="btn btn-secondary" @onclick="MoveToNextQuestion">Next question</button>
+    }
+</EditForm>
 
 
 @code {
     private int currentCount = 0;
     private List<SegmentUserScoreViewModel> SegmentUserScores = new();
     private List<QuestionAnswerViewModel> allQuestionsAndAnswers = new();
+    private int questionIdToDisplay = 0;
+    private QuestionAnswerViewModel currentQuestion = new();
 
     private void IncrementCount()
     {
         currentCount++;
     }
 
-    private async void HandleSubmit()
+    private void MoveToNextQuestion()
+    {
+        questionIdToDisplay++;
+        if (questionIdToDisplay > allQuestionsAndAnswers.Count)
+        {
+
+        }
+        else
+        {
+            currentQuestion = allQuestionsAndAnswers[questionIdToDisplay];
+        }
+    }
+
+    private void SubmitQuestionAnswer()
+    {
+        currentQuestion.IsAnswerSubmitted = true;
+    }
+
+    private async void SubmitQuiz()
     {
         List<UserAnswers> userAnswers = new();
         //Loop through each qa-viewmodel and extract answer id and userid
-        foreach(var questionAnswer in allQuestionsAndAnswers)
+        foreach (var questionAnswer in allQuestionsAndAnswers)
         {
             userAnswers.Add(new UserAnswers()
                 {
                     AnswerId = questionAnswer.UserAnswerId,
                     UserId = "3de3f363-9b6f-47e5-b6df-4f43baa4a70d",
                 });
+            if (questionAnswer.CorrectAnswerId != questionAnswer.UserAnswerId)
+            {
+                //User has answered the question wrong.
+            }
         }
         //Add to db
         bool isSuccessfullyRegistered = await userAnswersService.AddUserAnswersAsync(userAnswers);
@@ -128,6 +198,7 @@
         // List<QuestionModel> allQuestions = await questionService.GetAllQuestionsBySubCategoryId(1);
 
         allQuestionsAndAnswers = await questionService.ImprovedGetQuestionsBySubCategoryId(1);
+        currentQuestion = allQuestionsAndAnswers[questionIdToDisplay];
 
         //TEST ADD NEW QUESTION
         // QuestionModel newQuestion = new QuestionModel
