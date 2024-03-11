@@ -49,6 +49,12 @@
                 <ValidationMessage For="() => Input.ConfirmPassword" class="text-danger" />
             </div>
             <button type="submit" class="w-100 btn btn-lg btn-primary">Register</button>
+            <div class="form-check">
+                <input class="form-check-input" type="checkbox" @bind="policyAccepted" id="policyCheckbox" required>
+                <label class="form-check-label" for="policyCheckbox">
+                    Jag godkänner <a href="https://www.fakefactory.se/anvandarvillkor/" target="_blank">användarvillkoren</a> och <a href="https://www.fakefactory.se/integritetspolicy/" target="_blank">integritetspolicyn</a>.
+                </label>
+            </div>
         </EditForm>
     </div>
     <div class="col-md-6 col-md-offset-2">
@@ -60,8 +66,13 @@
     </div>
 </div>
 
+
+
 @code {
     private IEnumerable<IdentityError>? identityErrors;
+
+    private bool policyAccepted = false;
+
 
     [SupplyParameterFromForm]
     private InputModel Input { get; set; } = new();
