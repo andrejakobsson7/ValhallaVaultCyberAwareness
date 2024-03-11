@@ -22,10 +22,10 @@ else
         {
             // Create a card for each segment. Then include name, picture, score & a link to select SubSegments
             <div class="col-4">
-                <div class="card border-dark text-center w-100 h-300">
+                <div class="card border-dark text-center w-75">
                     <img class="card-img-top" src="https://variety.com/wp-content/uploads/2023/04/Twitter-Logo-Doge-Dogecoin.png" alt="Card image cap" />
                     <div class="card-img-overlay">
-                        <h2 class="card-title">@segmentItem.SegmentName</h2>
+                        <h4 class="card-title">@segmentItem.SegmentName</h4>
                     </div>
                     <div class="card-footer">
                         <p>@segmentItem.SegmentDescription</p>
@@ -58,7 +58,7 @@ else
                         <p class="card-description">@segmentItem.SegmentDescription</p>
                     </div>
                     <div class="card-footer bg-secondary">
-                        <h5 >Completed SubCategories: 
+                        <h6 >Completed SubCategories: 
 
                             <!-- In each SubCategory we compare the amount of booleans in the IsCorrect property
                                  to the amount of booleans that are TRUE (a TRUE boolean signifies a correct answer).
@@ -83,11 +83,7 @@ else
                             -->
 
                             <!-- Count the amount of SubCategories contained in each Segment-->
-                            @segmentItem.SegmentSubCategories.Count </h5>
-
-                            <!-- TEST, REMOVE LATER-->
-                            <p>TEST @(segmentItem.SegmentSubCategories.FirstOrDefault()?.Questions.FirstOrDefault()?.Answers.FirstOrDefault()?.UserAnswers.FirstOrDefault()?.UserId ?? "Default") TEST</p>
-
+                            @segmentItem.SegmentSubCategories.Count </h6>
                     </div>
                     <a href="@($"https://localhost:7107/quizpage/{segmentItem.SegmentId}")" class="stretched-link"></a>
                 </div>
