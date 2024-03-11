@@ -7,14 +7,14 @@ namespace ValhallaVaultCyberAwareness.Client.ViewModels
     public class QuestionAnswerViewModel
     {
         public int QuestionId { get; set; }
-        public string Question { get; set; }
-        public string Explanation { get; set; }
+        public string? Question { get; set; }
+        public string? Explanation { get; set; }
 
         [Range(1, int.MaxValue, ErrorMessage = "No answer has been selected.")]
         public int UserAnswerId { get; set; }
         public List<AnswerModel> Answers { get; set; } = new();
         public int CorrectAnswerId { get; set; }
-        public string CorrectAnswer { get; set; }
+        public string? CorrectAnswer { get; set; }
 
         public bool IsAnswerSubmitted { get; set; }
         public QuestionAnswerViewModel(QuestionModel question)
