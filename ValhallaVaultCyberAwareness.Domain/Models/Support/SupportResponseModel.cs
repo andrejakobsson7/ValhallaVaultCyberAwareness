@@ -18,7 +18,10 @@ namespace ValhallaVaultCyberAwareness.Domain.Models.Support
         [Column("created")]
         public DateTime Created { get; set; }
 
-        [Column("admin_id")]
-        public string AdminId { get; set; } = null!;
+        [Column("admin_name")]
+        public string AdminName { get; set; } = null!;
+
+        //Navigation property
+        public SupportQuestionModel? SupportQuestion { get; set; }
     }
 }

@@ -12,8 +12,8 @@ namespace ValhallaVaultCyberAwareness.Domain.Models.Support
         [Column("question")]
         public string Question { get; set; } = null!;
 
-        [Column("user_id")]
-        public string UserId { get; set; } = null!;
+        [Column("username")]
+        public string? Username { get; set; }
 
         [Column("created")]
         public DateTime Created { get; set; }
