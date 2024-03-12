@@ -1,0 +1,44 @@
+﻿@page "/Support"
+@using ValhallaVaultCyberAwareness.Client.Services
+@using ValhallaVaultCyberAwareness.Domain.Models
+@using ValhallaVaultCyberAwareness.Domain.Models.Support
+@rendermode @(new InteractiveAutoRenderMode(false))
+@inject ISupportQuestionService supportQuestionService
+@inject ISupportResponseService supportResponseService
+
+<PageTitle>Support</PageTitle>
+
+<h3 class="text-bold">Välkommen till support-sidan för Valhalla Vault</h3>
+@if (supportQuestionsToDisplay == null)
+{
+	<h3>Hämtar data...</h3>
+}
+else
+{
+	<div class="row justify-content-center">
+		<div class="col-12">
+			<h3>Hitta svaren på dina frågor genom att söka bland tidigare ställda frågor.</h3>
+		</div>
+		<div class="col-12">
+			<input type="search" placeholder="Sök" @bind-value="SearchText" @bind-value:event="oninput" />
+		</div>
+		<div class="col-12">
+			@foreach (var sq in supportQuestionsToDisplay)
+			{
+				<h3>@sq.Question</h3>
+			}
+		</div>
+	</div>
+}
+
+@code {
+
+	private List<SupportQuestionModel>? supportQuestionsToDisplay => allSupportQuestions!.Where(q => q.Question.ToLower().Contains(SearchText.Trim().ToLower())).ToList();
+	private List<SupportQuestionModel>? allSupportQuestions;
+	private string SearchText = "";
+
+	protected override async Task OnInitializedAsync()
+	{
+		allSupportQuestions = await supportQuestionService.GetAllSupportQuestionsAsync();
+	}
+}
