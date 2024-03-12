@@ -19,7 +19,7 @@ else
             <div class="col-10">
                 <div class="card border-dark text-center">
                     <div class="card-body">
-                        <h4>@questions.FirstOrDefault()?.SubCategory</h4>
+                        <h4>@questions.FirstOrDefault()?.SubCategory?.Name</h4>
                         <h5>Question: @($"{ currentQuestionIndex + 1}") / @questions.Count</h5>
                     </div>
                 </div>
@@ -31,7 +31,7 @@ else
                 <div class="col-7">
                     <div class="card border-dark text-center">
                         <div class="card-body">
-                            <h5 class="card-title">Question: @($"{currentQuestionIndex + 1}")</h5>
+                            <h5 class="card-title"></h5>
                         </div>
                         <div class="card-body">
                             <p>@questions[currentQuestionIndex].Question</p>
@@ -91,22 +91,22 @@ else
         }
         else
         {
-            <div class="justify-content-center mt-5">
+            <div class="row justify-content-center mt-5">
                 <div class="col-7">
-                <div class="card border-dark text-center">
-                    <div class="card-body">
-                        <h5 class="card-title">Quiz Complete!</h5>
-                    </div
-                    <div class="card-body mt-2">
-                        <h6>Your score:  0 / 0  - 0%</h6>
-                        <h6>You've passed! / You failed to pass!</h6>
-                    </div>
-                    <div class="card-body mt-2">
-                        <button>Return to SegmentMenu</button>
-                    </div>
+                   <div class="card border-dark text-center">
+                      <div class="card-body">
+                          <h5 class="card-title">Quiz Complete!</h5>
+                      </div>
+                      <div class="card-body mt-2">
+                          <h6>Your score:  0 / 0  - 0%</h6>
+                          <h6>You've passed! / You failed to pass!</h6>
+                      </div>
+                      <div class="card-body mt-2">
+                         <button>Return to SegmentMenu</button>
+                      </div>
+                   </div>
                 </div>
             </div>
-            </div>  
         }
     </div>
     <div class="mt-5">
@@ -131,7 +131,7 @@ else
 
     protected override async Task OnInitializedAsync()
     {
-        questions = await questionService.GetQuestionsBySubCategoryId(1);
+        questions = await questionService.GetQuestionsBySubCategoryId(SubCategoryId);
     }
     private async Task AnswerSelected()
     {
