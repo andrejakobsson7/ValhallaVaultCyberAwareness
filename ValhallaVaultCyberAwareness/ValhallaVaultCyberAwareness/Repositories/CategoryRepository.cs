@@ -52,6 +52,18 @@ namespace ValhallaVaultCyberAwareness.Repositories
             return false;
         }
 
+        public async Task<List<CategoryModel>> SearchCategoriesAsync(string searchTerm)
+        {
+            // Sök efter kategorier vars namn innehåller söktermen
+            var categories = await _context.Categories
+                .Where(c => c.Name.Contains(searchTerm))
+                .ToListAsync();
+
+            return categories;
+        }
+
+
+
         public async Task<CategoryModel> UpdateCategoryAsync(CategoryModel category)
         {
             var categoryToUpdate = await _context.Categories.FirstOrDefaultAsync(c => c.Id == category.Id);

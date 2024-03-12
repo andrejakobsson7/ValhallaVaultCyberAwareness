@@ -1,7 +1,13 @@
 ﻿@page "/CategoryPage"
 @using ValhallaVaultCyberAwareness.Client.Services
 @using ValhallaVaultCyberAwareness.Domain.Models
-@inject ICategoryService CategoryService
+@inject ISegmentService SegmentService
+@inject ISubCategoryService SubCategoryService
+@inject NavigationManager NavigationManager
+@inject ICategoryRepository CategoryRepo
+@attribute [StreamRendering]
+
+<h1>Category page</h1>
 
 @if (categories == null)
 {
@@ -30,10 +36,12 @@ else
 }
 
 @code {
-    List<CategoryModel> categories;
+    private List<CategoryModel>? categories;
 
     protected override async Task OnInitializedAsync()
     {
-        categories = await CategoryService.GetAllCategoriesAsync();
+        categories = await CategoryRepo.GetAllCategoriesAsync();
     }
+
 }
+q

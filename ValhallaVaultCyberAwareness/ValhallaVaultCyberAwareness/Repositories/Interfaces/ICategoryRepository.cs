@@ -16,5 +16,7 @@ namespace ValhallaVaultCyberAwareness.Repositories
         public Task<bool> DeleteCategoryAsync(int Id);
 
         public Task<CategoryModel> UpdateCategoryAsync(CategoryModel newCategory);
+
+        public Task<List<CategoryModel>> SearchCategoriesAsync(string searchTerm);
     }
 }
