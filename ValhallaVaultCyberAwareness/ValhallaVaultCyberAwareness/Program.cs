@@ -28,6 +28,8 @@ builder.Services.AddScoped<ICategoryRepository, CategoryRepository>();
 builder.Services.AddScoped<ISubCategoryRepository, SubCategoryRepository>();
 builder.Services.AddScoped<IQuestionRepository, QuestionRepository>();
 builder.Services.AddScoped<IUserAnswersRepository, UserAnswersRepository>();
+builder.Services.AddScoped<ISupportQuestionRepository, SupportQuestionRepository>();
+builder.Services.AddScoped<ISupportResponseRepository, SupportResponseRepository>();
 
 //Services
 builder.Services.AddScoped<ICategoryService, CategoryService>();
@@ -35,6 +37,8 @@ builder.Services.AddScoped<ISegmentService, SegmentService>();
 builder.Services.AddScoped<ISubCategoryService, SubCategoryService>();
 builder.Services.AddScoped<IQuestionService, QuestionService>();
 builder.Services.AddScoped<IAnswerService, AnswerService>();
+builder.Services.AddScoped<ISupportQuestionService, SupportQuestionService>();
+builder.Services.AddScoped<ISupportResponseService, SupportResponseService>();
 
 builder.Services.AddScoped<AdminManager>();
 builder.Services.AddScoped<IUserAnswersService, UserAnswersService>();
