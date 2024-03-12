@@ -38,7 +38,9 @@ builder.Services.AddScoped<IAnswerService, AnswerService>();
 
 builder.Services.AddScoped<AdminManager>();
 builder.Services.AddScoped<IUserAnswersService, UserAnswersService>();
-builder.Services.AddScoped<AdminManager>();
+builder.Services.AddBlazorBootstrap();
+
+
 
 builder.Services.AddControllers();
 

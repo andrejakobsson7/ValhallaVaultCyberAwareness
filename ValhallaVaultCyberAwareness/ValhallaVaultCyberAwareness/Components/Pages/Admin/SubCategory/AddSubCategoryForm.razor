@@ -1,7 +1,5 @@
 ﻿@inject AdminManager manager
 
-<ConfirmDialog @ref="dialog"></ConfirmDialog>
-
 <EditForm Model="SubCategory" OnSubmit="HandleSubmit" FormName="name" class="card w-50">
 
     <label>
@@ -27,7 +25,7 @@
         }
     </InputSelect>
 
-    <input type="submit" value="Update" />
+    <input type="submit" value="Create subcategory" />
 
 </EditForm>
 
@@ -38,14 +36,6 @@
 
     public List<SegmentModel> Segments { get; set; } = new();
 
-    private ConfirmDialog dialog;
-
-    protected bool IsClicked { get; set; }
-
-    [Parameter]
-    public Action? OnUpdate { get; set; }
-
-
     protected override async Task OnInitializedAsync()
     {
         Segments = await manager._segmentRepository.GetAllSegmentsAsync();
@@ -54,20 +44,7 @@
 
     private async Task HandleSubmit()
     {
-
-        var confirmation = await dialog.ShowAsync(
-
-            title: "Are you sure you want to update?",
-            message1: "Y/N"
-
-        );
-
-        if (confirmation)
-        {
-            await manager._subcategoryRepository.UpdateSubCategoryAsync(SubCategory);
-            OnUpdate?.Invoke();
-        }
-
+        await manager._subcategoryRepository.UpdateSubCategoryAsync(SubCategory);
     }
 
 }

@@ -16,7 +16,7 @@
 
         @if(Hide == false)
         {
-            <EditSubCategoryForm SubCategory="CurrentSubCategory"></EditSubCategoryForm>
+            <EditSubCategoryForm SubCategory="CurrentSubCategory" OnUpdate="ToggleHide"></EditSubCategoryForm>
         }
 
     </div>
@@ -35,5 +35,13 @@
     private void Toggle()
     {
         Hide = !Hide;
+        StateHasChanged();
     }
+
+    private void ToggleHide()
+    {
+        Hide = true;
+        StateHasChanged();
+    }
+  
 }
