@@ -17,6 +17,8 @@ builder.Services.AddScoped<ISubCategoryService, SubCategoryService>();
 builder.Services.AddScoped<IQuestionService, QuestionService>();
 builder.Services.AddScoped<IAnswerService, AnswerService>();
 builder.Services.AddScoped<IUserAnswersService, UserAnswersService>();
+builder.Services.AddScoped<ISupportQuestionService, ISupportQuestionService>();
+builder.Services.AddScoped<ISupportResponseService, SupportResponseService>();
 
 builder.Services.AddAuthorizationCore();
 builder.Services.AddCascadingAuthenticationState();
