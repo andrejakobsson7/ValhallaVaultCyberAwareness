@@ -1,4 +1,7 @@
 ﻿@inject NavigationManager NavigationManager
+@inject AuthenticationStateProvider AuthenticationStateProvider
+@using Microsoft.AspNetCore.Components.Authorization
+
 
 
 <nav class="navbar navbar-expand navbar-dark bg-dark"> 
@@ -9,13 +12,19 @@
         </button>
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
             <div class="navbar-nav me-auto mb-2 mb-lg-0">
-                <a class="nav-link active" aria-current="page" href="/hem">Home</a>
+                <a class="nav-link active" aria-current="page" href="/">Home</a>
                 <a class="nav-link" href="/WelcomePage">Welcome</a>
                 <a class="nav-link" href="/CategoryPage">Category</a>
                 <a class="nav-link" href="/Account/Login">Login</a>
                 <a class="nav-link" href="/Account/Register">Register</a>
-                <a class="nav-link" href="/UserPage">User</a>
-                <a class="nav-link" href="/Admin/AdminPage">Admin</a>
+                @if (UserIsAuthenticated)
+                {
+                    <a class="nav-link" href="/UserPage">User</a>
+                }
+                <AuthorizeView Roles="Admin">
+                    <a class="nav-link" href="/Admin/AdminPage">Admin</a>
+
+                </AuthorizeView>
                 <div class="dropdown">
                     <a class="nav-link dropdown-toggle" href="/CategoryPage">Categories</a>
                     <div class="dropdown-content">
@@ -69,3 +78,13 @@
     }
 
 </style>
+
+@code {
+    private bool UserIsAuthenticated;
+
+    protected override async Task OnInitializedAsync()
+    {
+        var authState = await AuthenticationStateProvider.GetAuthenticationStateAsync();
+        UserIsAuthenticated = authState.User.Identity.IsAuthenticated;
+    }
+}
