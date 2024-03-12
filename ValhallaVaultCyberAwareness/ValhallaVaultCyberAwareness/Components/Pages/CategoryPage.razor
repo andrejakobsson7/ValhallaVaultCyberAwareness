@@ -1,10 +1,10 @@
 ﻿@page "/CategoryPage"
 @using ValhallaVaultCyberAwareness.Client.Services
-@using ValhallaVaultCyberAwareness.Domain.Models
-@inject ISegmentService SegmentService
-@inject ISubCategoryService SubCategoryService
-@inject NavigationManager NavigationManager
+@using ValhallaVaultCyberAwareness.Repositories.Interfaces
 @inject ICategoryRepository CategoryRepo
+@inject ISubCategoryRepository SubcategoryRepo
+@inject ISegmentRepository SegmentRepo
+@inject NavigationManager NavigationManager
 @attribute [StreamRendering]
 
 <h1>Category page</h1>
@@ -15,33 +15,50 @@
 }
 else
 {
-    <table class="table">
-        <thead>
-            <tr>
-                <th>Id</th>
-                <th>Name</th>
-                <th></th>
-            </tr>
-        </thead>
-        <tbody>
+    <div class="container">
+        <div class="row">
             @foreach (var category in categories)
             {
-                <tr>
-                    <td>@category.Id</td>
-                    <td>@category.Name</td>
-                </tr>
+                <div class="col-4">
+                    <div class="card border-dark mb-3">
+                        <div class="card-header">
+                            <h5>@category.Name</h5>
+                        </div>
+                        <div class="card-body">
+                            <ul class="list-group">
+                                @foreach (var segment in category.Segments)
+                                {
+                                    <li class="list-group-item">
+                                        <h6>@segment.Name</h6>
+                                        <ul class="list-group">
+                                            @foreach (var subcategory in segment.SubCategories)
+                                            {
+                                                <li class="list-group-item">
+                                                    <a href="@($"quizpage/{subcategory.Id}")">@subcategory.Name</a>
+                                                </li>
+                                            }
+                                        </ul>
+                                    </li>
+                                }
+                            </ul>
+                        </div>
+                    </div>
+                </div>
             }
-        </tbody>
-    </table>
+        </div>
+    </div>
 }
 
 @code {
     private List<CategoryModel>? categories;
+    private List<SubCategoryModel>? subCategories;
+    private List<SegmentModel>? segments;
 
     protected override async Task OnInitializedAsync()
     {
         categories = await CategoryRepo.GetAllCategoriesAsync();
+        subCategories = await SubcategoryRepo.GetAllCategoriesAsync();
+        segments = await SegmentRepo.GetAllCategoriesAsync();
+        
     }
-
 }
-q

@@ -14,6 +14,11 @@ namespace ValhallaVaultCyberAwareness.Repositories
             _context = context;
         }
 
+        public async Task<List<SegmentModel>> GetAllCategoriesAsync()
+        {
+            return await _context.Segments.ToListAsync();
+        }
+
         /// <summary>
         /// Retrieves one segment with included data (subcategories). 
         /// </summary>
