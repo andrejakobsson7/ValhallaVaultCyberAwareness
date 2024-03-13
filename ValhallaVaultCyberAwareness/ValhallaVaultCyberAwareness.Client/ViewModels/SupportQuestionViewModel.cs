@@ -18,6 +18,8 @@ namespace ValhallaVaultCyberAwareness.Client.ViewModels
 		[IsBool(ErrorMessage = "Du måste acceptera att frågan publiceras")]
 		public bool HasAcceptedTerms { get; set; }
 
+		public bool QuestionHasResponses { get; set; }
+
 		//Navigation property
 		public List<SupportResponseModel> SupportResponses { get; set; } = new();
 
@@ -28,6 +30,7 @@ namespace ValhallaVaultCyberAwareness.Client.ViewModels
 			Username = supportQuestion.Username;
 			DaysSincePost = Math.Round((DateTime.Now - supportQuestion.Created).TotalDays);
 			SupportResponses = supportQuestion.SupportResponses;
+			QuestionHasResponses = SupportResponses.Count > 0;
 		}
 
 		public SupportQuestionViewModel()

@@ -47,7 +47,7 @@ else
 						</svg>
 						@supportQuestion.Question
 					</p>
-					@if(supportQuestion.SupportResponses.Count > 0)
+					@if(supportQuestion.QuestionHasResponses)
 					{
 						<button class="toggle-answer-btn" @onclick="@(() => ToggleAnswers(supportQuestion))">Se svar(@supportQuestion.SupportResponses.Count)</button>
 					}
