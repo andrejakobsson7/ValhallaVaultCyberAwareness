@@ -1032,7 +1032,7 @@ namespace ValhallaVaultCyberAwareness.Migrations
                         {
                             Id = 15,
                             Explanation = "Klicka aldrig på länkar som uppges komma från banker via e-post.",
-                            Question = "Du får ett e-postmeddelande som ser ut att komma från din bank. Det ber dig klicka på en länk och logga in på ditt konto för att “uppdatera din information”. Vad bör du göra?",
+                            Question = "Du får ett e-postmeddelande som ser ut att komma från din bank. Det ber dig klicka på en länk och logga in på ditt konto för att uppdatera din information. Vad bör du göra?",
                             SubCategoryId = 1
                         },
                         new
@@ -1527,6 +1527,67 @@ namespace ValhallaVaultCyberAwareness.Migrations
                         });
                 });
 
+            modelBuilder.Entity("ValhallaVaultCyberAwareness.Domain.Models.Support.SupportQuestionModel", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasColumnName("id");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<DateTime>("Created")
+                        .HasColumnType("datetime2")
+                        .HasColumnName("created");
+
+                    b.Property<string>("Question")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)")
+                        .HasColumnName("question");
+
+                    b.Property<string>("Username")
+                        .HasColumnType("nvarchar(max)")
+                        .HasColumnName("username");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("SupportQuestions");
+                });
+
+            modelBuilder.Entity("ValhallaVaultCyberAwareness.Domain.Models.Support.SupportResponseModel", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasColumnName("id");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("AdminName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)")
+                        .HasColumnName("admin_name");
+
+                    b.Property<DateTime>("Created")
+                        .HasColumnType("datetime2")
+                        .HasColumnName("created");
+
+                    b.Property<string>("Response")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)")
+                        .HasColumnName("response");
+
+                    b.Property<int>("SupportQuestionId")
+                        .HasColumnType("int")
+                        .HasColumnName("supportquestion_id");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("SupportQuestionId");
+
+                    b.ToTable("SupportResponses");
+                });
+
             modelBuilder.Entity("ValhallaVaultCyberAwareness.Domain.Models.UserAnswers", b =>
                 {
                     b.Property<string>("UserId")
@@ -1639,6 +1700,17 @@ namespace ValhallaVaultCyberAwareness.Migrations
                     b.Navigation("Segment");
                 });
 
+            modelBuilder.Entity("ValhallaVaultCyberAwareness.Domain.Models.Support.SupportResponseModel", b =>
+                {
+                    b.HasOne("ValhallaVaultCyberAwareness.Domain.Models.Support.SupportQuestionModel", "SupportQuestion")
+                        .WithMany("SupportResponses")
+                        .HasForeignKey("SupportQuestionId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("SupportQuestion");
+                });
+
             modelBuilder.Entity("ValhallaVaultCyberAwareness.Domain.Models.UserAnswers", b =>
                 {
                     b.HasOne("ValhallaVaultCyberAwareness.Domain.Models.AnswerModel", "Answer")
@@ -1686,6 +1758,11 @@ namespace ValhallaVaultCyberAwareness.Migrations
             modelBuilder.Entity("ValhallaVaultCyberAwareness.Domain.Models.SubCategoryModel", b =>
                 {
                     b.Navigation("Questions");
+                });
+
+            modelBuilder.Entity("ValhallaVaultCyberAwareness.Domain.Models.Support.SupportQuestionModel", b =>
+                {
+                    b.Navigation("SupportResponses");
                 });
 #pragma warning restore 612, 618
         }

@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using ValhallaVaultCyberAwareness.Domain.Models;
+using ValhallaVaultCyberAwareness.Domain.Models.Support;
 
 namespace ValhallaVaultCyberAwareness.Data
 {
@@ -12,6 +13,9 @@ namespace ValhallaVaultCyberAwareness.Data
         public DbSet<QuestionModel> Questions { get; set; }
         public DbSet<AnswerModel> Answers { get; set; }
         public DbSet<UserAnswers> UserAnswers { get; set; }
+
+        public DbSet<SupportQuestionModel> SupportQuestions { get; set; }
+        public DbSet<SupportResponseModel> SupportResponses { get; set; }
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
@@ -36,6 +40,12 @@ namespace ValhallaVaultCyberAwareness.Data
                 .HasOne(a => a.Question)
                 .WithMany(q => q.Answers)
                 .HasForeignKey(a => a.QuestionId);
+
+            builder.Entity<SupportResponseModel>()
+                .HasOne(a => a.SupportQuestion)
+                .WithMany(q => q.SupportResponses)
+                .HasForeignKey(a => a.SupportQuestionId);
+
             //Set combined key for join table UserAnswers
             //builder.Entity<UserAnswers>().HasKey(ua => new { ua.UserId, ua.AnswerId });
 
