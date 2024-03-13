@@ -5,7 +5,6 @@
 @using ValhallaVaultCyberAwareness.Domain.Models.Support
 @rendermode @(new InteractiveAutoRenderMode(false))
 @inject ISupportQuestionService supportQuestionService
-@inject ISupportResponseService supportResponseService
 
 <PageTitle>Support</PageTitle>
 
@@ -16,8 +15,6 @@
 else
 {
 	//TODOS
-	//Display questions and answers
-	//Enable toggling to see answers for each question (if there is any)
 	//For admin, a function shall exist to be able to respond
 	<div class="row">
 		<div class="col-10 d-flex justify-content-center">

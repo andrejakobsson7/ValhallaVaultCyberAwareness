@@ -1,6 +1,7 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
+
 namespace ValhallaVaultCyberAwareness.Domain.Models.Support
 {
 	public class SupportQuestionModel

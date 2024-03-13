@@ -1,6 +1,61 @@
 ﻿@page "/AddSupportQuestion"
-<h3>AddSupportQuestion</h3>
+@using ValhallaVaultCyberAwareness.Client.Services
+@using ValhallaVaultCyberAwareness.Client.ViewModels
+@using ValhallaVaultCyberAwareness.Domain.Models
+@using ValhallaVaultCyberAwareness.Domain.Models.Support
+@rendermode @(new InteractiveAutoRenderMode(false))
+@inject ISupportQuestionService supportQuestionService
+@inject IJSRuntime jsRuntime
+@inject NavigationManager navManager
 
+
+<PageTitle>Lägg till ny support fråga</PageTitle>
+
+<div class="row">
+	<div class="col-10 new-question-container">
+		<h3>Ställ din fråga här</h3>
+
+		<EditForm Model="newSupportQuestion" OnValidSubmit="AddNewSupportQuestion">
+			<DataAnnotationsValidator />
+			<ValidationSummary/>
+			<InputTextArea class="text-area" @bind-Value="@newSupportQuestion.Question" placeholder="Fråga"></InputTextArea><br/>
+			<InputText @bind-Value="@newSupportQuestion.Username" placeholder="Användarnamn"></InputText><br />
+			<InputCheckbox @bind-Value="@newSupportQuestion.HasAcceptedTerms"></InputCheckbox> Jag godkänner att frågan publiceras på supportsidan<br />
+			<button class="btn btn-primary" type="submit">Ställ fråga</button>
+		</EditForm>
+
+	</div>
+
+</div>
 @code {
 
+	private SupportQuestionViewModel newSupportQuestion { get; set; } = new();
+
+	private async Task AddNewSupportQuestion()
+	{
+
+		bool isSuccessfullyAdded = await supportQuestionService.AddSupportQuestionAsync(new SupportQuestionModel()
+		{
+			Question = newSupportQuestion.Question!,
+			Username = newSupportQuestion.Username,
+		});
+		if(isSuccessfullyAdded)
+		{
+			await jsRuntime.InvokeVoidAsync("alert", "Din fråga har blivit registrerad och du kommer få svar inom 24 timmar.");
+			navManager.NavigateTo("/Support");
+		}
+		else
+		{
+			await jsRuntime.InvokeVoidAsync("alert", "Något oväntat gick fel. Vänligen försök igen senare.");
+		}
+	}
+
 }
+
+<style>
+	.text-area {
+		height: 100px;
+		width: 150px;
+	}
+	
+</style>
