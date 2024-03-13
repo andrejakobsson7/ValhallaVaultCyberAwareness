@@ -3,25 +3,27 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace ValhallaVaultCyberAwareness.Domain.Models.Support
 {
-    public class SupportResponseModel
-    {
-        [Key]
-        [Column("id")]
-        public int Id { get; set; }
+	public class SupportResponseModel
+	{
+		[Key]
+		[Column("id")]
+		public int Id { get; set; }
 
-        [Column("response")]
-        public string Response { get; set; } = null!;
+		[Required(ErrorMessage = "Inget svar har angivits")]
+		[Column("response")]
+		public string Response { get; set; } = null!;
 
-        [Column("supportquestion_id")]
-        public int SupportQuestionId { get; set; }
+		[Column("supportquestion_id")]
+		public int SupportQuestionId { get; set; }
 
-        [Column("created")]
-        public DateTime Created { get; set; }
+		[Column("created")]
+		public DateTime Created { get; set; }
 
-        [Column("admin_name")]
-        public string AdminName { get; set; } = null!;
+		[Required(ErrorMessage = "Inget användarnamn har angivits")]
+		[Column("admin_name")]
+		public string AdminName { get; set; } = null!;
 
-        //Navigation property
-        public SupportQuestionModel? SupportQuestion { get; set; }
-    }
+		//Navigation property
+		public SupportQuestionModel? SupportQuestion { get; set; }
+	}
 }

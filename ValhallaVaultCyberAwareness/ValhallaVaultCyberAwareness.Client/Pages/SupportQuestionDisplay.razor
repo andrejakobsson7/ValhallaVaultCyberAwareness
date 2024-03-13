@@ -1,0 +1,87 @@
+﻿@using ValhallaVaultCyberAwareness.Client.ViewModels
+
+	<div class="col-10 question-container">
+		<div class="col-12 d-flex justify-content-between">
+			<p>
+				<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-person-circle" viewBox="0 0 16 16">
+					<path d="M11 6a3 3 0 1 1-6 0 3 3 0 0 1 6 0" />
+					<path fill-rule="evenodd" d="M0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8m8-7a7 7 0 0 0-5.468 11.37C3.242 11.226 4.805 10 8 10s4.757 1.225 5.468 2.37A7 7 0 0 0 8 1" />
+				</svg>
+			@SupportQuestion.Username
+			</p>
+		<p>@SupportQuestion.DaysSincePost dagar sedan</p>
+		</div>
+		<div class="col-12 d-flex justify-content-between">
+			<p style="font-weight:bold">
+				<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-question-circle" viewBox="0 0 16 16">
+					<path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14m0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16" />
+					<path d="M5.255 5.786a.237.237 0 0 0 .241.247h.825c.138 0 .248-.113.266-.25.09-.656.54-1.134 1.342-1.134.686 0 1.314.343 1.314 1.168 0 .635-.374.927-.965 1.371-.673.489-1.206 1.06-1.168 1.987l.003.217a.25.25 0 0 0 .25.246h.811a.25.25 0 0 0 .25-.25v-.105c0-.718.273-.927 1.01-1.486.609-.463 1.244-.977 1.244-2.056 0-1.511-1.276-2.241-2.673-2.241-1.267 0-2.655.59-2.75 2.286m1.557 5.763c0 .533.425.927 1.01.927.609 0 1.028-.394 1.028-.927 0-.552-.42-.94-1.029-.94-.584 0-1.009.388-1.009.94" />
+				</svg>
+			@SupportQuestion.Question
+			</p>
+		@if (SupportQuestion.QuestionHasResponses)
+			{
+			<button class="toggle-answer-btn" @onclick="@(() => ToggleAnswers(SupportQuestion))">Se svar(@SupportQuestion.SupportResponses.Count)</button>
+			}
+			else
+			{
+				<p>Tyvärr har inte denna fråga besvarats än.</p>
+			}
+		</div>
+	@if (SupportQuestion.DisplayAnswers)
+		{
+		@foreach (var response in SupportQuestion.SupportResponses)
+			{
+				<div class="col-12 d-flex justify-content-end">
+					<p class="text-right">
+						@response.Response
+						<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-reply-fill" viewBox="0 0 16 16">
+							<path d="M5.921 11.9 1.353 8.62a.72.72 0 0 1 0-1.238L5.921 4.1A.716.716 0 0 1 7 4.719V6c1.5 0 6 0 7 8-2.5-4.5-7-4-7-4v1.281c0 .56-.606.898-1.079.62z" />
+						</svg>
+					</p>
+				</div>
+				<div class="col-12 d-flex justify-content-end">
+					<p class="text-right">
+						@response.AdminName
+						<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-person-circle" viewBox="0 0 16 16">
+							<path d="M11 6a3 3 0 1 1-6 0 3 3 0 0 1 6 0" />
+							<path fill-rule="evenodd" d="M0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8m8-7a7 7 0 0 0-5.468 11.37C3.242 11.226 4.805 10 8 10s4.757 1.225 5.468 2.37A7 7 0 0 0 8 1" />
+						</svg>
+					</p>
+				</div>
+			}
+
+		}
+	</div>
+
+
+@code {
+	[Parameter]
+	public SupportQuestionViewModel SupportQuestion { get; set; }
+
+	private void ToggleAnswers(SupportQuestionViewModel supportQuestion)
+	{
+		supportQuestion.DisplayAnswers = !supportQuestion.DisplayAnswers;
+	}
+
+}
+
+<style>
+	.question-container {
+		border: 1px solid black;
+		margin: 10px;
+		padding: 5px;
+		box-shadow: 5px 5px 5px;
+	}
+
+	.toggle-answer-btn {
+		background-color: transparent;
+		border-color: transparent;
+		color: blue;
+	}
+
+</style>
+
+@code {
+
+}

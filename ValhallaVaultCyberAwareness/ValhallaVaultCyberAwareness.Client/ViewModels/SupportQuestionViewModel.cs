@@ -20,6 +20,8 @@ namespace ValhallaVaultCyberAwareness.Client.ViewModels
 
 		public bool QuestionHasResponses { get; set; }
 
+		public bool IsAnsweringEnabled { get; set; }
+
 		//Navigation property
 		public List<SupportResponseModel> SupportResponses { get; set; } = new();
 
