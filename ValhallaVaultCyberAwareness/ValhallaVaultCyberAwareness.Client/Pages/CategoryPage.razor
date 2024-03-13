@@ -1,9 +1,7 @@
 ﻿@page "/CategoryPage"
 @using ValhallaVaultCyberAwareness.Client.Services
-@using ValhallaVaultCyberAwareness.Repositories.Interfaces
-@inject ICategoryRepository CategoryRepo
-@inject ISubCategoryRepository SubcategoryRepo
-@inject ISegmentRepository SegmentRepo
+@using ValhallaVaultCyberAwareness.Domain.Models
+@inject ICategoryService categoryService
 @inject NavigationManager NavigationManager
 @attribute [StreamRendering]
 
@@ -51,14 +49,10 @@ else
 
 @code {
     private List<CategoryModel>? categories;
-    private List<SubCategoryModel>? subCategories;
-    private List<SegmentModel>? segments;
 
     protected override async Task OnInitializedAsync()
     {
-        categories = await CategoryRepo.GetAllCategoriesAsync();
-        subCategories = await SubcategoryRepo.GetAllCategoriesAsync();
-        segments = await SegmentRepo.GetAllCategoriesAsync();
+        categories = await categoryService.GetAllCategoriesAsync();
         
     }
 }
