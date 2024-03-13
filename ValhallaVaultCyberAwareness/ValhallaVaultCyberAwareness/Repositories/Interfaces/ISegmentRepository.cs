@@ -7,7 +7,6 @@ namespace ValhallaVaultCyberAwareness.Repositories.Interfaces
     {
         public ApplicationDbContext _context { get; set; }
         public Task<SegmentModel?> GetSegmentByIdAsync(int segmentId);
-        public Task<List<SegmentModel>> GetAllCategoriesAsync();
         public Task<List<SegmentModel>> GetSegmentsByCategoryIdAsync(int categoryId, string userId);
         public Task<List<SegmentModel>> GetAllSegmentsAsync();
         public Task<List<SegmentModel>> GetAllSegmentsWithIncludeAsync();

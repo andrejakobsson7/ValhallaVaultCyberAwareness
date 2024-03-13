@@ -13,11 +13,6 @@ namespace ValhallaVaultCyberAwareness.Repositories
         {
             _context = context;
         }
-
-        public async Task<List<SubCategoryModel>> GetAllCategoriesAsync()
-        {
-            return await _context.SubCategories.ToListAsync();
-        }
         public async Task<List<SubCategoryModel>> GetSubCategoriesWithIncludeAsync()
         {
             return await _context.SubCategories.Include(s => s.Segment).ToListAsync();
