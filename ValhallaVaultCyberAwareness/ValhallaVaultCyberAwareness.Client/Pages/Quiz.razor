@@ -1,9 +1,13 @@
 ﻿@page "/quiz/{SubCategoryId:int}"
 
 @using ValhallaVaultCyberAwareness.Client.Services
+@using ValhallaVaultCyberAwareness.Client.ViewModels
 @using ValhallaVaultCyberAwareness.Domain.Models
 
-@inject IQuestionService questionService
+@inject IQuestionService questionService 
+@inject AuthenticationStateProvider authStateProvider
+@inject IUserAnswersService userAnswersService;
+
 
 @rendermode InteractiveAuto
 
@@ -19,42 +23,37 @@ else
             <div class="col-10">
                 <div class="card border-dark text-center">
                     <div class="card-body">
-                        <h4>@questions.FirstOrDefault()?.SubCategory</h4>
+                        <h4>Name</h4>
                         <h5>Question: @($"{ currentQuestionIndex + 1}") / @questions.Count</h5>
                     </div>
                 </div>
             </div>
         </div>
+        <!-- 
+            Check if the quiz has been completed or if the quiz should be presented
+        -->
         @if (!quizComplete)
         {
             <div class="row justify-content-center mt-5">
                 <div class="col-7">
                     <div class="card border-dark text-center">
                         <div class="card-body">
-                            <h5 class="card-title">Question: @($"{currentQuestionIndex + 1}")</h5>
+                            <h5 class="card-title"></h5>
                         </div>
                         <div class="card-body">
                             <p>@questions[currentQuestionIndex].Question</p>
                         </div>
                         <div class="card-body">
-                            @if (questions.FirstOrDefault()?.Answers.Count(a => !string.IsNullOrEmpty(a.Answer)) == 1 && !answerSubmitted)
-                            {
-                                <div class="row justify-content-center">
-                                    <div class="col-3">
-                                        <button class="btn border-dark mx-auto" @onclick="() => AnswerSelected()" disabled="@(answerSubmitted)">Yes</button>
-                                    </div>
-                                    <div class="col-3">
-                                        <button class="btn border-dark mx-auto" @onclick="() => AnswerSelected()" disabled="@(answerSubmitted)">No</button>
-                                    </div>
-                                </div>
-                            }
-                            else if (!answerSubmitted)
+                            @if (!answerSubmitted)
                             {
                                 <div>
-                                    @foreach (var answerItem in questions.FirstOrDefault()?.Answers)
+                                    <!--
+                                        Create a button for each answer
+                                    -->
+                                    @foreach (var answerItem in questions[currentQuestionIndex].Answers)
                                     {
                                         <div class="mt-1">
-                                            <button class="btn border-dark" @onclick="() => AnswerSelected()" disabled="@(answerSubmitted)">@answerItem.Answer</button>
+                                            <button class="btn border-dark" @onclick="() => AnswerSelected(answerItem.Id)">@answerItem.Answer</button>
                                         </div>
                                     }
                                 </div>
@@ -62,16 +61,33 @@ else
                         </div>
                         <div class="card-body mt-1">
                             <div>
+                                <!--
+                                    Display a submit button that is disabled if no answer is highlighted
+                                -->
                                 @if (!answerSubmitted)
                                 {
                                     <button @onclick="SubmitAnswer" disabled="@(!IsAnswerSelected)">Submit Answer</button>
                                 }
                             </div>
+                            <!--
+                                When an answer has been submitted correctly
+                                Display if the answer is correct as well as an explanation and button to continue
+                            -->
                             @if (answerSubmitted)
                             {
                                 <div>
-                                    <p>CORRECT! / INCORRECT!</p>
-                                    <p class="mt-1">
+                                    @if (selectedAnswer == questions[currentQuestionIndex].CorrectAnswerId)
+                                        {
+                                        <p>You answered correctly!</p>
+                                        AddAnswerId(questions[currentQuestionIndex].UserAnswerId, userId);
+                                    }
+                                    else
+                                    {
+                                            <p>You answered incorrectly!</p>
+                                        AddAnswerId(questions[currentQuestionIndex].UserAnswerId, userId);
+                                    }
+                                    <h5>Selected Answer: @selectedAnswer</h5>
+                                    <p class="mt-2">
                                         Explanation: @questions.FirstOrDefault()?.Explanation
                                     </p>
                                     @if (currentQuestionIndex + 1 != questions.Count)
@@ -91,22 +107,22 @@ else
         }
         else
         {
-            <div class="justify-content-center mt-5">
+            <div class="row justify-content-center mt-5">
                 <div class="col-7">
-                <div class="card border-dark text-center">
-                    <div class="card-body">
-                        <h5 class="card-title">Quiz Complete!</h5>
-                    </div
-                    <div class="card-body mt-2">
-                        <h6>Your score:  0 / 0  - 0%</h6>
-                        <h6>You've passed! / You failed to pass!</h6>
-                    </div>
-                    <div class="card-body mt-2">
-                        <button>Return to SegmentMenu</button>
-                    </div>
+                   <div class="card border-dark text-center">
+                      <div class="card-body">
+                          <h5 class="card-title">Quiz Complete!</h5>
+                      </div>
+                      <div class="card-body mt-2">
+                          <h6>Your score:  0 / 0  - 0%</h6>
+                          <h6>You've passed! / You failed to pass!</h6>
+                      </div>
+                      <div class="card-body mt-2">
+                         <button>Return to SegmentMenu</button>
+                      </div>
+                   </div>
                 </div>
             </div>
-            </div>  
         }
     </div>
     <div class="mt-5">
@@ -119,28 +135,40 @@ else
     [Parameter]
     public int SubCategoryId { get; set; }
 
+    public string? userId { get; set; }
 
-    private List<QuestionModel>? questions;
+    private List<QuestionAnswerViewModel>? questions;
+
+    // Holds the answers from user
+    private List<UserAnswers> userAnswers = new();
 
 
     bool IsAnswerSelected { get; set; } = false;
     private int currentQuestionIndex = 0;
     private bool quizComplete = false;
     bool answerSubmitted = false;
-
+    private int selectedAnswer;
 
     protected override async Task OnInitializedAsync()
     {
-        questions = await questionService.GetQuestionsBySubCategoryId(1);
+        questions = await questionService.ImprovedGetQuestionsBySubCategoryId(SubCategoryId);
+        var authState = await authStateProvider.GetAuthenticationStateAsync();
+        userId = authState.User.FindFirst(c => c.Type.Contains("nameidentifier"))?.Value;
     }
-    private async Task AnswerSelected()
+    private async Task AnswerSelected(int answerId)
     {
+        selectedAnswer = answerId;
         IsAnswerSelected = true;
+        StateHasChanged(); // Ensure the UI updates after setting the property
     }
     private async Task SubmitAnswer()
     {
         answerSubmitted = true;
         IsAnswerSelected = false;
+    }
+    private async Task AddAnswerId(int answerId, string userId)
+    {
+        userAnswers.Add(new UserAnswers() {AnswerId = answerId, UserId = userId});
     }
     private async Task NextQuestion()
     {
@@ -159,6 +187,7 @@ else
     }
     private async Task CompleteQuiz()
     {
+        bool isSuccessful = await userAnswersService.AddUserAnswersAsync(userAnswers);
         quizComplete = true;
     }
 }

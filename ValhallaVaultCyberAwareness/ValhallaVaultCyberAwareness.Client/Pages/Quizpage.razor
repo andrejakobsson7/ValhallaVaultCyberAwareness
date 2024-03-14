@@ -2,27 +2,25 @@
 @using ValhallaVaultCyberAwareness.Client.Services
 @using ValhallaVaultCyberAwareness.Domain.Models
 
-@inject ISegmentService SegmentService
+@inject ISubCategoryService SubCategoryService
+@inject IQuestionService QuestionService
 
-@if (Segment == null)
+@if (SubCategories == null)
 {
     <p>Loading...</p>
 }
 else
 {
     <div id="frontPage" class="row">
-        @foreach (var SegmentItem in Segment)
+        @foreach (var SubCategoryItem in SubCategories)
         {
             <div class="col-3 mt-3">
                 <div class="card border-dark text-center w-100">
                     <div class="card-body">
-                        <h5 class="card-title">@SegmentItem.SubCategories.FirstOrDefault()?.Name</h5>
-                        <p>@SegmentItem.SubCategories.FirstOrDefault()?.Description</p>
+                        <h5 class="card-title">@SubCategoryItem.Name</h5>
+                        <p>@SubCategoryItem.Description</p>
                     </div>
-                    <div class="card-footer">
-                        <p>Previous score: 0 / 0</p>
-                    </div>
-                    <a href="@($"https://localhost:7107/quiz/{SegmentItem.SubCategories.FirstOrDefault()?.SubCategoryId}")" class="stretched-link"></a>
+                    <a href="@($"https://localhost:7107/quiz/{SubCategoryItem.Id}")" class="stretched-link"></a>
                 </div>
             </div>
         }    
@@ -36,13 +34,14 @@ else
     [Parameter]
     public int SegmentId { get; set; }
 
-    private List<SegmentModel>? Segment;
+    private List<SubCategoryModel>? SubCategories;
 
     protected override async Task OnInitializedAsync()
     {
-        Segment = GetDummyData();
+        SubCategories = await SubCategoryService.GetSubCategoriesBySegmentIdAsync(SegmentId);
     }
 
+    /*
     private List<SegmentModel> GetDummyData()
     {
         var dummyData = new List<SegmentModel>();
@@ -75,4 +74,5 @@ else
         public string Name { get; set; }
         public string Description { get; set; }
     }
+    */
 }
