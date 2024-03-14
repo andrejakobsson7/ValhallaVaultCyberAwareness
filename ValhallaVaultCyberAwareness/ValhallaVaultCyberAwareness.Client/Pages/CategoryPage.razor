@@ -1,0 +1,59 @@
+﻿@page "/CategoryPage"
+@using ValhallaVaultCyberAwareness.Client.Services
+@using ValhallaVaultCyberAwareness.Domain.Models
+@inject ICategoryService categoryService
+@inject NavigationManager NavigationManager
+@inject ICategoryService categoryService
+@attribute [StreamRendering]
+
+<h1>Category page</h1>
+
+@if (categories == null)
+{
+    <p>Loading...</p>
+}
+else
+{
+    <div class="container">
+        <div class="row">
+            @foreach (var category in categories)
+            {
+                <div class="col-4">
+                    <div class="card border-dark mb-3">
+                        <div class="card-header">
+                            <h5>@category.Name</h5>
+                        </div>
+                        <div class="card-body">
+                            <ul class="list-group">
+                                @foreach (var segment in category.Segments)
+                                {
+                                    <li class="list-group-item">
+                                        <h6>@segment.Name</h6>
+                                        <ul class="list-group">
+                                            @foreach (var subcategory in segment.SubCategories)
+                                            {
+                                                <li class="list-group-item">
+                                                    <a href="@($"quizpage/{subcategory.Id}")">@subcategory.Name</a>
+                                                </li>
+                                            }
+                                        </ul>
+                                    </li>
+                                }
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+}
+
+@code {
+    private List<CategoryModel>? categories;
+
+    protected override async Task OnInitializedAsync()
+    {
+        categories = await categoryService.GetAllCategoriesAsync();
+        
+    }
+}

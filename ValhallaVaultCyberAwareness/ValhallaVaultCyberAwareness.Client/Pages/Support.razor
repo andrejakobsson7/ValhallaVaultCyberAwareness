@@ -1,0 +1,72 @@
+﻿@page "/Support"
+@using ValhallaVaultCyberAwareness.Client.Services
+@using ValhallaVaultCyberAwareness.Client.ViewModels
+@using ValhallaVaultCyberAwareness.Domain.Models
+@using ValhallaVaultCyberAwareness.Domain.Models.Support
+@rendermode @(new InteractiveAutoRenderMode(false))
+@inject ISupportQuestionService supportQuestionService
+
+<PageTitle>Support</PageTitle>
+
+@if (supportQuestionsToDisplay == null)
+{
+	<h3>Hämtar data...</h3>
+}
+else
+{
+	//TODOS
+	//For admin, a function shall exist to be able to respond
+	<div class="row">
+		<div class="col-10 d-flex justify-content-center">
+			<h3>Välkommen till support-sidan för Valhalla Vault</h3>
+		</div>
+		<div class="col-10 d-flex justify-content-center">
+			<h5>Hitta svaren på dina frågor genom att söka bland tidigare ställda frågor.</h5>
+		</div>
+		<div class="col-10 d-flex justify-content-center">
+			<input type="search" placeholder="Sök" @bind-value="SearchText" @bind-value:event="oninput" />
+		</div>
+		@foreach(var supportQuestion in supportQuestionsToDisplay)
+		{
+			<SupportQuestionDisplay SupportQuestion="@supportQuestion"></SupportQuestionDisplay>
+		}
+		<div class="col-10 d-flex justify-content-center">
+			<p>Hittade du inte frågan i listan? Ställ en ny genom att klicka <a href="/AddSupportQuestion">här</a></p>
+		</div>
+	</div>
+}
+
+@code {
+
+	private List<SupportQuestionViewModel>? allSupportQuestions;
+	private List<SupportQuestionViewModel>? supportQuestionsToDisplay => allSupportQuestions?.Where(q => q.Question.ToLower().Contains(SearchText.Trim().ToLower())).ToList();
+
+	private string SearchText = "";
+
+	protected override async Task OnInitializedAsync()
+	{
+		allSupportQuestions = await supportQuestionService.GetAllSupportQuestionsAsync();
+	}
+
+	private void ToggleAnswers(SupportQuestionViewModel supportQuestion)
+	{
+		supportQuestion.DisplayAnswers = !supportQuestion.DisplayAnswers;
+	}
+}
+
+<style>
+	.question-container {
+		border:1px solid black;
+		margin: 10px;
+		padding: 5px;
+		box-shadow: 5px 5px 5px;
+	}
+
+	.toggle-answer-btn {
+		background-color:transparent;
+		border-color:transparent;
+		color: blue;
+
+	}
+
+</style>

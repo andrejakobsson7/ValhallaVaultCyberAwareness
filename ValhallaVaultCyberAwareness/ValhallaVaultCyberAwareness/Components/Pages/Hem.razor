@@ -1,9 +1,84 @@
-﻿@page "/"
+﻿@inject NavigationManager NavigationManager
+@inject ICategoryRepository CategoryRepo
+@attribute [StreamRendering]
 
-<h3></h3>
+@page "/"
 
+<h3>VVCA</h3>
+
+<form @onsubmit="Search">
+    <input type="text" @bind-value="searchTerm" @bind-value:event="oninput" placeholder="Sök kategori..." />
+    <button type="submit">Sök</button>
+</form>
+
+@if (categories == null)
+{
+    <p>Loading...</p>
+}
+else if (searchPerformed && filteredCategories.Count == 0)
+{
+    <p>Kategorin hittades inte.</p>
+}
+else
+{
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Name</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var category in filteredCategories)
+            {
+                <tr>
+                    <td>@category.Id</td>
+                    <td>@category.Name</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
 
 @code {
+    private List<CategoryModel>? categories;
+    private List<CategoryModel> filteredCategories = new List<CategoryModel>();
+    private string searchTerm = "";
+    private bool searchPerformed = false;
+
+    protected override async Task OnInitializedAsync()
+    {
+        categories = await CategoryRepo.GetAllCategoriesAsync();
+        filteredCategories = categories;
+    }
+
+    private void FilterCategories()
+    {
+        if (!string.IsNullOrWhiteSpace(searchTerm))
+        {
+            filteredCategories = categories.Where(c => c.Name.Contains(searchTerm, StringComparison.OrdinalIgnoreCase)).ToList();
+        }
+        else
+        {
+            filteredCategories = categories;
+        }
+    }
+
+    private async Task Search()
+    {
+        if (string.IsNullOrWhiteSpace(searchTerm))
+        {
+            // Visa en varning om söktermen är tom
+            Console.WriteLine("Vänligen ange en sökterm.");
+        }
+        else
+        {
+            FilterCategories();
+            searchPerformed = true;
+        }
+        StateHasChanged();
+    }
 
 }
 
+            

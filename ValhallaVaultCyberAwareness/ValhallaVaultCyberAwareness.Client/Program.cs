@@ -7,7 +7,7 @@ var builder = WebAssemblyHostBuilder.CreateDefault(args);
 
 builder.Services.AddScoped(http => new HttpClient
 {
-    BaseAddress = new Uri("https://localhost:7107/"),
+	BaseAddress = new Uri("https://localhost:7107/"),
 });
 
 //Services
@@ -17,6 +17,8 @@ builder.Services.AddScoped<ISubCategoryService, SubCategoryService>();
 builder.Services.AddScoped<IQuestionService, QuestionService>();
 builder.Services.AddScoped<IAnswerService, AnswerService>();
 builder.Services.AddScoped<IUserAnswersService, UserAnswersService>();
+builder.Services.AddScoped<ISupportQuestionService, SupportQuestionService>();
+builder.Services.AddScoped<ISupportResponseService, SupportResponseService>();
 
 builder.Services.AddAuthorizationCore();
 builder.Services.AddCascadingAuthenticationState();
