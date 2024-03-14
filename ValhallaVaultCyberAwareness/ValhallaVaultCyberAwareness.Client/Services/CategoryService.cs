@@ -1,5 +1,6 @@
 ﻿using Newtonsoft.Json;
 using System.Net.Http.Json;
+using ValhallaVaultCyberAwareness.Client.ViewModels;
 using ValhallaVaultCyberAwareness.Domain.Models;
 
 namespace ValhallaVaultCyberAwareness.Client.Services
@@ -25,6 +26,26 @@ namespace ValhallaVaultCyberAwareness.Client.Services
                 else
                 {
                     return allCategories;
+                }
+            }
+            throw new HttpRequestException();
+        }
+
+        public async Task<List<CategoryScoreViewModel>> GetAllCategoriesWithUserScores(string userId)
+        {
+            var apiResponse = await Client.GetAsync($"api/category/{userId}");
+            if (apiResponse.IsSuccessStatusCode)
+            {
+                string jsonCategories = await apiResponse.Content.ReadAsStringAsync();
+                List<CategoryModel>? categories = JsonConvert.DeserializeObject<List<CategoryModel>>(jsonCategories);
+                if (categories == null)
+                {
+                    throw new JsonException();
+                }
+                else
+                {
+                    List<CategoryScoreViewModel> categoryScores = categories.Select(c => new CategoryScoreViewModel(c)).ToList();
+                    return categoryScores;
                 }
             }
             throw new HttpRequestException();

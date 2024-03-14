@@ -9,6 +9,8 @@ namespace ValhallaVaultCyberAwareness.Repositories
         public Task<List<CategoryModel>> GetAllCategoriesAsync();
         public Task<List<CategoryModel>> GetAllCategoriesWithInclude();
 
+        public Task<List<CategoryModel>> GetAllCategoriesWithUserScores(string userId);
+
         public Task<CategoryModel> GetCategoryById(int categoryId);
 
         public Task<CategoryModel> AddCategoryAsync(CategoryModel newCategory);

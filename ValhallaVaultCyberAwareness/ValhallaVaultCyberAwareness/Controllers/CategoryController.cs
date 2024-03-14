@@ -38,6 +38,20 @@ namespace ValhallaVaultCyberAwareness.Controllers
             return BadRequest();
         }
 
+        [HttpGet]
+        [Route("{userId}")]
+        public async Task<IActionResult> GetCategoryScoresByUserIdAsync(string userId)
+        {
+            var categoryScores = await _categoryRepo.GetAllCategoriesWithUserScores(userId);
+            if (categoryScores != null)
+            {
+                List<CategoryScoreApiModel> apiCategoryScores = categoryScores.Select(s => new CategoryScoreApiModel(s)).ToList();
+
+                var categoryScoresJson = JsonSerializer.Serialize(apiCategoryScores, _jsonSerializerOptions);
+                return Ok(categoryScoresJson);
+            }
+            return BadRequest();
+        }
         [HttpPost]
         public async Task<IActionResult> AddCategory(CategoryModel newCategory)
         {
@@ -97,6 +111,47 @@ namespace ValhallaVaultCyberAwareness.Controllers
                         SubCategories.Add(segment.SubCategories[i]);
                     }
                 }
+            }
+        }
+
+        public class CategoryScoreApiModel
+        {
+            public int Id { get; set; }
+            public string Name { get; set; } = null!;
+            public string? Description { get; set; }
+            public List<SegmentModel> Segments { get; set; } = new();
+            public List<SubCategoryModel> SubCategories { get; set; } = new();
+
+            public List<QuestionModel> Questions { get; set; } = new();
+            public List<AnswerModel> Answers { get; set; } = new();
+            public List<UserAnswers> UserAnswers { get; set; } = new();
+
+            public CategoryScoreApiModel(CategoryModel category)
+            {
+                Id = category.Id;
+                Name = category.Name;
+                Description = category.Description;
+                for (int i = 0; i < category.Segments.Count; i++)
+                {
+                    Segments.Add(category.Segments[i]);
+                    foreach (var subCategory in Segments[i].SubCategories)
+                    {
+                        SubCategories.Add(subCategory);
+                        foreach (var question in subCategory.Questions)
+                        {
+                            Questions.Add(question);
+                            foreach (var answer in question.Answers)
+                            {
+                                Answers.Add(answer);
+                                foreach (var userAnswer in answer.UserAnswers)
+                                {
+                                    UserAnswers.Add(userAnswer);
+                                }
+                            }
+                        }
+                    }
+                }
+
             }
         }
     }
