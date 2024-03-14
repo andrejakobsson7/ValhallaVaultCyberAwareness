@@ -9,6 +9,9 @@ namespace ValhallaVaultCyberAwareness.Client.ViewModels
         public string? SubCategoryDescription { get; set; }
         public int CorrectUserAnswers { get; set; }
         public int TotalQuestions { get; set; }
+
+        public double UserCompletionPercentage { get; set; }
+
         public bool UserHasCompletedSubCategory { get; set; }
         private double CompletionPercentage { get; set; } = 0.80;
 
@@ -33,9 +36,9 @@ namespace ValhallaVaultCyberAwareness.Client.ViewModels
                 }
             }
             //Calculate the success percentage
-            double completionPercentage = (double)CorrectUserAnswers / (double)subCategory.Questions.Count;
+            UserCompletionPercentage = (double)CorrectUserAnswers / (double)TotalQuestions;
             //If the success percentage is over the threshold or NaN (which will be the case if the subcategory doesn't contain any questions).
-            if (completionPercentage >= CompletionPercentage || Double.IsNaN(completionPercentage))
+            if (UserCompletionPercentage >= CompletionPercentage || Double.IsNaN(UserCompletionPercentage))
             {
                 //Add true as the value if the user has passed enough in this subcategory.
                 UserHasCompletedSubCategory = true;

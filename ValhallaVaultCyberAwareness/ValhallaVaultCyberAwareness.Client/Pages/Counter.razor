@@ -6,6 +6,7 @@
 @using ValhallaVaultCyberAwareness.Domain.Models
 @rendermode InteractiveAuto
 @inject ICategoryService categoryService;
+@inject AuthenticationStateProvider authStateProvider;
 @inject ISegmentService segmentService;
 @inject IQuestionService questionService
 @inject ISubCategoryService subCategoryService;
@@ -164,6 +165,9 @@
 
     protected override async Task OnInitializedAsync()
     {
+        var authState = await authStateProvider.GetAuthenticationStateAsync();
+        string userId = authState.User.FindFirst(c => c.Type.Contains("nameidentifier"))?.Value;
+
         //TEST CALL CATEGORIES
         // List<CategoryModel> allCategories = await categoryService.GetAllCategoriesAsync();
 
@@ -197,8 +201,8 @@
         //TEST CALL QUESTIONS
         // List<QuestionModel> allQuestions = await questionService.GetAllQuestionsBySubCategoryId(1);
 
-        allQuestionsAndAnswers = await questionService.ImprovedGetQuestionsBySubCategoryId(1);
-        currentQuestion = allQuestionsAndAnswers[questionIdToDisplay];
+        // allQuestionsAndAnswers = await questionService.ImprovedGetQuestionsBySubCategoryId(1);
+        // currentQuestion = allQuestionsAndAnswers[questionIdToDisplay];
 
         //TEST ADD NEW QUESTION
         // QuestionModel newQuestion = new QuestionModel
@@ -276,6 +280,9 @@
 
         //TEST IMPROVED SERVICE CALL FOR SEGMENTS
         // SegmentUserScores = await segmentService.ImprovedGetSegmentsByCategoryIdAsync(1, "3de3f363-9b6f-47e5-b6df-4f43baa4a70d");
+
+        //TEST IMPROVED CALL FOR CATEGORIES
+        List<CategoryScoreViewModel> allCategoryScores = await categoryService.GetAllCategoriesWithUserScores("532fdc53-0e3a-4857-a413-455d2d373527");
 
     }
 }

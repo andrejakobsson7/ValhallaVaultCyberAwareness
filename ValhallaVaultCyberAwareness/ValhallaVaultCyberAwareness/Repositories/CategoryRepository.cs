@@ -24,6 +24,17 @@ namespace ValhallaVaultCyberAwareness.Repositories
             return categories;
         }
 
+        public async Task<List<CategoryModel>> GetAllCategoriesWithUserScores(string userId)
+        {
+            return await _context.Categories.
+                Include(c => c.Segments).
+                ThenInclude(s => s.SubCategories).
+                ThenInclude(s => s.Questions.Where(q => q.Answers.Any(a => a.IsCorrect))).
+                ThenInclude(q => q.Answers).
+                ThenInclude(a => a.UserAnswers.Where(u => u.UserId == userId)).
+                ToListAsync();
+        }
+
         public async Task<CategoryModel> GetCategoryById(int categoryId)
         {
             var category = await _context.Categories.FirstOrDefaultAsync(c => c.Id == categoryId);
