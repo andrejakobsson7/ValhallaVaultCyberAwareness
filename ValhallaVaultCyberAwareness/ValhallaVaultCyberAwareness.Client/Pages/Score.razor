@@ -33,23 +33,9 @@ else
                            
                             @foreach (var SubCategoryItem in segmentItem.SubCategoryScores)
                             {
-                                <!-- 1. List the name of every SubCategory contained in each Segment
-
-                                     2. For every SubCategory contained in a segment, display the amount
-                                        of TRUE's IsCorrect contains (a TRUE boolean singifies a correct answer).
-
-                                     3. Count the amount of Questions contained within a SubCategory.
-                                -->
                                 <li>@SubCategoryItem.SubCategoryName - 
 
-                                    
-                                    <!-- COUNT CORRECT ANSWERS FROM USER, NEEDS FIXING! -->
                                     @SubCategoryItem.CorrectUserAnswers
-
-                                    <!--
-                                    @(SubCategoryItem.Questions.FirstOrDefault()?
-                                    .Answers.Count(a => a.IsCorrect == true) ?? 0)
-                                    -->
                                     
                                     / @SubCategoryItem.TotalQuestions
                                 </li>
@@ -59,31 +45,8 @@ else
                     </div>
                     <div class="card-footer bg-secondary">
                         <h6 >Completed SubCategories: 
-
-                            <!-- In each SubCategory we compare the amount of booleans in the IsCorrect property
-                                 to the amount of booleans that are TRUE (a TRUE boolean signifies a correct answer).
-                                 If the amount of TRUE booleans is >= 80% of the amount of booleans,
-                                 it counts that as a completed SubCategory and is counted to the max amount of SubCategories.
-                            -->
-                            @(segmentItem.SegmentSubCategories.Count(SubCategory => SubCategory
-                            .Questions.FirstOrDefault()?
-                            .Answers.Count(a => a.IsCorrect) > 0.8 * 
-                            SubCategory.Questions.FirstOrDefault()?
-                            .Answers.Count(a => a.IsCorrect))) /
-
-                            <!-- I admit I had to use the help of ChatGPT to make the above monster of a LINQ statement.
-                               This was the original I came up with before I asked ChatGPT for help:
-
-                                @(segmentItem.SubCategories.FirstOrDefault()?
-                                .Questions.FirstOrDefault()?
-                                .Answers.Count(a => a.IsCorrect == true) > @segmentItem.SubCategories.FirstOrDefault()?
-                                .Questions.FirstOrDefault()?
-                                .Answers.Count(a => a.IsCorrect)
-                                * 0.8 ? "true" : "false")
-                            -->
-
-                            <!-- Count the amount of SubCategories contained in each Segment-->
-                            @segmentItem.SegmentSubCategories.Count </h6>
+                            @segmentItem.SubCategoryScores.Count(item => item.UserHasCompletedSubCategory)
+                            / @segmentItem.SegmentSubCategories.Count </h6>
                     </div>
                     <a href="@($"https://localhost:7107/quizpage/{segmentItem.SegmentId}")" class="stretched-link"></a>
                 </div>

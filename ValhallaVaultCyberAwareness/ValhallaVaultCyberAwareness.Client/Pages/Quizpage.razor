@@ -3,6 +3,7 @@
 @using ValhallaVaultCyberAwareness.Domain.Models
 
 @inject ISubCategoryService SubCategoryService
+@inject IQuestionService QuestionService
 
 @if (SubCategories == null)
 {
@@ -18,12 +19,6 @@ else
                     <div class="card-body">
                         <h5 class="card-title">@SubCategoryItem.Name</h5>
                         <p>@SubCategoryItem.Description</p>
-                    </div>
-                    <div class="card-footer">
-
-                        <!-- HALP!!!-->
-                        <p>Previous score: 0 / @SubCategoryItem.Questions.Count</p>
-
                     </div>
                     <a href="@($"https://localhost:7107/quiz/{SubCategoryItem.Id}")" class="stretched-link"></a>
                 </div>
