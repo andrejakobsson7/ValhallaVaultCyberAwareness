@@ -19,4 +19,5 @@ namespace ValhallaVaultCyberAwareness.Repositories
 
         public Task<List<CategoryModel>> SearchCategoriesAsync(string searchTerm);
     }
+
 }

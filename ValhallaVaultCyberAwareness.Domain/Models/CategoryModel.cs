@@ -15,6 +15,9 @@ namespace ValhallaVaultCyberAwareness.Domain.Models
         [Column("description")]
         public string? Description { get; set; }
 
+        [NotMapped] // Så att den inte finns med i 
+        public double Progress { get; set; }
+
         //Navigation property
         public List<SegmentModel> Segments = new();
 

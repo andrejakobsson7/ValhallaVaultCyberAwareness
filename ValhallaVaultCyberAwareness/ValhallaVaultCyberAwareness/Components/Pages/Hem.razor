@@ -1,22 +1,22 @@
 ﻿@inject NavigationManager NavigationManager
 @inject ICategoryRepository CategoryRepo
 @attribute [StreamRendering]
+@rendermode InteractiveServer
 
-@page "/"
+    @page "/Hem"
 
 <h3>VVCA</h3>
 
-<form @onsubmit="Search">
-    <input type="text" @bind-value="searchTerm" @bind-value:event="oninput" placeholder="Sök kategori..." />
-    <button type="submit">Sök</button>
-</form>
+<input type="text" @bind="searchTerm" placeholder="Sök kategori..." />
+<button @onclick="Search">Sök</button>
 
-@if (categories == null)
+    @if (categories == null)
 {
     <p>Loading...</p>
 }
 else if (searchPerformed && filteredCategories.Count == 0)
 {
+
     <p>Kategorin hittades inte.</p>
 }
 else
@@ -33,12 +33,43 @@ else
             {
                 <tr>
                     <td>@category.Id</td>
-                    <td>@category.Name</td>
+                    <td><a href="@($"/CategoryPage")">@category.Name</a></td>
                 </tr>
             }
         </tbody>
     </table>
 }
+
+<style>
+    .progress {
+        margin-bottom: 20px; 
+        width: 50%; 
+    }
+</style>
+
+<div class="progress">
+    <div class="progress-bar progress-bar-success progress-bar-striped" role="progressbar"
+         aria-valuenow="40" aria-valuemin="0" aria-valuemax="100" style="width:40%">
+        Att skydda sig mot bedrägerier
+    </div>
+</div>
+
+<div class="progress">
+    <div class="progress-bar progress-bar-info progress-bar-striped" role="progressbar"
+         aria-valuenow="50" aria-valuemin="0" aria-valuemax="100" style="width:50%">
+        Cybersäkerhet för företag
+    </div>
+</div>
+
+<div class="progress">
+    <div class="progress-bar progress-bar-warning progress-bar-striped" role="progressbar"
+         aria-valuenow="60" aria-valuemin="0" aria-valuemax="100" style="width:60%">
+        Cyberspionage
+    </div>
+</div>
+
+
+
 
 @code {
     private List<CategoryModel>? categories;
@@ -68,7 +99,7 @@ else
     {
         if (string.IsNullOrWhiteSpace(searchTerm))
         {
-            // Visa en varning om söktermen är tom
+
             Console.WriteLine("Vänligen ange en sökterm.");
         }
         else
@@ -78,7 +109,4 @@ else
         }
         StateHasChanged();
     }
-
 }
-
-            

@@ -18,6 +18,21 @@ namespace ValhallaVaultCyberAwareness.Repositories
             return await _context.Categories.ToListAsync();
         }
 
+
+        public async Task<List<CategoryModel>> SearchCategoriesAsync(string searchTerm)
+        {
+            // Hämta alla kategorier
+            var allCategories = await GetAllCategoriesAsync();
+
+            // Filtrera kategorier baserat på searchTerm
+            var filteredCategories = allCategories
+                .Where(c => c.Name.Contains(searchTerm, StringComparison.OrdinalIgnoreCase))
+                .ToList();
+
+            return filteredCategories;
+        }
+
+
         public async Task<List<CategoryModel>> GetAllCategoriesWithInclude()
         {
             var categories = await _context.Categories.Include(c => c.Segments).ThenInclude(c => c.SubCategories).ToListAsync();
@@ -51,18 +66,6 @@ namespace ValhallaVaultCyberAwareness.Repositories
 
             return false;
         }
-
-        public async Task<List<CategoryModel>> SearchCategoriesAsync(string searchTerm)
-        {
-            // Sök efter kategorier vars namn innehåller söktermen
-            var categories = await _context.Categories
-                .Where(c => c.Name.Contains(searchTerm))
-                .ToListAsync();
-
-            return categories;
-        }
-
-
 
         public async Task<CategoryModel> UpdateCategoryAsync(CategoryModel category)
         {

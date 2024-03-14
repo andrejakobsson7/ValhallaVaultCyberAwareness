@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using ValhallaVaultCyberAwareness.Domain.Models;
+using static ValhallaVaultCyberAwareness.Client.Services.UserAnswersService;
 
 namespace ValhallaVaultCyberAwareness.Data
 {
@@ -12,6 +13,12 @@ namespace ValhallaVaultCyberAwareness.Data
         public DbSet<QuestionModel> Questions { get; set; }
         public DbSet<AnswerModel> Answers { get; set; }
         public DbSet<UserAnswers> UserAnswers { get; set; }
+
+        public object UserProgress { get; internal set; }
+
+
+
+
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
