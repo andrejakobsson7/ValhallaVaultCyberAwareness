@@ -1,11 +1,13 @@
 ﻿@page "/Segment/{SegmentId:int}"
+@using Microsoft.AspNetCore.Authorization
 @using ValhallaVaultCyberAwareness.Client.Services
 @using ValhallaVaultCyberAwareness.Client.ViewModels
 @using ValhallaVaultCyberAwareness.Domain.Models
 
 @inject ISegmentService SegmentService
 @inject AuthenticationStateProvider authStateProvider
-@inject IUserAnswersService userAnswersService
+@rendermode InteractiveServer
+@attribute [Authorize]
 
 <PageTitle>Quiz Segments</PageTitle>
 

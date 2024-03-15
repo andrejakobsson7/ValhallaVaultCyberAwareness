@@ -12,32 +12,20 @@
         </button>
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
             <div class="navbar-nav me-auto mb-2 mb-lg-0">
-                <a class="nav-link active" aria-current="page" href="/Hem">Home</a>
-                <a class="nav-link" href="/CategoryPage">Category</a>
-                <a class="nav-link" href="/Account/Login">Login</a>
-                <a class="nav-link" href="/Account/Register">Register</a>
-                @if (UserIsAuthenticated)
-                {
-                    <a class="nav-link" href="/UserPage">User</a>
-                }
+                <AuthorizeView>
+                    <NotAuthorized>
+                        <a class="nav-link" href="/Account/Login">Login</a>
+                        <a class="nav-link" href="/Account/Register">Register</a>
+                    </NotAuthorized>
+                    <Authorized>
+                        <a class="nav-link active" aria-current="page" href="/Hem">Home</a>
+                        <a class="nav-link" href="/UserPage">User</a>
+                    </Authorized>
+                </AuthorizeView>
                 <AuthorizeView Roles="Admin">
                     <a class="nav-link" href="/Admin/AdminPage">Admin</a>
-
                 </AuthorizeView>
-                <div class="dropdown">
-                    <a class="nav-link dropdown-toggle" href="/CategoryPage">Categories</a>
-                    <div class="dropdown-content">
-                        <a href="/SubCategoryPage">SubCategory</a>
-                        <a href="/Segment">Segments</a>
-                        <a href="/QuestionsPage">Questions</a>
-                        <a href="/Client/Pages/Score">score</a>
-                    </div>
-                </div>
             </div>
-            <form class="d-flex" role="search">
-                <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
-                <button class="btn btn-outline-success" type="submit">Search</button>
-            </form>
             <a class="nav-link" href="/Support">
                 <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="white" class="bi bi-question-circle" viewBox="0 0 16 16">
                     <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14m0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16" />
