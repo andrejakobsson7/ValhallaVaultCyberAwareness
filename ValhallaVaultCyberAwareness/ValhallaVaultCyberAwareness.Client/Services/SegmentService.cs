@@ -13,45 +13,26 @@ namespace ValhallaVaultCyberAwareness.Client.Services
         {
             Client = client;
         }
-        public async Task<List<SegmentModel>> GetSegmentsByCategoryIdAsync(int categoryId, string userId)
+        public async Task<SegmentUserScoreViewModel> GetSegmentWithUserScore(int segmentId, string userId)
         {
-
-            var apiResponse = await Client.GetAsync($"/api/segment/{categoryId}/{userId}");
-            if (apiResponse.IsSuccessStatusCode)
             {
-                string jsonSegment = await apiResponse.Content.ReadAsStringAsync();
-                List<SegmentModel>? segments = JsonConvert.DeserializeObject<List<SegmentModel>>(jsonSegment);
-                if (segments == null)
+                var apiResponse = await Client.GetAsync($"api/segment/{segmentId}/{userId}");
+                if (apiResponse.IsSuccessStatusCode)
                 {
-                    throw new JsonException();
+                    string jsonSegment = await apiResponse.Content.ReadAsStringAsync();
+                    SegmentModel? segment = JsonConvert.DeserializeObject<SegmentModel>(jsonSegment);
+                    if (segment == null)
+                    {
+                        throw new JsonException();
+                    }
+                    else
+                    {
+                        SegmentUserScoreViewModel segmentScore = new SegmentUserScoreViewModel(segment);
+                        return segmentScore;
+                    }
                 }
-                else
-                {
-                    return segments;
-                }
+                throw new HttpRequestException();
             }
-            throw new HttpRequestException();
-        }
-
-        public async Task<List<SegmentUserScoreViewModel>> ImprovedGetSegmentsByCategoryIdAsync(int categoryId, string userId)
-        {
-
-            var apiResponse = await Client.GetAsync($"/api/segment/{categoryId}/{userId}");
-            if (apiResponse.IsSuccessStatusCode)
-            {
-                string jsonSegment = await apiResponse.Content.ReadAsStringAsync();
-                List<SegmentModel>? segments = JsonConvert.DeserializeObject<List<SegmentModel>>(jsonSegment);
-                if (segments == null)
-                {
-                    throw new JsonException();
-                }
-                else
-                {
-                    List<SegmentUserScoreViewModel> userScores = segments.Select(s => new SegmentUserScoreViewModel(s)).ToList();
-                    return userScores;
-                }
-            }
-            throw new HttpRequestException();
         }
 
         public async Task<bool> AddSegmentAsync(SegmentModel newSegment)
