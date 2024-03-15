@@ -123,8 +123,8 @@ else
                             }
                       </div>
                       <div class="card-body mt-2">
-                         <button>Return to SegmentMenu</button>
-                      </div>
+                            <button onclick="window.location.href = 'https://localhost:7107/CategoryPage'">Return to Category Menu</button>
+                        </div>
                    </div>
                 </div>
             </div>
@@ -193,7 +193,7 @@ else
     }
     private async Task CompleteQuiz()
     {
-        bool isSuccessful = await userAnswersService.AddUserAnswersAsync(userAnswers);
         quizComplete = true;
+        bool isSuccessful = await userAnswersService.AddUserAnswersAsync(userAnswers);
     }
 }

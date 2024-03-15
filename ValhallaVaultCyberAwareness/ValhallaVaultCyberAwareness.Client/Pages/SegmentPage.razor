@@ -41,7 +41,7 @@ else
                         </ul>
                         <p class="card-description">@segments.SegmentDescription</p>
                     </div>
-                    <div class="card-body mt-5">
+                    <div class="card-footer">
                         @if (segments.AvailableSubCategoryIndex >= segments.SubCategoryScores.IndexOf(SubCategoryItem))
                         {
                             <a href="@($"https://localhost:7107/quiz/{SubCategoryItem.SubCategoryId}")" class="stretched-link"></a>
