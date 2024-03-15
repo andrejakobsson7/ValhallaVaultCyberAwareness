@@ -79,12 +79,12 @@ else
                                     @if (selectedAnswer == questions[currentQuestionIndex].CorrectAnswerId)
                                         {
                                         <p>You answered correctly!</p>
-                                        AddAnswerId(questions[currentQuestionIndex].UserAnswerId, userId);
+                                        AddAnswerId(selectedAnswer, userId);
                                     }
                                     else
                                     {
                                             <p>You answered incorrectly!</p>
-                                        AddAnswerId(questions[currentQuestionIndex].UserAnswerId, userId);
+                                        AddAnswerId(selectedAnswer, userId);
                                     }
                                     <h5>Selected Answer: @selectedAnswer</h5>
                                     <p class="mt-2">

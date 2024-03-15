@@ -2,7 +2,7 @@
 @inject ISegmentRepository segmentRepository;
 
 
-@page "/WelcomePage"
+@page "/"
 @using ValhallaVaultCyberAwareness.Domain.Models
 @using ValhallaVaultCyberAwareness.Repositories;
 @using ValhallaVaultCyberAwareness.Repositories.Interfaces
@@ -19,11 +19,6 @@
 </NavLink>
 
 @code {
-	protected override async Task OnInitializedAsync()
-	{
-		bool isDeleted = await segmentRepository.RemoveSegmentAsync(10);
-	}
-
 
 
 }
