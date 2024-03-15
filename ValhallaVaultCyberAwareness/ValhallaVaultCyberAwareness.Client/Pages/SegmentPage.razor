@@ -1,9 +1,11 @@
-﻿@page "/Segment"
+﻿@page "/Segment/{SegmentId:int}"
 @using ValhallaVaultCyberAwareness.Client.Services
 @using ValhallaVaultCyberAwareness.Client.ViewModels
 @using ValhallaVaultCyberAwareness.Domain.Models
 
 @inject ISegmentService SegmentService
+@inject AuthenticationStateProvider authStateProvider
+@inject IUserAnswersService userAnswersService
 
 <PageTitle>Quiz Segments</PageTitle>
 
@@ -16,37 +18,47 @@ else
 {
     // Div to display cards as a row instead of top to bottom
     <div class="row">
-        @foreach (var segmentItem in segments)
+        @foreach (var SubCategoryItem in segments.SubCategoryScores)
         {
-            // Create a card for each segment. Then include name, picture, score & a link to select SubSegments
             <div class="col-4">
-                <div class="card border-dark text-center w-75">
+                <div class="card border-dark text-center w-75 mt-5">
                     <img class="card-img-top" src="https://variety.com/wp-content/uploads/2023/04/Twitter-Logo-Doge-Dogecoin.png" alt="Card image cap" />
                     <div class="card-img-overlay">
-                        <h4 class="card-title">@segmentItem.SegmentName</h4>
+                        <h4 class="card-title">@SubCategoryItem.SubCategoryName</h4>
                     </div>
                     <div class="card-footer">
-                        <p>@segmentItem.SegmentDescription</p>
+                        <p>@segments.SegmentDescription</p>
                         <ul>
                            
-                            @foreach (var SubCategoryItem in segmentItem.SubCategoryScores)
-                            {
+                            
                                 <li>@SubCategoryItem.SubCategoryName - 
 
                                     @SubCategoryItem.CorrectUserAnswers
                                     
                                     / @SubCategoryItem.TotalQuestions
                                 </li>
-                            }
+                            
                         </ul>
-                        <p class="card-description">@segmentItem.SegmentDescription</p>
+                        <p class="card-description">@segments.SegmentDescription</p>
                     </div>
-                    <div class="card-footer bg-secondary">
-                        <h6 >Completed SubCategories: 
-                            @segmentItem.SubCategoryScores.Count(item => item.UserHasCompletedSubCategory)
-                            / @segmentItem.SegmentSubCategories.Count </h6>
+                    <div class="card-body mt-5">
+                        @if (segments.AvailableSubCategoryIndex >= segments.SubCategoryScores.IndexOf(SubCategoryItem))
+                        {
+                            <a href="@($"https://localhost:7107/quiz/{SubCategoryItem.SubCategoryId}")" class="stretched-link"></a>
+                        }
+                        else if (segments.AvailableSubCategoryIndex == -1)
+                        {
+                            <p>Det finns inga frågor registrerade i denna subkategori</p>
+                        }
+                        else
+                        {
+                            <p>
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-lock-fill" viewBox="0 0 16 16">
+                                    <path d="M8 1a2 2 0 0 1 2 2v4H6V3a2 2 0 0 1 2-2m3 6V3a3 3 0 0 0-6 0v4a2 2 0 0 0-2 2v5a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2" />
+                                </svg> Slutför tidigare segment för att få tillgång till frågorna i detta segment
+                            </p>
+                        }
                     </div>
-                    <a href="@($"https://localhost:7107/SubCategory/{segmentItem.SegmentId}")" class="stretched-link"></a>
                 </div>
             </div>
         }
@@ -54,12 +66,20 @@ else
 }
 
 @code {
+    [Parameter]
+    public int SegmentId { get; set; }
     // Create a list of all segments using GetSegments();
-    private List<SegmentUserScoreViewModel>? segments;
+    private SegmentUserScoreViewModel segments;
+
+    public string? UserId { get; set; }
+
 
     protected override async Task OnInitializedAsync()
     {
-        // Use the Category Id and User Id to fetch the corresponding Segment and the user information tied to it.
-        segments = await SegmentService.ImprovedGetSegmentsByCategoryIdAsync(1, "1872fec2-27e0-4aa2-b876-5de387b62fbc");
+        var authState = await authStateProvider.GetAuthenticationStateAsync();
+        UserId = authState.User.FindFirst(c => c.Type.Contains("nameidentifier"))?.Value;
+
+        segments = await SegmentService.GetSegmentWithUserScore(SegmentId, UserId);
+
     }
 }
