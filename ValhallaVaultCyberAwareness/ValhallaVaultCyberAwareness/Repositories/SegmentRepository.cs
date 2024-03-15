@@ -23,23 +23,16 @@ namespace ValhallaVaultCyberAwareness.Repositories
         {
             return await _context.Segments.FirstOrDefaultAsync(s => s.Id == segmentId);
         }
-
-        /// <summary>
-        /// Retrieves all segments by category-id. A fail safe is included so that we don't include any questions that doesn't have a correct answer registered.
-        /// </summary>
-        /// <param name="categoryId"></param>
-        /// <param name="userId"></param>
-        /// <returns>A list of segments with included data</returns>
-        public async Task<List<SegmentModel>> GetSegmentsByCategoryIdAsync(int categoryId, string userId)
+        public async Task<SegmentModel?> GetSegmentWithUserScoresByUserIdAsync(int segmentId, string userId)
         {
-            return await _context.Segments
-                .Where(s => s.CategoryId == categoryId)
-                .Include(s => s.SubCategories)
-                .ThenInclude(s => s.Questions.Where(q => q.Answers.Any(a => a.IsCorrect)))
-                .ThenInclude(q => q.Answers)
-                .ThenInclude(a => a.UserAnswers.Where(u => u.UserId == userId))
-                .ToListAsync();
+            return await _context.Segments.Where(s => s.Id == segmentId).
+                Include(s => s.SubCategories).
+                ThenInclude(s => s.Questions.Where(q => q.Answers.Any(a => a.IsCorrect))).
+                ThenInclude(q => q.Answers).
+                ThenInclude(a => a.UserAnswers.Where(u => u.UserId == userId)).
+                FirstOrDefaultAsync();
         }
+
         public async Task<List<SegmentModel>> GetAllSegmentsAsync()
         {
             return await _context.Segments.ToListAsync();
