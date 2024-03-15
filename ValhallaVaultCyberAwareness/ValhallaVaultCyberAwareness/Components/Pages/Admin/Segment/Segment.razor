@@ -1,16 +1,23 @@
 ﻿@rendermode InteractiveServer
 @inject AdminManager manager
 
+<ConfirmDialog @ref="dialog"></ConfirmDialog>
+
+
 <div class="card">
     <div class="card-body">
 
         <h5 class="card-title">@CurrentSegment.Name</h5>
         <h5 class="card-text">Category: @CurrentSegment.Category.Name</h5>
         <p class="card-text">@CurrentSegment.Description</p>
-        <button class="btn btn-primary" @onclick="async () => await DeleteSegment()">Delete</button>
-        <a href="/Admin/Segment/UpdateSegmentPage/@CurrentSegment.Id">
-            <button class="btn btn-primary">Edit</button>
-        </a>
+          <button class="btn btn-primary" @onclick="async () => await DeleteSegment()">Delete</button>
+        <button class="btn btn-primary" @onclick="Toggle">Edit</button>
+
+        @if(Hide == false)
+        {
+            <EditSegmentForm segment ="CurrentSegment" OnUpdate="ToggleHide"></EditSegmentForm>
+        }
+
      </div>
 </div>
 @code {
@@ -19,6 +26,34 @@
 
     async Task DeleteSegment()
     {
-        await manager._segmentRepository.RemoveSegmentAsync(CurrentSegment.Id);
+        var confirmation = await dialog.ShowAsync(
+
+            title: "Are you sure you want to delete this segment?",
+            message1: "This item will be deleted permanently. You can't undo this action."
+
+        );
+        if (confirmation)
+        {
+            await manager._segmentRepository.RemoveSegmentAsync(CurrentSegment.Id);
+            OnDelete.Invoke();
+        }
+    }
+
+    [Parameter]
+    public Action? OnDelete { get; set; }
+
+    private ConfirmDialog dialog;
+
+    private bool Hide { get; set; } = true;
+
+    private void Toggle()
+    {
+        Hide = !Hide;
+    }
+
+    private void ToggleHide()
+    {
+        Hide = true;
+        StateHasChanged();
     }
 }

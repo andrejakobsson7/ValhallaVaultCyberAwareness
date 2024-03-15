@@ -5,6 +5,7 @@ namespace ValhallaVaultCyberAwareness.Repositories.Interfaces
     public interface IQuestionRepository
     {
         Task<List<QuestionModel>> GetAllQuestionsAsync();
+        Task<List<QuestionModel>> GetAllQuestionsWithIncludeAsync();
         Task<List<QuestionModel>> GetQuestionsBySubCategoryIdAsync(int subCategoryId);
         Task<QuestionModel> AddQuestionAsync(QuestionModel newQuestion);
         Task<bool> DeleteQuestionAsync(int Id);

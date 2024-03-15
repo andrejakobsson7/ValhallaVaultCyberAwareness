@@ -1,5 +1,41 @@
-﻿<h3>QuestionPage</h3>
+﻿@page "/Admin/Question/QuestionPage"
+@attribute [Authorize(Roles = "Admin")]
+@inject AdminManager manager
+@rendermode InteractiveServer
+
+<h3>Questions: </h3>
+
+@if(Questions == null)
+{
+    <h3>Loading...</h3>
+}
+else
+{
+    <div class="flex-column">
+
+        @foreach (var question in Questions)
+        {
+            <Question CurrentQuestion="@question" OnDelete=" async () => await OnChange()"></Question>
+        }
+        <AddQuestionForm></AddQuestionForm>
+
+    </div>
+
+}
+
+
 
 @code {
+    List<QuestionModel> Questions = new();
 
+    protected override async Task OnInitializedAsync()
+    {
+        Questions = await manager._questionRepository.GetAllQuestionsWithIncludeAsync();
+    }
+
+    private async Task OnChange()
+    {
+        Questions = await manager._questionRepository.GetAllQuestionsWithIncludeAsync();
+        StateHasChanged();
+    }
 }

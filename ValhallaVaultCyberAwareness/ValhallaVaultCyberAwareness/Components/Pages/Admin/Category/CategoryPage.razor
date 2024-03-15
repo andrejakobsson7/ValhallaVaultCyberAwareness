@@ -1,12 +1,11 @@
 ﻿@page "/Admin/Category/CategoryPage"
 @attribute [Authorize(Roles = "Admin")]
 @inject AdminManager manager
-@attribute [StreamRendering(true)]
-
+@rendermode InteractiveServer
 
 <h3>Categories: </h3>
 
-@if(categories == null)
+@if(Categories == null)
 {
     <h3>Loading...</h3>
 }
@@ -15,12 +14,12 @@ else
 
     <div class="flex-column">
 
-        @foreach (var category in categories)
+        @foreach (var category in Categories)
         {
-            <Category CurrentCategory="@category"></Category>
+            <Category CurrentCategory="@category" OnDelete="async () => await OnChange()"></Category>
         }
 
-        <AddCategoryForm></AddCategoryForm>
+        <AddCategoryForm OnAdd="async () => await OnChange()"></AddCategoryForm>
 
     </div>
 
@@ -29,10 +28,16 @@ else
 
 
 @code {
-    List<CategoryModel> categories = new();
+    List<CategoryModel> Categories = new();
 
     protected override async Task OnInitializedAsync()
     {
-        categories = await manager._categoryRepository.GetAllCategoriesWithInclude();
+        Categories = await manager._categoryRepository.GetAllCategoriesWithInclude();
+    }
+
+    private async Task OnChange()
+    {
+        Categories = await manager._categoryRepository.GetAllCategoriesWithInclude();
+        StateHasChanged();
     }
 }

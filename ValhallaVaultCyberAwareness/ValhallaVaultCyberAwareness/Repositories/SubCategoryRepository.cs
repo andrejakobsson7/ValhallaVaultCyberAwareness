@@ -13,6 +13,11 @@ namespace ValhallaVaultCyberAwareness.Repositories
         {
             _context = context;
         }
+
+        public async Task<List<SubCategoryModel>> GetSubCategoriesAsync()
+        {
+            return await _context.SubCategories.ToListAsync();
+        }
         public async Task<List<SubCategoryModel>> GetSubCategoriesWithIncludeAsync()
         {
             return await _context.SubCategories.Include(s => s.Segment).ToListAsync();
@@ -79,6 +84,5 @@ namespace ValhallaVaultCyberAwareness.Repositories
             throw new Exception("Sub category not found");
 
         }
-
     }
 }

@@ -10,10 +10,6 @@
          <h5 class="card-text">Segment: @CurrentSubCategory.Segment.Name</h5>
          <p class="card-text">@CurrentSubCategory.Description</p>
         <button class="btn btn-primary" @onclick="async () => await DeleteSubCategory()">Delete</button>
-       @*  <a href="/Admin/Segment/UpdateSegmentPage/@CurrentSubCategory.Id">
-            <button class="btn btn-primary">Edit</button>
-        </a>
- *@
         <button class="btn btn-primary" @onclick="Toggle">Edit</button>
 
         @if(Hide == false)

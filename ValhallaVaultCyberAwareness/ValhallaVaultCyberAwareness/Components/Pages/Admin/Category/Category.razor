@@ -1,17 +1,61 @@
-﻿
+﻿@rendermode InteractiveServer
+@inject AdminManager manager
+
+<ConfirmDialog @ref="dialog"></ConfirmDialog>
+
 <div class="card">
     <div class="card-body">
 
         <h5 class="card-title">@CurrentCategory.Name</h5>
         <p class="card-text">@CurrentCategory.Description</p>
-        <a href="/Admin/Category/UpdateCategoryPage/@CurrentCategory.Id">
-            <button class="btn btn-primary">Edit</button>
-        </a>
-        <DeleteCategoryButton CategoryId="@CurrentCategory.Id"></DeleteCategoryButton>
+        <button class="btn btn-primary" @onclick="async () => await DeleteCategory()">Delete</button>
+        <button class="btn btn-primary" @onclick="Toggle">Edit</button>
+
+         @if(Hide == false)
+        {
+            <EditCategoryForm Category="CurrentCategory" OnUpdate="ToggleHide"></EditCategoryForm>
+        }
+
     </div>
 </div>
 
 @code {
     [Parameter]
     public CategoryModel CurrentCategory { get; set; } = new();
+
+    [Parameter]
+    public Action? OnDelete { get; set; }
+
+    private ConfirmDialog dialog;
+
+    async Task DeleteCategory()
+    {
+        var confirmation = await dialog.ShowAsync(
+
+            title: "Are you sure you want to delete this category?",
+            message1: "This item will be deleted permanently. You can't undo this action."
+
+        );
+
+        if (confirmation)
+        {
+            await manager._categoryRepository.DeleteCategoryAsync(CurrentCategory.Id);
+            OnDelete.Invoke();
+        }
+
+    }
+
+    private bool Hide { get; set; } = true;
+
+    private void Toggle()
+    {
+        Hide = !Hide;
+    }
+
+    private void ToggleHide()
+    {
+        Hide = true;
+        StateHasChanged();
+    }
+
 }

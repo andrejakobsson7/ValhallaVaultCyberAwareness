@@ -2,7 +2,6 @@
 @attribute [Authorize(Roles = "Admin")]
 @rendermode InteractiveServer
 @inject AdminManager manager
-@inject ApplicationDbContext context
 
 <h3>Subcategories: </h3>
 
@@ -33,16 +32,9 @@ else
         Subcategories = await manager._subcategoryRepository.GetSubCategoriesWithIncludeAsync();
     }
 
-    // protected override async Task OnAfterRenderAsync(bool firstRender)
-    // {
-    //     Subcategories = await manager._subcategoryRepository.GetSubCategoriesWithIncludeAsync();
-    // }
-
-
     // Gets the new list of subcategories and calls statehaschanged to refresh the page
     private async Task OnChange()
     {
-        context.ChangeTracker.Clear();
         Subcategories = await manager._subcategoryRepository.GetSubCategoriesWithIncludeAsync();
         StateHasChanged();
     }

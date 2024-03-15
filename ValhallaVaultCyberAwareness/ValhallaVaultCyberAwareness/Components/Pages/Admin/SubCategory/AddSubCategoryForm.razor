@@ -3,6 +3,8 @@
 
 <ConfirmDialog @ref="dialog"></ConfirmDialog>
 
+<h3>Create a SubCategory: </h3>
+
 <EditForm Model="SubCategory" OnSubmit=" async ()=> await HandleSubmit()" FormName="name" class="card w-50">
 
     <label>
@@ -41,8 +43,6 @@
     public List<SegmentModel> Segments { get; set; } = new();
 
     private ConfirmDialog dialog;
-
-    protected bool IsClicked { get; set; }
 
     [Parameter]
     public Action? OnAdd { get; set; }

@@ -1,7 +1,6 @@
 ﻿@page "/Admin/Segment/SegmentPage"
 @attribute [Authorize(Roles = "Admin")]
 @rendermode InteractiveServer
-
 @inject AdminManager manager
 
 <h3>Segments: </h3>
@@ -12,9 +11,9 @@
 
         @foreach (var segment in Segments)
         {
-            <Segment CurrentSegment="@segment"></Segment>
+            <Segment CurrentSegment="@segment" OnDelete=" async () => await OnChange()"></Segment>
         }
-        <AddSegmentForm Categories="Categories"></AddSegmentForm>
+        <AddSegmentForm Categories="Categories" OnAdd="async () => await OnChange()"></AddSegmentForm>
      </div>
 }
 else
@@ -32,12 +31,13 @@ else
     {
         Segments = await manager._segmentRepository.GetAllSegmentsWithIncludeAsync();
 
-        Categories = await manager._categoryRepository.GetAllCategoriesAsync();
+        // Categories = await manager._categoryRepository.GetAllCategoriesAsync();
 
     }
 
-    protected override async Task OnAfterRenderAsync(bool firstRender)
+    private async Task OnChange()
     {
+        Segments = await manager._segmentRepository.GetAllSegmentsWithIncludeAsync();
         StateHasChanged();
     }
 }
