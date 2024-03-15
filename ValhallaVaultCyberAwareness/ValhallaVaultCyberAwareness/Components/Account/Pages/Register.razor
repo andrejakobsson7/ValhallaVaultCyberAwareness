@@ -27,6 +27,10 @@
             <h2>Create a new account.</h2>
             <hr />
             <ValidationSummary class="text-danger" role="alert" />
+            @if(String.IsNullOrEmpty(EmailErrorMessage) == false)
+            {
+                <p class="text-danger">@EmailErrorMessage</p>
+            }
             <div class="form-floating mb-3">
                 <InputText @bind-Value="Input.Email" class="form-control" autocomplete="username" aria-required="true" placeholder="name@example.com" />
                 <label for="email">Email</label>
@@ -69,6 +73,8 @@
 
 
 @code {
+
+    private string EmailErrorMessage = "";
     private IEnumerable<IdentityError>? identityErrors;
 
     private bool policyAccepted = false;
@@ -84,39 +90,48 @@
 
     public async Task RegisterUser(EditContext editContext)
     {
-        var user = CreateUser();
-
-        await UserStore.SetUserNameAsync(user, Input.Username, CancellationToken.None);
-        var emailStore = GetEmailStore();
-        await emailStore.SetEmailAsync(user, Input.Email, CancellationToken.None);
-        var result = await UserManager.CreateAsync(user, Input.Password);
-
-        if (!result.Succeeded)
+        ApplicationUser userFound = await UserManager.FindByEmailAsync(Input.Email);
+        if(userFound == null)
         {
-            identityErrors = result.Errors;
-            return;
+            var user = CreateUser();
+
+            await UserStore.SetUserNameAsync(user, Input.Username, CancellationToken.None);
+            var emailStore = GetEmailStore();
+            await emailStore.SetEmailAsync(user, Input.Email, CancellationToken.None);
+            var result = await UserManager.CreateAsync(user, Input.Password);
+
+            if (!result.Succeeded)
+            {
+                identityErrors = result.Errors;
+                return;
+            }
+
+            Logger.LogInformation("User created a new account with password.");
+
+            var userId = await UserManager.GetUserIdAsync(user);
+            var code = await UserManager.GenerateEmailConfirmationTokenAsync(user);
+            code = WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(code));
+            var callbackUrl = NavigationManager.GetUriWithQueryParameters(
+                NavigationManager.ToAbsoluteUri("Account/ConfirmEmail").AbsoluteUri,
+                new Dictionary<string, object?> { ["userId"] = userId, ["code"] = code, ["returnUrl"] = ReturnUrl });
+
+            await EmailSender.SendConfirmationLinkAsync(user, Input.Email, HtmlEncoder.Default.Encode(callbackUrl));
+
+            if (UserManager.Options.SignIn.RequireConfirmedAccount)
+            {
+                RedirectManager.RedirectTo(
+                    "Account/RegisterConfirmation",
+                    new() { ["email"] = Input.Email, ["returnUrl"] = ReturnUrl });
+            }
+
+            await SignInManager.SignInAsync(user, isPersistent: false);
+            RedirectManager.RedirectTo(ReturnUrl);
+        }
+        else
+        {
+            EmailErrorMessage = "Email already in use, please choose another one";
         }
 
-        Logger.LogInformation("User created a new account with password.");
-
-        var userId = await UserManager.GetUserIdAsync(user);
-        var code = await UserManager.GenerateEmailConfirmationTokenAsync(user);
-        code = WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(code));
-        var callbackUrl = NavigationManager.GetUriWithQueryParameters(
-            NavigationManager.ToAbsoluteUri("Account/ConfirmEmail").AbsoluteUri,
-            new Dictionary<string, object?> { ["userId"] = userId, ["code"] = code, ["returnUrl"] = ReturnUrl });
-
-        await EmailSender.SendConfirmationLinkAsync(user, Input.Email, HtmlEncoder.Default.Encode(callbackUrl));
-
-        if (UserManager.Options.SignIn.RequireConfirmedAccount)
-        {
-            RedirectManager.RedirectTo(
-                "Account/RegisterConfirmation",
-                new() { ["email"] = Input.Email, ["returnUrl"] = ReturnUrl });
-        }
-
-        await SignInManager.SignInAsync(user, isPersistent: false);
-        RedirectManager.RedirectTo(ReturnUrl);
     }
 
     private ApplicationUser CreateUser()
