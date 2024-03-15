@@ -11,6 +11,11 @@
 }
 else
 {
+    <!--
+
+        TO BE DELETED?!
+
+    -->
     <div id="frontPage" class="row">
         @foreach (var SubCategoryItem in SubCategories)
         {
@@ -38,41 +43,6 @@ else
 
     protected override async Task OnInitializedAsync()
     {
-        SubCategories = await SubCategoryService.GetSubCategoriesBySegmentIdAsync(SegmentId);
+        // SubCategories = await SubCategoryService.GetSubCategoriesBySegmentIdAsync(SegmentId);
     }
-
-    /*
-    private List<SegmentModel> GetDummyData()
-    {
-        var dummyData = new List<SegmentModel>();
-
-        for (int i = 1; i <= 5; i++)
-        {
-            var segment = new SegmentModel
-                {
-                    SubCategories = new List<SubCategory>
-                {
-                    new SubCategory { Name = $"SubCategory{i}", Description = $"Description for SubCategory{i}" },
-                    new SubCategory { Name = $"SubCategory{i + 1}", Description = $"Description for SubCategory{i + 1}" }
-                }
-                };
-
-            dummyData.Add(segment);
-        }
-
-        return dummyData;
-    }
-
-    public class SegmentModel
-    {
-        public List<SubCategory> SubCategories { get; set; } = new List<SubCategory>();
-
-    }
-    public class SubCategory
-    {
-        public int SubCategoryId { get; set; }
-        public string Name { get; set; }
-        public string Description { get; set; }
-    }
-    */
 }
