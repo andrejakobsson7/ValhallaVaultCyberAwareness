@@ -1,0 +1,65 @@
+﻿@page "/Segment"
+@using ValhallaVaultCyberAwareness.Client.Services
+@using ValhallaVaultCyberAwareness.Client.ViewModels
+@using ValhallaVaultCyberAwareness.Domain.Models
+
+@inject ISegmentService SegmentService
+
+<PageTitle>Quiz Segments</PageTitle>
+
+<!-- Check if content has loaded. If it has not display Loading-->
+@if (segments == null)
+{
+    <h2><em>Loading...</em></h2>
+}
+else
+{
+    // Div to display cards as a row instead of top to bottom
+    <div class="row">
+        @foreach (var segmentItem in segments)
+        {
+            // Create a card for each segment. Then include name, picture, score & a link to select SubSegments
+            <div class="col-4">
+                <div class="card border-dark text-center w-75">
+                    <img class="card-img-top" src="https://variety.com/wp-content/uploads/2023/04/Twitter-Logo-Doge-Dogecoin.png" alt="Card image cap" />
+                    <div class="card-img-overlay">
+                        <h4 class="card-title">@segmentItem.SegmentName</h4>
+                    </div>
+                    <div class="card-footer">
+                        <p>@segmentItem.SegmentDescription</p>
+                        <ul>
+                           
+                            @foreach (var SubCategoryItem in segmentItem.SubCategoryScores)
+                            {
+                                <li>@SubCategoryItem.SubCategoryName - 
+
+                                    @SubCategoryItem.CorrectUserAnswers
+                                    
+                                    / @SubCategoryItem.TotalQuestions
+                                </li>
+                            }
+                        </ul>
+                        <p class="card-description">@segmentItem.SegmentDescription</p>
+                    </div>
+                    <div class="card-footer bg-secondary">
+                        <h6 >Completed SubCategories: 
+                            @segmentItem.SubCategoryScores.Count(item => item.UserHasCompletedSubCategory)
+                            / @segmentItem.SegmentSubCategories.Count </h6>
+                    </div>
+                    <a href="@($"https://localhost:7107/SubCategory/{segmentItem.SegmentId}")" class="stretched-link"></a>
+                </div>
+            </div>
+        }
+    </div>
+}
+
+@code {
+    // Create a list of all segments using GetSegments();
+    private List<SegmentUserScoreViewModel>? segments;
+
+    protected override async Task OnInitializedAsync()
+    {
+        // Use the Category Id and User Id to fetch the corresponding Segment and the user information tied to it.
+        segments = await SegmentService.ImprovedGetSegmentsByCategoryIdAsync(1, "1872fec2-27e0-4aa2-b876-5de387b62fbc");
+    }
+}
