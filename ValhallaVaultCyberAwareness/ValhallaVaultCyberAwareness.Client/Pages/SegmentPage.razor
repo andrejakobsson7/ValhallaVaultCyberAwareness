@@ -1,13 +1,11 @@
-﻿@page "/Score"
+﻿@page "/Segment"
 @using ValhallaVaultCyberAwareness.Client.Services
 @using ValhallaVaultCyberAwareness.Client.ViewModels
 @using ValhallaVaultCyberAwareness.Domain.Models
 
 @inject ISegmentService SegmentService
 
-<PageTitle>Quiz Score and Links</PageTitle>
-
-<h3>Quiz Score and Links</h3>
+<PageTitle>Quiz Segments</PageTitle>
 
 <!-- Check if content has loaded. If it has not display Loading-->
 @if (segments == null)
@@ -48,7 +46,7 @@ else
                             @segmentItem.SubCategoryScores.Count(item => item.UserHasCompletedSubCategory)
                             / @segmentItem.SegmentSubCategories.Count </h6>
                     </div>
-                    <a href="@($"https://localhost:7107/quizpage/{segmentItem.SegmentId}")" class="stretched-link"></a>
+                    <a href="@($"https://localhost:7107/SubCategory/{segmentItem.SegmentId}")" class="stretched-link"></a>
                 </div>
             </div>
         }
