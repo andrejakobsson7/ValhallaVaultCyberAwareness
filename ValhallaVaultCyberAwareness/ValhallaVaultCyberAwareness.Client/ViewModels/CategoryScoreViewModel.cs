@@ -23,13 +23,21 @@ namespace ValhallaVaultCyberAwareness.Client.ViewModels
             CategoryDescription = category.Description;
             SegmentUserScores = category.Segments.Select(s => new SegmentUserScoreViewModel(s)).ToList();
             CompletedSegments = SegmentUserScores.Where(s => s.UserHasCompletedSegment).Count();
+            TotalSegments = SegmentUserScores.Count();
             //Calculate all correct useranswers in each segment and aggregate it to the category total.
             CorrectUserAnswers = SegmentUserScores.Aggregate(0, (total, segmentScore) => total + segmentScore.CorrectUserAnswers);
             //Calculate all questions in each segment and aggregate it to the category total.
             TotalQuestions = SegmentUserScores.Aggregate(0, (total, segmentScore) => total + segmentScore.TotalQuestions);
             //Calculate user success percentage in this category.
-            UserCompletionPercentage = Math.Round(((double)CorrectUserAnswers / (double)TotalQuestions) * 100, 2);
-            TotalSegments = SegmentUserScores.Count();
+            if (TotalQuestions > 0)
+            {
+                UserCompletionPercentage = Math.Round(((double)CorrectUserAnswers / (double)TotalQuestions) * 100, 2);
+            }
+            else
+            {
+                UserCompletionPercentage = 0;
+                AvailableSegmentIndex = -1;
+            }
             //Calculate which segment the user is eligible to start from.
             for (int i = 0; i < SegmentUserScores.Count; i++)
             {

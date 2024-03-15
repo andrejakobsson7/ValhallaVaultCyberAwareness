@@ -14,6 +14,10 @@ namespace ValhallaVaultCyberAwareness.Repositories
             _context = context;
         }
 
+        public async Task<List<QuestionModel>> GetAllQuestionsWithIncludeAsync()
+        {
+            return await _context.Questions.Include(q => q.Answers).Include(q => q.SubCategory).ToListAsync();
+        }
         public async Task<List<QuestionModel>> GetAllQuestionsAsync()
         {
             var questions = await _context.Questions.ToListAsync();
@@ -69,5 +73,6 @@ namespace ValhallaVaultCyberAwareness.Repositories
             throw new Exception("Question not found");
 
         }
+
     }
 }

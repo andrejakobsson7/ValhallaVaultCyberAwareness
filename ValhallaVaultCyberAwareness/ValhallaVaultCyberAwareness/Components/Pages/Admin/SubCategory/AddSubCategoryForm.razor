@@ -1,8 +1,11 @@
 ﻿@inject AdminManager manager
+@inject NavigationManager navManager
 
 <ConfirmDialog @ref="dialog"></ConfirmDialog>
 
-<EditForm Model="SubCategory" OnSubmit="HandleSubmit" FormName="name" class="card w-50">
+<h3>Create a SubCategory: </h3>
+
+<EditForm Model="SubCategory" OnSubmit=" async ()=> await HandleSubmit()" FormName="name" class="card w-50">
 
     <label>
         Name
@@ -21,19 +24,20 @@
     </label>
 
     <InputSelect @bind-Value="SubCategory.SegmentId">
+        <option>None</option>
         @foreach (var segment in Segments)
         {
             <option value="@segment.Id">@segment.Name</option>
         }
     </InputSelect>
 
-    <input type="submit" value="Update" />
+    <input type="submit" value="Create subcategory" />
 
 </EditForm>
 
 
 @code {
-    [Parameter]
+    [SupplyParameterFromForm]
     public SubCategoryModel SubCategory { get; set; } = new();
 
     public List<SegmentModel> Segments { get; set; } = new();
@@ -41,8 +45,7 @@
     private ConfirmDialog dialog;
 
     [Parameter]
-    public Action? OnUpdate { get; set; }
-
+    public Action? OnAdd { get; set; }
 
     protected override async Task OnInitializedAsync()
     {
@@ -55,17 +58,23 @@
 
         var confirmation = await dialog.ShowAsync(
 
-            title: "Are you sure you want to update?",
+            title: "Are you sure you want to add?",
             message1: "Y/N"
-
         );
 
         if (confirmation)
         {
-            await manager._subcategoryRepository.UpdateSubCategoryAsync(SubCategory);
-            OnUpdate?.Invoke();
-        }
+            await manager._subcategoryRepository.AddSubCategory(SubCategory);
 
+            navManager.NavigateTo("Admin/SubCategory/SubCategoryPage", true);
+            // OnAdd?.Invoke();
+            // StateHasChanged();
+        }
     }
+
+    // protected override async Task OnParametersSetAsync()
+    // {
+    //     SubCategory = null;
+    // }
 
 }

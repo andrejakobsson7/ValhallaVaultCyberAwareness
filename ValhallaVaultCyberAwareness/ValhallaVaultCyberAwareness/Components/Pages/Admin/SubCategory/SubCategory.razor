@@ -1,6 +1,8 @@
 ﻿@rendermode InteractiveServer
 @inject AdminManager manager
 
+<ConfirmDialog @ref="dialog"></ConfirmDialog>
+
 <div class="card">
     <div class="card-body">
 
@@ -8,15 +10,11 @@
          <h5 class="card-text">Segment: @CurrentSubCategory.Segment.Name</h5>
          <p class="card-text">@CurrentSubCategory.Description</p>
         <button class="btn btn-primary" @onclick="async () => await DeleteSubCategory()">Delete</button>
-       @*  <a href="/Admin/Segment/UpdateSegmentPage/@CurrentSubCategory.Id">
-            <button class="btn btn-primary">Edit</button>
-        </a>
- *@
         <button class="btn btn-primary" @onclick="Toggle">Edit</button>
 
         @if(Hide == false)
         {
-            <EditSubCategoryForm SubCategory="CurrentSubCategory"></EditSubCategoryForm>
+            <EditSubCategoryForm SubCategory="CurrentSubCategory" OnUpdate="ToggleHide"></EditSubCategoryForm>
         }
 
     </div>
@@ -25,9 +23,26 @@
     [Parameter]
     public SubCategoryModel CurrentSubCategory { get; set; }
 
+    [Parameter]
+    public Action? OnDelete { get; set; }
+
+    private ConfirmDialog dialog;
+
     async Task DeleteSubCategory()
     {
-        await manager._segmentRepository.RemoveSegmentAsync(CurrentSubCategory.Id);
+        var confirmation = await dialog.ShowAsync(
+
+            title: "Are you sure you want to delete this subcategory?",
+            message1: "This item will be deleted permanently. You can't undo this action."
+
+        );
+
+        if (confirmation)
+        {
+            await manager._subcategoryRepository.DeleteSubCategoryAsync(CurrentSubCategory.Id);
+            OnDelete.Invoke();
+        }
+
     }
 
     private bool Hide { get; set; } = true;
@@ -36,4 +51,11 @@
     {
         Hide = !Hide;
     }
+
+    private void ToggleHide()
+    {
+        Hide = true;
+        StateHasChanged();
+    }
+  
 }

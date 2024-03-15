@@ -34,7 +34,14 @@ namespace ValhallaVaultCyberAwareness.Client.ViewModels
                 }
             }
             //Calculate the success percentage
-            UserCompletionPercentage = Math.Round(((double)CorrectUserAnswers / (double)TotalQuestions) * 100, 2);
+            if (TotalQuestions > 0)
+            {
+                UserCompletionPercentage = Math.Round(((double)CorrectUserAnswers / (double)TotalQuestions) * 100, 2);
+            }
+            else
+            {
+                UserCompletionPercentage = 0;
+            }
             //If the success percentage is over the threshold or NaN (which will be the case if the subcategory doesn't contain any questions).
             if (UserCompletionPercentage >= CompletionPercentage || Double.IsNaN(UserCompletionPercentage))
             {

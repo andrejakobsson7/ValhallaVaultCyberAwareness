@@ -11,8 +11,10 @@
 
         @foreach (var subCategory in Subcategories)
         {
-            <SubCategory CurrentSubCategory="subCategory"></SubCategory>
+            <SubCategory CurrentSubCategory="subCategory" OnDelete=" async () => await OnChange()"></SubCategory>
         }
+
+        <AddSubCategoryForm OnAdd="async () => await OnChange()"></AddSubCategoryForm>
      </div>
 }
 else
@@ -30,4 +32,10 @@ else
         Subcategories = await manager._subcategoryRepository.GetSubCategoriesWithIncludeAsync();
     }
 
+    // Gets the new list of subcategories and calls statehaschanged to refresh the page
+    private async Task OnChange()
+    {
+        Subcategories = await manager._subcategoryRepository.GetSubCategoriesWithIncludeAsync();
+        StateHasChanged();
+    }
 }
