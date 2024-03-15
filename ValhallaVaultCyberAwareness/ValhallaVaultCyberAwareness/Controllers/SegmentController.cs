@@ -34,16 +34,15 @@ namespace ValhallaVaultCyberAwareness.Controllers
         //}
 
         [HttpGet]
-        [Route("{categoryId}/{userId}")]
-        public async Task<IActionResult> GetSegmentsByCategoryId(int categoryId, string userId)
+        [Route("{segmentId}/{userId}")]
+        public async Task<IActionResult> GetCategoryWithUserScoresByUserIdAsync(int segmentId, string userId)
         {
-            var segments = await _segmentRepo.GetSegmentsByCategoryIdAsync(categoryId, userId);
-            if (segments != null)
+            var segmentScore = await _segmentRepo.GetSegmentWithUserScoresByUserIdAsync(segmentId, userId);
+            if (segmentScore != null)
             {
-                List<SegmentApiModel> apiSegments = segments.Select(s => new SegmentApiModel(s)).ToList();
-
-                var segmentsJson = JsonSerializer.Serialize(apiSegments, _jsonSerializerOptions);
-                return Ok(segmentsJson);
+                SegmentApiModel apiSegmentScore = new SegmentApiModel(segmentScore);
+                var segmentScoresJson = JsonSerializer.Serialize(apiSegmentScore, _jsonSerializerOptions);
+                return Ok(segmentScoresJson);
             }
             return BadRequest();
         }

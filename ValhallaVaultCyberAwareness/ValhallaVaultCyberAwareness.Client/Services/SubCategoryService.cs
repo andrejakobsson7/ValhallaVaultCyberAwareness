@@ -32,6 +32,25 @@ namespace ValhallaVaultCyberAwareness.Client.Services
             throw new HttpRequestException();
         }
 
+        public async Task<SubCategoryModel> GetSubCategoryById(int subCategoryId)
+        {
+            var apiResponse = await Client.GetAsync($"/api/subcategory/{subCategoryId}/");
+            if (apiResponse.IsSuccessStatusCode)
+            {
+                string jsonSubCategory = await apiResponse.Content.ReadAsStringAsync();
+                SubCategoryModel? subCategory = JsonConvert.DeserializeObject<SubCategoryModel>(jsonSubCategory);
+                if (subCategory == null)
+                {
+                    throw new JsonException();
+                }
+                else
+                {
+                    return subCategory;
+                }
+            }
+            throw new HttpRequestException();
+        }
+
         public async Task<bool> AddSubCategoryAsync(SubCategoryModel newSubCategory)
         {
             var apiResponse = await Client.PostAsJsonAsync("/api/subcategory/", newSubCategory);

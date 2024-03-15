@@ -16,14 +16,14 @@ namespace ValhallaVaultCyberAwareness.Controllers
         }
 
         [HttpGet]
-        [Route("{segmentId}")]
-        public async Task<ActionResult<SubCategoryModel>> GetSubCategoriesBySegmentId(int segmentId)
+        [Route("{subCategoryId}")]
+        public async Task<IActionResult> GetSubCategoryById(int subCategoryId)
         {
-            var subCategories = await _subCategoryRepo.GetSubCategoriesBySegmentId(segmentId);
+            var subCategory = await _subCategoryRepo.GetSubCategoryByIdAsync(subCategoryId);
 
-            if (subCategories != null)
+            if (subCategory != null)
             {
-                return Ok(subCategories);
+                return Ok(subCategory);
             }
 
             return BadRequest();
