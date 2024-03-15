@@ -1,0 +1,34 @@
+﻿@page "/Admin/Question/Answers/EditAnswersPage/{id:int}"
+@attribute [Authorize(Roles = "Admin")]
+@inject AdminManager manager
+@rendermode InteractiveServer
+
+<h3>Edit Answers: </h3>
+
+@if(Answers != null)
+{
+    foreach(var answer in Answers)
+    {
+        <EditAnswerForm Answer="answer" OnUpdate=" async () => await OnChange()"></EditAnswerForm>
+    }
+}
+
+@code {
+
+    [Parameter]
+    public int id { get; set; }
+
+    public List<AnswerModel> Answers { get; set; } = new();
+
+    protected override async Task OnInitializedAsync()
+    {
+        Answers = await manager._answersRepository.GetAnswersByQuestionIdAsync(id);
+
+    }
+
+    private async Task OnChange()
+    {
+        Answers = await manager._answersRepository.GetAnswersByQuestionIdAsync(id);
+        StateHasChanged();
+    }
+}

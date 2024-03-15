@@ -13,6 +13,11 @@ namespace ValhallaVaultCyberAwareness.Repositories
         {
             _context = context;
         }
+
+        public async Task<List<SubCategoryModel>> GetSubCategoriesAsync()
+        {
+            return await _context.SubCategories.ToListAsync();
+        }
         public async Task<List<SubCategoryModel>> GetSubCategoriesWithIncludeAsync()
         {
             return await _context.SubCategories.Include(s => s.Segment).ToListAsync();
@@ -25,10 +30,24 @@ namespace ValhallaVaultCyberAwareness.Repositories
 
         public async Task<SubCategoryModel> AddSubCategory(SubCategoryModel newSubCategory)
         {
-            await _context.SubCategories.AddAsync(newSubCategory);
-            await _context.SaveChangesAsync();
+            try
+            {
+                var local = _context.SubCategories.FirstOrDefault(s => s.Id == newSubCategory.Id);
+                if (local != null)
+                {
+                    _context.Entry(local).State = EntityState.Detached;
+                }
 
-            return newSubCategory;
+                await _context.SubCategories.AddAsync(newSubCategory);
+                await _context.SaveChangesAsync();
+                return newSubCategory;
+            }
+            catch (Exception ex)
+            {
+                var msg = ex.Message;
+                return null;
+            }
+
         }
 
         public async Task<bool> DeleteSubCategoryAsync(int Id)
@@ -65,6 +84,5 @@ namespace ValhallaVaultCyberAwareness.Repositories
             throw new Exception("Sub category not found");
 
         }
-
     }
 }

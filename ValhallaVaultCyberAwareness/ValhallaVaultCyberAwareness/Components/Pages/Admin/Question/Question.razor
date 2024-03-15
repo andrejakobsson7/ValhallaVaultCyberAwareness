@@ -1,0 +1,79 @@
+﻿@rendermode InteractiveServer
+@inject AdminManager manager
+
+<ConfirmDialog @ref="dialog"></ConfirmDialog>
+
+<div class="card">
+    <div class="card-body">
+
+        <h5 class="card-title">Question: @CurrentQuestion.Question</h5>
+         <h5 class="card-text">Subcategory: @CurrentQuestion.SubCategory.Name</h5>
+         <p class="card-text">Explanation: @CurrentQuestion.Explanation</p>
+         <h5>Answers: </h5>
+        @foreach(var answer in CurrentQuestion.Answers)
+        {
+            if (answer.IsCorrect)
+            {
+                <p style="color:green">@answer.Answer</p>
+            }
+            else
+            {
+                <p>@answer.Answer</p>
+
+            }
+        }
+
+        <button class="btn btn-primary" @onclick="async () => await DeleteQuestion()">Delete</button>
+        <button class="btn btn-primary" @onclick="Toggle">Edit Question</button>
+
+        <a href="Admin/Question/Answers/EditAnswersPage/@CurrentQuestion.Id">
+            <button class="btn btn-primary">Edit Answers</button>
+        </a>
+
+        @if(Hide == false)
+        {
+            <EditQuestionForm Question="CurrentQuestion" OnUpdate="ToggleHide"></EditQuestionForm>
+        }
+
+    </div>
+</div>
+@code {
+    [Parameter]
+    public QuestionModel CurrentQuestion { get; set; }
+
+    [Parameter]
+    public Action? OnDelete { get; set; }
+
+    private ConfirmDialog dialog;
+
+    async Task DeleteQuestion()
+    {
+        var confirmation = await dialog.ShowAsync(
+
+            title: "Are you sure you want to delete this question?",
+            message1: "This item will be deleted permanently. You can't undo this action."
+
+        );
+
+        if (confirmation)
+        {
+            await manager._questionRepository.DeleteQuestionAsync(CurrentQuestion.Id);
+            OnDelete.Invoke();
+        }
+
+    }
+
+    private bool Hide { get; set; } = true;
+
+    private void Toggle()
+    {
+        Hide = !Hide;
+    }
+
+    private void ToggleHide()
+    {
+        Hide = true;
+        StateHasChanged();
+    }
+  
+}

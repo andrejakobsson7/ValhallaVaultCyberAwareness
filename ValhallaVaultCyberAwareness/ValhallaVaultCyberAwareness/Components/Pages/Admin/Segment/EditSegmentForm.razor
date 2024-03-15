@@ -1,9 +1,8 @@
 ﻿@inject AdminManager manager
-@inject NavigationManager navManager
 
 <ConfirmDialog @ref="dialog"></ConfirmDialog>
 
-<h3>Create a segment: </h3>
+<h3>Update</h3>
 
 <EditForm Model="segment" OnSubmit="HandleSubmit" FormName="name" class="card w-50">
 
@@ -24,7 +23,6 @@
     </label>
 
     <InputSelect @bind-Value="segment.CategoryId">
-        <option>None</option>
         @foreach (var category in Categories)
         {
             <option value="@category.Id">@category.Name</option>
@@ -32,22 +30,21 @@
     </InputSelect>
 
 
-    <input type="submit" value="Create a segment" />
+    <input type="submit" value="Update"/>
 
 </EditForm>
 
 
 @code {
-    [SupplyParameterFromForm]
+    [Parameter]
     public SegmentModel segment { get; set; } = new();
 
-    [Parameter]
     public List<CategoryModel> Categories { get; set; } = new();
 
     private ConfirmDialog dialog;
 
     [Parameter]
-    public Action? OnAdd { get; set; }
+    public Action? OnUpdate { get; set; }
 
     protected override async Task OnInitializedAsync()
     {
@@ -59,18 +56,15 @@
 
         var confirmation = await dialog.ShowAsync(
 
-           title: "Are you sure you want to add?",
+           title: "Are you sure you want to update this segment?",
            message1: "Y/N"
        );
 
         if (confirmation)
         {
-            await manager._segmentRepository.AddSegmentAsync(segment);
-            navManager.NavigateTo("Admin/Segment/SegmentPage", true);
-
+            await manager._segmentRepository.UpdateSegmentAsync(segment);
+            OnUpdate?.Invoke();
         }
 
-      
     }
-
 }

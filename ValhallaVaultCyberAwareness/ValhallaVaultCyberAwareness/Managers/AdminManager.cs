@@ -9,17 +9,20 @@ namespace ValhallaVaultCyberAwareness.Managers
         public readonly ISubCategoryRepository _subcategoryRepository;
         public readonly ISegmentRepository _segmentRepository;
         public readonly IQuestionRepository _questionRepository;
+        public readonly IAnswersRepository _answersRepository;
 
         public AdminManager
             (ICategoryRepository categoryRepository,
             ISubCategoryRepository subcategoryRepository,
             ISegmentRepository segmentRepository,
-            IQuestionRepository questionRepository)
+            IQuestionRepository questionRepository,
+            IAnswersRepository answersRepository)
         {
             _categoryRepository = categoryRepository;
             _subcategoryRepository = subcategoryRepository;
             _segmentRepository = segmentRepository;
             _questionRepository = questionRepository;
+            _answersRepository = answersRepository;
         }
 
     }

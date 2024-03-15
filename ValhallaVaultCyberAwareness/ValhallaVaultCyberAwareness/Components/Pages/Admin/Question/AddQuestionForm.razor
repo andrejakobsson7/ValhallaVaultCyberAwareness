@@ -1,0 +1,183 @@
+﻿@inject AdminManager manager
+@inject NavigationManager navManager
+
+<ConfirmDialog @ref="dialog"></ConfirmDialog>
+
+<h3>Create a category</h3>
+<div class="container">
+
+        <div class="row">
+
+            <div class="col-sm">
+            <EditForm Model="Question" OnSubmit="HandleSubmit" FormName="QuestionForm" Context="ArbitraryConceptualName" class="card w-50">
+
+                <label>Question: </label>
+
+                <InputText @bind-Value="Question.Question"></InputText>
+
+                <label>Explanation: </label>
+
+                <InputText @bind-Value="Question.Explanation"></InputText>
+
+                <label>
+                    Subcategory:
+                </label>
+
+                <InputSelect @bind-Value="Question.SubCategoryId">
+                    @foreach (var subcategory in SubCategories)
+                    {
+                        <option value="@subcategory.Id">@subcategory.Name</option>
+                    }
+                </InputSelect>
+
+                <EditForm Model="Answer" FormName="AnswerForm" OnSubmit="HandleAnswerSubmit">
+
+                    <label>Answer: </label>
+
+                    <InputText @bind-Value="Answer.Answer"></InputText>
+
+                    <label>Correct answer</label>
+
+                    <InputCheckbox @bind-Value="Answer.IsCorrect"></InputCheckbox>
+
+                    <input type="submit" value="Add answer" />
+
+                </EditForm>
+
+                <input type="submit" value="Create a question" />
+
+
+            </EditForm>
+
+            @if (Hide == false)
+            {
+                <Alert Color="AlertColor.Danger">
+                    <strong>Please add a correct answer</strong>  <Button Color="ButtonColor.Danger" @onclick="Toggle">Close</Button>
+                </Alert>
+
+
+            }
+            </div>
+
+        <div class="col-sm">    
+
+            <h4>Answers: </h4>
+
+            @if (QuestionAnwers.Any())
+            {
+                <div class="container">
+
+                    <div class="row">
+
+                        <div class="col-sm">
+
+                            @foreach (var answer in QuestionAnwers)
+                            {
+                                <h5>@answer.Answer</h5>
+
+                                @if (answer.IsCorrect)
+                                {
+                                    <p style="color:green">Correct answer</p>
+                                }
+                            }
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            }
+             </div>
+        </div>
+
+</div>
+
+ 
+@code {
+    [SupplyParameterFromForm(FormName ="QuestionForm")]
+    public QuestionModel Question { get; set; } = new();
+
+    public AnswerModel Answer { get; set; } = new();
+
+    public List<AnswerModel> QuestionAnwers { get; set; } = new();
+
+    public List<SubCategoryModel> SubCategories { get; set; } = new();
+
+    private ConfirmDialog dialog;
+
+    private bool Hide { get; set; } = true;
+
+    [Parameter]
+    public Action? OnAdd { get; set; }
+
+    protected override async Task OnInitializedAsync()
+    {
+        SubCategories = await manager._subcategoryRepository.GetSubCategoriesAsync();
+    }
+
+    private async Task HandleSubmit()
+    {
+        var confirmation = await dialog.ShowAsync(
+
+         title: "Are you sure you want to add this question?",
+         message1: "Y/N"
+     );
+
+        if (confirmation)
+        {
+            bool noCorrectAnswer = true;
+
+            foreach(var answer in QuestionAnwers)
+            {
+                if(answer.IsCorrect == true)
+                {
+                    noCorrectAnswer = false;
+                }
+            }
+
+            if (noCorrectAnswer)
+            {
+                Hide = false;
+            }
+
+            else
+            {
+                foreach (var answer in QuestionAnwers)
+                {
+                    Question.Answers.Add(answer);
+                }
+
+                await manager._questionRepository.AddQuestionAsync(Question);
+                navManager.NavigateTo("Admin/Question/Questionpage", true);
+            }
+  
+        }
+    }
+
+    private async Task HandleAnswerSubmit()
+    {
+        var confirmation = await dialog.ShowAsync(
+
+        title: "Are you sure you want to add this answer?",
+        message1: "Y/N"
+    );
+
+        if (confirmation)
+        {
+            AnswerModel newAnswer = new()
+                {
+                    Answer = Answer.Answer,
+                    IsCorrect = Answer.IsCorrect
+                };
+
+            QuestionAnwers.Add(newAnswer);
+        }
+    }
+
+    private void Toggle()
+    {
+        Hide = true;
+    }
+
+}
