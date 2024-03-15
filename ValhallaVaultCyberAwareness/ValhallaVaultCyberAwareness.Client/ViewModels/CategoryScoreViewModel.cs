@@ -50,6 +50,7 @@ namespace ValhallaVaultCyberAwareness.Client.ViewModels
                     break;
                 }
             }
+            //Check if the user has not finished all segments. If so, the category is not completed.
             if (SegmentUserScores.Any(s => s.UserHasCompletedSegment == false))
             {
                 UserHasCompletedCategory = false;
