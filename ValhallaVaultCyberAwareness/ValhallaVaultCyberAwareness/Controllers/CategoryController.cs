@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.OutputCaching;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 using ValhallaVaultCyberAwareness.Domain.Models;
@@ -11,17 +12,20 @@ namespace ValhallaVaultCyberAwareness.Controllers
 	public class CategoryController : ControllerBase
 	{
 		private readonly ICategoryRepository _categoryRepo;
+		private readonly IOutputCacheStore _outputCacheStore;
 		private JsonSerializerOptions _jsonSerializerOptions = new()
 		{
 			ReferenceHandler = ReferenceHandler.Preserve
 		};
 
-		public CategoryController(ICategoryRepository categoryRepo)
+		public CategoryController(ICategoryRepository categoryRepo, IOutputCacheStore outputCacheStore)
 		{
 			_categoryRepo = categoryRepo;
+			_outputCacheStore = outputCacheStore;
 		}
 
 		[HttpGet]
+		[OutputCache(PolicyName = "CategoryPolicy")]
 		public async Task<IActionResult> GetAllCategories()
 		{
 			var categories = await _categoryRepo.GetAllCategoriesWithInclude();
@@ -40,6 +44,7 @@ namespace ValhallaVaultCyberAwareness.Controllers
 
 		[HttpGet]
 		[Route("{userId}")]
+		[OutputCache(PolicyName = "ByIdCachePolicy", VaryByQueryKeys = new[] { "userId" })]
 		public async Task<IActionResult> GetAllCategoryScoresByUserIdAsync(string userId)
 		{
 			var categoryScores = await _categoryRepo.GetAllCategoriesWithUserScores(userId);
@@ -55,6 +60,7 @@ namespace ValhallaVaultCyberAwareness.Controllers
 
 		[HttpGet]
 		[Route("{categoryId}/{userId}")]
+		[OutputCache(PolicyName = "ByIdCachePolicy", VaryByQueryKeys = new[] { "userId" })]
 		public async Task<IActionResult> GetCategoryWithUserScoresByUserIdAsync(int categoryId, string userId)
 		{
 			var categoryScore = await _categoryRepo.GetCategoryWithUserScoresByUserIdAsync(categoryId, userId);
@@ -68,24 +74,28 @@ namespace ValhallaVaultCyberAwareness.Controllers
 		}
 
 		[HttpPost]
-		public async Task<IActionResult> AddCategory(CategoryModel newCategory)
+		[OutputCache(PolicyName = "CategoryPolicy")]
+		public async Task<IActionResult> AddCategory(CategoryModel newCategory, CancellationToken cancellationToken)
 		{
 			var category = await _categoryRepo.AddCategoryAsync(newCategory);
 			if (category != null)
 			{
+				await _outputCacheStore.EvictByTagAsync("CategoryPolicy_Tag", cancellationToken);
 				return Ok(category);
 			}
 			return BadRequest();
 		}
 
 		[HttpPut]
-		[Route("{id}")]
-		public async Task<ActionResult<CategoryModel>> UpdateCategory(CategoryModel category)
+		[Route("{categoryId}")]
+		[OutputCache(PolicyName = "ByIdCachePolicy")]
+		public async Task<ActionResult<CategoryModel>> UpdateCategory(CategoryModel category, CancellationToken cancellationToken)
 		{
 			var categoryToUpdate = await _categoryRepo.UpdateCategoryAsync(category);
-
 			if (categoryToUpdate != null)
 			{
+				await _outputCacheStore.EvictByTagAsync(categoryToUpdate.Id.ToString(), cancellationToken);
+				await _outputCacheStore.EvictByTagAsync("CategoryPolicy_Tag", cancellationToken);
 				return Ok(categoryToUpdate);
 
 			}
@@ -93,13 +103,17 @@ namespace ValhallaVaultCyberAwareness.Controllers
 		}
 
 		[HttpDelete]
-		[Route("{id}")]
-		public async Task<ActionResult<CategoryModel>> DeleteCategory(int id)
+		[Route("{categoryId}")]
+		[OutputCache(PolicyName = "ByIdCachePolicy")]
+		public async Task<ActionResult<CategoryModel>> DeleteCategory(int categoryId, CancellationToken cancellationToken)
 		{
-			var categoryToDelete = await _categoryRepo.DeleteCategoryAsync(id);
+			var categoryToDelete = await _categoryRepo.DeleteCategoryAsync(categoryId);
 
 			if (categoryToDelete != false)
 			{
+				await _outputCacheStore.EvictByTagAsync(categoryId.ToString(), cancellationToken);
+				await _outputCacheStore.EvictByTagAsync("CategoryPolicy_Tag", cancellationToken);
+
 				return Ok(categoryToDelete);
 			}
 			return BadRequest();
@@ -111,6 +125,7 @@ namespace ValhallaVaultCyberAwareness.Controllers
 		{
 			public int Id { get; set; }
 			public string Name { get; set; } = null!;
+			public string? Description { get; set; }
 			public List<SegmentModel> Segments { get; set; } = new();
 			public List<SubCategoryModel> SubCategories { get; set; } = new();
 
@@ -118,6 +133,7 @@ namespace ValhallaVaultCyberAwareness.Controllers
 			{
 				Id = category.Id;
 				Name = category.Name;
+				Description = category.Description;
 				Segments = category.Segments;
 				foreach (var segment in Segments)
 				{

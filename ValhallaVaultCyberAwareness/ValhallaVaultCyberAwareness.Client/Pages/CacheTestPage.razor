@@ -1,0 +1,117 @@
+﻿@page "/CacheTestPage"
+@using Microsoft.AspNetCore.Identity
+@using ValhallaVaultCyberAwareness.Client.Services
+@using ValhallaVaultCyberAwareness.Client.ViewModels
+@using ValhallaVaultCyberAwareness.Data
+@using ValhallaVaultCyberAwareness.Domain.Models
+@rendermode InteractiveAuto
+@inject ICategoryService categoryService;
+@inject AuthenticationStateProvider authStateProvider;
+@inject ISegmentService segmentService;
+@inject IQuestionService questionService
+@inject ISubCategoryService subCategoryService;
+@inject IUserAnswersService userAnswersService;
+
+@code {
+
+	protected override async Task OnInitializedAsync()
+	{
+		//1. Call is made to the db and stored in the cache
+		string userId = "532fdc53-0e3a-4857-a413-455d2d373527";
+		DateTime startTimeDbCall = DateTime.Now;
+		List<CategoryModel> allCategoriesFromDb = await categoryService.GetAllCategoriesAsync();
+		DateTime endTimeDbCall = DateTime.Now;
+		double dbdiff = MeasureTimeDifferenceBetweenTwoCalls(startTimeDbCall, endTimeDbCall);
+
+		//2. Another identical call is made and fetched from the cache - correctly!
+		DateTime startTimeCacheCall = DateTime.Now;
+		List<CategoryModel> allCategoriesFromCache = await categoryService.GetAllCategoriesAsync();
+		DateTime endTimeCacheCall = DateTime.Now;
+		double cachediff = MeasureTimeDifferenceBetweenTwoCalls(startTimeCacheCall, endTimeCacheCall);
+		double diffdbVsCache = MeasureDiffBetweenTwoDoubles(dbdiff, cachediff);
+
+		//3. Make call to get specific category with categoryId and userId. Stored in cache
+		var category = await categoryService.GetCategoryWithUserScore(1, userId);
+
+		//4. Make call to get specific category with categoryId and userId. Store in cache. This id will not be altered in any CRUD-action below.
+		var unrelatedCategory = await categoryService.GetCategoryWithUserScore(2, userId);
+
+		//ADD
+
+		//5. A new category is added to the database
+		//It should evict the cache for all categories
+		bool isSuccessfullyAdded = await categoryService.AddCategoryAsync(new CategoryModel()
+			{
+				Name = "Test ny kategori 1"
+			});
+
+		//6. Make new call to get all categories
+		//It is fetched fresh from the db - correctly!
+		List<CategoryModel> allCategoriesAfterAddition = await categoryService.GetAllCategoriesAsync();
+
+		//7. Make new call to get specific category with categoryId and userId.
+		//It is still fetched from the cache as it was before the addition of a new category - correctly!
+		var category2 = await categoryService.GetCategoryWithUserScore(1, userId);
+
+		//DELETE
+
+		//8. Delete a category in the database
+		bool isSuccessfullyDeleted = await categoryService.RemoveCategoryAsync(3);
+
+		//9. Make new call to get all categories. 
+		// It is fetched fresh from the db - correctly!
+		List<CategoryModel> allCategoriesAfterDelete = await categoryService.GetAllCategoriesAsync();
+
+		//10. Make new call to get specific category with categoryId, same as before delete
+		//It is still fetched from the cache - correctly!
+		var category3 = await categoryService.GetCategoryWithUserScore(1, userId);
+
+		//11. Make specific call for one category by id. It has not been altered in the delete, so it should still be fetched from the cache
+		//It is fetched from the cache - correctly!
+		var unRelatedCategory3 = await categoryService.GetCategoryWithUserScore(2, userId);
+
+		//UPDATE
+
+		//12. An update of an existing category is made to the database
+		//This should evict all tags on ID- and general level
+		bool isSuccessfullyUpdated = await categoryService.UpdateCategoryAsync(new CategoryModel()
+		{
+			Id = allCategoriesAfterDelete[0].Id,
+			Name = allCategoriesAfterDelete[0].Name,
+			Description = "Ny kategoribeskrivning"
+		});
+
+		//13. Make new call to get all categories. It is fetched fresh from the db - correctly!
+		List<CategoryModel> allCategoriesAfterUpdate = await categoryService.GetAllCategoriesAsync();
+
+		//14. Make new call to get specific category by id. The id is the one that was altered in the update, so it should be fetched fresh from the db
+		var category4 = await categoryService.GetCategoryWithUserScore(1, userId);
+
+		//12. Make specific call for one category by id. It has not been altered in the update, so it should still be fetched from the cache
+		//It is fetched from the cache - correctly!
+		var unRelatedCategory4 = await categoryService.GetCategoryWithUserScore(2, userId);
+
+		//13. Make call for another userid. This has not been queried before so it should be fetched from the db
+		var newUserCategoryScore = await categoryService.GetCategoryWithUserScore(2, "5db5968d-eb63-4515-a74c-9dc7b5d4328e");
+
+		DateTime endTimeDbCall2 = DateTime.Now;
+		// double dbdiff2 = MeasureTimeDifferenceBetweenTwoCalls(startTimeDbCall2, endTimeDbCall2);
+
+		//Testa så att detta inte hämtas från cachen
+		//The following should not be fetched from the cache since it's another userid
+
+		// var category2 = await categoryService.GetCategoryWithUserScore(1, "5db5968d-eb63-4515-a74c-9dc7b5d4328e");
+
+	}
+
+
+	private double MeasureTimeDifferenceBetweenTwoCalls(DateTime startTime, DateTime endTime)
+	{
+		return (endTime - startTime).TotalSeconds;
+	}
+
+	private double MeasureDiffBetweenTwoDoubles(double dbDouble, double dbCacheDouble)
+	{
+		return dbDouble - dbCacheDouble;
+	}
+}

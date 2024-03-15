@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using ValhallaVaultCyberAwareness.Cache;
 using ValhallaVaultCyberAwareness.Client.Services;
 using ValhallaVaultCyberAwareness.Components;
 using ValhallaVaultCyberAwareness.Components.Account;
@@ -45,6 +46,19 @@ builder.Services.AddScoped<AdminManager>();
 builder.Services.AddScoped<IUserAnswersService, UserAnswersService>();
 builder.Services.AddBlazorBootstrap();
 
+//Add cache and policies
+builder.Services.AddOutputCache(options =>
+{
+    options.AddBasePolicy(builder => builder.Expire(TimeSpan.FromDays(1)));
+    options.AddBasePolicy(builder => builder.Tag("All_Tag"));
+    options.AddPolicy("ByIdCachePolicy", policy => policy.AddPolicy<ByIdCachePolicy>());
+    options.AddPolicy("AnswerPolicy", policy => policy.Tag("AnswerPolicy_Tag"));
+    options.AddPolicy("CategoryPolicy", policy => policy.Tag("CategoryPolicy_Tag"));
+    options.AddPolicy("QuestionPolicy", policy => policy.Tag("QuestionPolicy_Tag"));
+    options.AddPolicy("SegmentPolicy", policy => policy.Tag("SegmentPolicy_Tag"));
+    options.AddPolicy("SubCategoryPolicy", policy => policy.Tag("SubCategoryPolicy_Tag"));
+    options.AddPolicy("UserAnswersPolicy", policy => policy.Tag("UserAnswersPolicy_Tag"));
+});
 
 
 builder.Services.AddControllers();
@@ -147,6 +161,9 @@ using (ServiceProvider sp = builder.Services.BuildServiceProvider())
 var app = builder.Build();
 
 app.UseCors("AllowAll");
+
+//Use cache
+app.UseOutputCache();
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
