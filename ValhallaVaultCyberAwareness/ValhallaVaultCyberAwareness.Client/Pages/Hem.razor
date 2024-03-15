@@ -1,4 +1,4 @@
-﻿@page "/CategoryPage"
+﻿@page "/Hem"
 @using Microsoft.AspNetCore.Authorization
 @using ValhallaVaultCyberAwareness.Client.Services
 @using ValhallaVaultCyberAwareness.Client.ViewModels
@@ -35,10 +35,10 @@ else
                         <div class="card-body">
                             <ul class="list-group" style="list-style:none">
                                 @foreach (var segment in category.SegmentUserScores)
-                                {                                        
+                                {
                                     <li>
                                         <a>@segment.SegmentName</a>
-                                        </li>
+                                    </li>
                                     <li class="list-group-item">
                                         <ul class="list-group">
                                             @foreach (var subcategory in segment.SubCategoryScores)
@@ -70,6 +70,8 @@ else
         var authState = await authStateProvider.GetAuthenticationStateAsync();
         userId = authState.User.FindFirst(c => c.Type.Contains("nameidentifier"))?.Value;
         allCategories = await categoryService.GetAllCategoriesWithUserScores(userId);
-        
+
     }
 }
+
+            

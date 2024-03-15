@@ -9,6 +9,7 @@ namespace ValhallaVaultCyberAwareness.Client.Services
         public Task<List<CategoryModel>> GetAllCategoriesAsync();
         public Task<CategoryModel> GetCategoryByIdAsync(int categoryId);
         public Task<List<CategoryScoreViewModel>> GetAllCategoriesWithUserScores(string userId);
+        public Task<CategoryScoreViewModel> GetCategoryWithUserScore(int categoryId, string userId);
         public Task<bool> AddCategoryAsync(CategoryModel newCategory);
 
         public Task<bool> RemoveCategoryAsync(int categoryId);

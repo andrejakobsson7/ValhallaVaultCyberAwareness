@@ -1,0 +1,95 @@
+﻿@page "/Category/{id:int}"
+@using Microsoft.AspNetCore.Authorization
+@using ValhallaVaultCyberAwareness.Client.Services
+@using ValhallaVaultCyberAwareness.Client.ViewModels
+@using ValhallaVaultCyberAwareness.Domain.Models
+@inject ICategoryService categoryService
+@inject AuthenticationStateProvider authStateProvider
+@inject NavigationManager NavigationManager
+@inject ICategoryService categoryService
+@attribute [StreamRendering]
+@attribute [Authorize]
+
+
+@if (category == null)
+{
+    <p>Loading...</p>
+}
+else
+{
+    <div class="container">
+        <div class="row">
+            <h1>@category.CategoryName</h1>
+            <h3>@category.CategoryDescription</h3>
+            @if(category.UserHasCompletedCategory)
+            {
+                <h3>
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-check-circle-fill" viewBox="0 0 16 16">
+                        <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0m-3.97-3.03a.75.75 0 0 0-1.08.022L7.477 9.417 5.384 7.323a.75.75 0 0 0-1.06 1.06L6.97 11.03a.75.75 0 0 0 1.079-.02l3.992-4.99a.75.75 0 0 0-.01-1.05z" />
+                    </svg>  class="text-success">Grattis, du har slutför denna kategori!
+                </h3>
+
+            }
+
+            @foreach (var segment in category.SegmentUserScores)
+            {
+                <div class="col-4">
+                    <div class="card border-dark mb-3">
+                        <div class="card-header">
+                            @if(category.AvailableSegmentIndex >= category.SegmentUserScores.IndexOf(segment))
+                            {
+                                <a href="/Segment/@segment.SegmentId"><h5>@segment.SegmentName</h5></a>
+                                <p>Du har klarat @segment.CompletedSubcategories av @segment.TotalSubCategories subkategorier</p>
+                            }
+                            else if(category.AvailableSegmentIndex == -1)
+                            {
+                                <a><h5>@segment.SegmentName</h5></a>
+                                <p>Det finns inga frågor registrerade i detta segment</p>
+                            }
+                            else
+                            {
+                                <a><h5>@segment.SegmentName</h5></a>
+                                <p>
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-lock-fill" viewBox="0 0 16 16">
+                                        <path d="M8 1a2 2 0 0 1 2 2v4H6V3a2 2 0 0 1 2-2m3 6V3a3 3 0 0 0-6 0v4a2 2 0 0 0-2 2v5a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2" />
+                                    </svg> Slutför tidigare segment för att få tillgång till frågorna i detta segment
+                                </p>
+                            }
+                        </div>
+                        <div class="card-body">
+                            <ul class="list-group" style="list-style:none">
+                                    <li class="list-group-item">
+                                        <ul class="list-group">
+                                            @foreach (var subcategory in segment.SubCategoryScores)
+                                            {
+                                                <li class="list-group-item">
+                                                    <p>
+                                                        @subcategory.SubCategoryName
+                                                    </p>
+                                            </li>
+                                            }
+                                        </ul>
+                                    </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+}
+
+@code {
+	[Parameter]
+	public int Id { get; set; }
+    private CategoryScoreViewModel category;
+    private string userId;
+
+    protected override async Task OnInitializedAsync()
+    {
+        var authState = await authStateProvider.GetAuthenticationStateAsync();
+        userId = authState.User.FindFirst(c => c.Type.Contains("nameidentifier"))?.Value;
+        category = await categoryService.GetCategoryWithUserScore(Id, userId);
+    }
+
+}
