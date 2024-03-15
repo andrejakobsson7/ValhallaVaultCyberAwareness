@@ -28,6 +28,7 @@ builder.Services.AddScoped<ICategoryRepository, CategoryRepository>();
 builder.Services.AddScoped<ISubCategoryRepository, SubCategoryRepository>();
 builder.Services.AddScoped<IQuestionRepository, QuestionRepository>();
 builder.Services.AddScoped<IUserAnswersRepository, UserAnswersRepository>();
+builder.Services.AddScoped<IAnswersRepository, AnswersRepository>();
 builder.Services.AddScoped<ISupportQuestionRepository, SupportQuestionRepository>();
 builder.Services.AddScoped<ISupportResponseRepository, SupportResponseRepository>();
 

@@ -6,7 +6,7 @@
 <div class="card">
     <div class="card-body">
 
-        <h5 class="card-title">@CurrentQuestion.Question</h5>
+        <h5 class="card-title">Question: @CurrentQuestion.Question</h5>
          <h5 class="card-text">Subcategory: @CurrentQuestion.SubCategory.Name</h5>
          <p class="card-text">Explanation: @CurrentQuestion.Explanation</p>
          <h5>Answers: </h5>
@@ -24,11 +24,15 @@
         }
 
         <button class="btn btn-primary" @onclick="async () => await DeleteQuestion()">Delete</button>
-        <button class="btn btn-primary" @onclick="Toggle">Edit</button>
+        <button class="btn btn-primary" @onclick="Toggle">Edit Question</button>
+
+        <a href="Admin/Question/Answers/EditAnswersPage/@CurrentQuestion.Id">
+            <button class="btn btn-primary">Edit Answers</button>
+        </a>
 
         @if(Hide == false)
         {
-            <EditQuestionForm></EditQuestionForm>
+            <EditQuestionForm Question="CurrentQuestion" OnUpdate="ToggleHide"></EditQuestionForm>
         }
 
     </div>

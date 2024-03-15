@@ -52,8 +52,10 @@
             @if (Hide == false)
             {
                 <Alert Color="AlertColor.Danger">
-                    <strong>Please add a correct answer</strong>  <Button Color="ButtonColor.Warning" @onclick="Toggle">Close</Button>
+                    <strong>Please add a correct answer</strong>  <Button Color="ButtonColor.Danger" @onclick="Toggle">Close</Button>
                 </Alert>
+
+
             }
             </div>
 
@@ -96,8 +98,6 @@
     [SupplyParameterFromForm(FormName ="QuestionForm")]
     public QuestionModel Question { get; set; } = new();
 
-    // [SupplyParameterFromForm(FormName ="AnswerForm")]
-    [Parameter]
     public AnswerModel Answer { get; set; } = new();
 
     public List<AnswerModel> QuestionAnwers { get; set; } = new();
@@ -107,7 +107,6 @@
     private ConfirmDialog dialog;
 
     private bool Hide { get; set; } = true;
-
 
     [Parameter]
     public Action? OnAdd { get; set; }
@@ -127,22 +126,24 @@
 
         if (confirmation)
         {
-            bool correctAnswer = false;
+            bool noCorrectAnswer = true;
+
             foreach(var answer in QuestionAnwers)
             {
                 if(answer.IsCorrect == true)
                 {
-                    correctAnswer = true;
-                    break;
+                    noCorrectAnswer = false;
                 }
-
-                Hide = false;
-                break;
             }
 
-            if (correctAnswer)
+            if (noCorrectAnswer)
             {
-                foreach(var answer in QuestionAnwers)
+                Hide = false;
+            }
+
+            else
+            {
+                foreach (var answer in QuestionAnwers)
                 {
                     Question.Answers.Add(answer);
                 }
@@ -150,6 +151,7 @@
                 await manager._questionRepository.AddQuestionAsync(Question);
                 navManager.NavigateTo("Admin/Question/Questionpage", true);
             }
+  
         }
     }
 

@@ -11,18 +11,28 @@
 }
 else
 {
-    <div class="flex-column">
+    <div class="container">
+        <div class="row">
+           <div class="col-sm">
 
-        @foreach (var question in Questions)
-        {
-            <Question CurrentQuestion="@question" OnDelete=" async () => await OnChange()"></Question>
-        }
-        <AddQuestionForm></AddQuestionForm>
+                @foreach (var question in Questions)
+                {
+                    <Question CurrentQuestion="@question" OnDelete=" async () => await OnChange()"></Question>
+                }
+           </div>
+
+           <div class="col-sm">
+                <AddQuestionForm></AddQuestionForm>
+           </div>
+
+        </div>
+       
 
     </div>
 
-}
 
+
+}
 
 
 @code {
