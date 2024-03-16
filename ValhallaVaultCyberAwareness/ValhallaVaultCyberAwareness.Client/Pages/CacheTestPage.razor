@@ -56,7 +56,7 @@
 		//DELETE CATEGORY
 
 		//8. Delete a category in the database
-		bool isSuccessfullyDeletedCategory = await categoryService.RemoveCategoryAsync(16);
+		bool isSuccessfullyDeletedCategory = await categoryService.RemoveCategoryAsync(24);
 
 		//9. Make new call to get all categories. 
 		// It is fetched fresh from the db - correctly!
@@ -99,7 +99,7 @@
 		//DELETE SEGMENT
 		//14. Delete segment. Segment is nested under category. The deleted segment belongs to category-ID 2
 		// If it's queried for categories after that, it needs to hold the updated segment information, since it's included in those queries.
-		bool isSuccessfullyDeletedSegment = await segmentService.RemoveSegmentAsync(19);
+		bool isSuccessfullyDeletedSegment = await segmentService.RemoveSegmentAsync(18);
 
 		//15. Make new call to get all categories. This should be fetched fresh from the db, since the call to get all categories includes segments.
 		//It is correctly fetched fresh from db!
@@ -155,7 +155,7 @@
 
 		//25 Get category that has not been affected by update of subcategory. Should fetch from cache
 		//THIS DOESN'T WORK, IT'S FETCHING FROM THE DATABASE
-		var newUserCategoryScore5 = await categoryService.GetCategoryWithUserScore(1024, "5db5968d-eb63-4515-a74c-9dc7b5d4328e");
+		var newUserCategoryScore5 = await categoryService.GetCategoryWithUserScore(2, "5db5968d-eb63-4515-a74c-9dc7b5d4328e");
 
 		//26 Add new useranswers
 		List<UserAnswers> newUserAnswers = new();

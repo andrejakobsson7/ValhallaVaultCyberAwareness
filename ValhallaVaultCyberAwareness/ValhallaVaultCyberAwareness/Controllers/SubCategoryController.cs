@@ -50,7 +50,6 @@ namespace ValhallaVaultCyberAwareness.Controllers
 			{
 				//When a subcategory has been added, we need to evict the shared tag for category and segment since subcategory is included in general calls (without parameter).
 				//There is no need to remove subcategory by ID here, since it's new and cannot exist in any cache
-				//await RemoveFromCategorySegmentAndGeneralCache(subCategoryToAdd.Segment!.CategoryId, subCategoryToAdd.SegmentId, cancellationToken);
 				await CacheManager.RemoveFromCategorySegmentAndGeneralCache(subCategoryToAdd.Segment!.CategoryId, subCategoryToAdd.SegmentId, cancellationToken, _outputCacheStore);
 				var subCategoryJson = JsonSerializer.Serialize(subCategoryToAdd, _jsonSerializerOptions);
 				return Ok(subCategoryJson);
@@ -70,7 +69,6 @@ namespace ValhallaVaultCyberAwareness.Controllers
 			if (updatedSubCategory != null)
 			{
 				//When a subcategory is updated, we need to update the general cache and remove from category, segment and subcategory by respective ID, since we have calls per ID where subcategory is included.
-				//await RemoveFromCategorySegmentSubCategoryAndGeneralCache(updatedSubCategory.Segment!.CategoryId, updatedSubCategory.SegmentId, updatedSubCategory.Id, cancellationToken);
 				await CacheManager.RemoveFromCategorySegmentSubCategoryAndGeneralCache(updatedSubCategory.Segment!.CategoryId, updatedSubCategory.SegmentId, updatedSubCategory.Id, cancellationToken, _outputCacheStore);
 				var subCategoryJson = JsonSerializer.Serialize(updatedSubCategory, _jsonSerializerOptions);
 				return Ok(subCategoryJson);
@@ -88,7 +86,6 @@ namespace ValhallaVaultCyberAwareness.Controllers
 			{
 				SubCategoryModel deletedSubCategory = await _subCategoryRepo.DeleteSubCategoryAsync(subCategoryId);
 				//Evict from all caches
-				//await RemoveFromCategorySegmentSubCategoryAndGeneralCache(deletedSubCategory.Segment!.CategoryId, deletedSubCategory.SegmentId, deletedSubCategory.Id, cancellationToken);
 				await CacheManager.RemoveFromCategorySegmentSubCategoryAndGeneralCache(deletedSubCategory.Segment!.CategoryId, deletedSubCategory.SegmentId, deletedSubCategory.Id, cancellationToken, _outputCacheStore);
 
 				return Ok();

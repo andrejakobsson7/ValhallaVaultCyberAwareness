@@ -61,7 +61,6 @@ namespace ValhallaVaultCyberAwareness.Controllers
 			if (segmentToAdd != null)
 			{
 				await CacheManager.RemoveFromGeneralCache(cancellationToken, _outputCacheStore);
-				//await RemoveFromGeneralCache(cancellationToken);
 				return Ok(segmentToAdd);
 			}
 
@@ -77,7 +76,6 @@ namespace ValhallaVaultCyberAwareness.Controllers
 			{
 				bool isSegmentUpdated = await _segmentRepo.UpdateSegmentAsync(segment);
 				await CacheManager.RemoveFromCategorySegmentAndGeneralCache(segment.CategoryId, segment.Id, cancellationToken, _outputCacheStore);
-				//await RemoveFromCategorySegmentAndGeneralCache(segment.CategoryId, segment.Id, cancellationToken);
 				return Ok();
 			}
 			catch (ArgumentNullException ex)
@@ -99,7 +97,6 @@ namespace ValhallaVaultCyberAwareness.Controllers
 			{
 				SegmentModel deletedSegment = await _segmentRepo.RemoveSegmentAsync(segmentId);
 				await CacheManager.RemoveFromCategorySegmentAndGeneralCache(deletedSegment.CategoryId, segmentId, cancellationToken, _outputCacheStore);
-				//await RemoveFromCategorySegmentAndGeneralCache(deletedSegment.CategoryId, segmentId, cancellationToken);
 				return Ok();
 			}
 			//If the repository throws an argumentnullexception, it did not find the segment by the id sent along as a parameter

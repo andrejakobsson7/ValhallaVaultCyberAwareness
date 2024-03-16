@@ -83,7 +83,6 @@ namespace ValhallaVaultCyberAwareness.Controllers
 			if (category != null)
 			{
 				await CacheManager.RemoveFromGeneralCache(cancellationToken, _outputCacheStore);
-				//await RemoveFromGeneralCache(cancellationToken);
 				return Ok(category);
 			}
 			return BadRequest();
@@ -97,7 +96,6 @@ namespace ValhallaVaultCyberAwareness.Controllers
 			var categoryToUpdate = await _categoryRepo.UpdateCategoryAsync(category);
 			if (categoryToUpdate != null)
 			{
-				//await RemoveFromCategoryAndGeneralCache(categoryToUpdate.Id, cancellationToken);
 				await CacheManager.RemoveFromCategoryAndGeneralCache(categoryToUpdate.Id, cancellationToken, _outputCacheStore);
 				return Ok(categoryToUpdate);
 
@@ -115,7 +113,6 @@ namespace ValhallaVaultCyberAwareness.Controllers
 			if (categoryToDelete != false)
 			{
 				await CacheManager.RemoveFromCategoryAndGeneralCache(categoryId, cancellationToken, _outputCacheStore);
-				//await RemoveFromCategoryAndGeneralCache(categoryId, cancellationToken);
 				return Ok(categoryToDelete);
 			}
 			return BadRequest();
