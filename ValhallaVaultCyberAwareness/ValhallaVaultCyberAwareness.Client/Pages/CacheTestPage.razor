@@ -36,11 +36,11 @@
 		//4. Make call to get specific category with categoryId and userId. Store in cache. This id will not be altered in any CRUD-action below.
 		var unrelatedCategory = await categoryService.GetCategoryWithUserScore(2, userId);
 
-		//ADD
+		//ADD CATEGORY
 
 		//5. A new category is added to the database
 		//It should evict the cache for all categories
-		bool isSuccessfullyAdded = await categoryService.AddCategoryAsync(new CategoryModel()
+		bool isSuccessfullyAddedCategory = await categoryService.AddCategoryAsync(new CategoryModel()
 			{
 				Name = "Test ny kategori 1"
 			});
@@ -53,10 +53,10 @@
 		//It is still fetched from the cache as it was before the addition of a new category - correctly!
 		var category2 = await categoryService.GetCategoryWithUserScore(1, userId);
 
-		//DELETE
+		//DELETE CATEGORY
 
 		//8. Delete a category in the database
-		bool isSuccessfullyDeleted = await categoryService.RemoveCategoryAsync(3);
+		bool isSuccessfullyDeletedCategory = await categoryService.RemoveCategoryAsync(16);
 
 		//9. Make new call to get all categories. 
 		// It is fetched fresh from the db - correctly!
@@ -70,15 +70,15 @@
 		//It is fetched from the cache - correctly!
 		var unRelatedCategory3 = await categoryService.GetCategoryWithUserScore(2, userId);
 
-		//UPDATE
+		//UPDATE CATEGORY
 
 		//12. An update of an existing category is made to the database
 		//This should evict all tags on ID- and general level
-		bool isSuccessfullyUpdated = await categoryService.UpdateCategoryAsync(new CategoryModel()
+		bool isSuccessfullyUpdatedCategory = await categoryService.UpdateCategoryAsync(new CategoryModel()
 		{
 			Id = allCategoriesAfterDelete[0].Id,
 			Name = allCategoriesAfterDelete[0].Name,
-			Description = "Ny kategoribeskrivning22"
+			Description = "Ny kategoribeskrivning22335566"
 		});
 
 		//13. Make new call to get all categories. It is fetched fresh from the db - correctly!
@@ -96,9 +96,10 @@
 		//It is correctly fetched from the database
 		var newUserCategoryScore = await categoryService.GetCategoryWithUserScore(2, "5db5968d-eb63-4515-a74c-9dc7b5d4328e");
 
+		//DELETE SEGMENT
 		//14. Delete segment. Segment is nested under category. The deleted segment belongs to category-ID 2
 		// If it's queried for categories after that, it needs to hold the updated segment information, since it's included in those queries.
-		bool isSuccesfullyDeleted = await segmentService.RemoveSegmentAsync(7);
+		bool isSuccessfullyDeletedSegment = await segmentService.RemoveSegmentAsync(19);
 
 		//15. Make new call to get all categories. This should be fetched fresh from the db, since the call to get all categories includes segments.
 		//It is correctly fetched fresh from db!
@@ -113,17 +114,48 @@
 		//It is correctly fetched from the db!
 		var newUserCategoryScore2 = await categoryService.GetCategoryWithUserScore(2, "5db5968d-eb63-4515-a74c-9dc7b5d4328e");
 
+		//18 Add new subcategory
+		//When a new subcategory is added, we should evict the shared cache for category/segment/subcategory so that when a new general call is made, it will fetch fresh data from the db.
+		bool isSuccessfullyAddedSubCategory = await subCategoryService.AddSubCategoryAsync(new SubCategoryModel()
+			{
+				Name = "Test ny subkategori 2234445557777",
+				Description = "Vad ska man skriva här?",
+				SegmentId = 1
+			});
 
+		//19 Make call to get all categories. It should fetch fresh data from the db.
+		//It is fetching from the db - correctly!
+		List<CategoryModel> allCategoriesAfterSubCategoryAdd = await categoryService.GetAllCategoriesAsync();
 
+		//20 Make call to get single category by id (1). This has been affected by the addition of the subcategory, since the subcategory's segment belongs to category-ID 1
+		//It is fetching from the db - correctly!
+		var category6 = await categoryService.GetCategoryWithUserScore(1, userId);
 
+		//21 Make call to get category that has not been affected by addition of subcategory.It should still fetch from the cache
+		//It is fetching from the cache - correctly!
+		var newUserCategoryScore3 = await categoryService.GetCategoryWithUserScore(2, "5db5968d-eb63-4515-a74c-9dc7b5d4328e");
 
-		DateTime endTimeDbCall2 = DateTime.Now;
-		// double dbdiff2 = MeasureTimeDifferenceBetweenTwoCalls(startTimeDbCall2, endTimeDbCall2);
+		//22 Update existing subcategory in db.
+		//This should evict general cache and on ID-level in all entities
+		var newUserCategoryScore4 = await categoryService.GetCategoryWithUserScore(2, "5db5968d-eb63-4515-a74c-9dc7b5d4328e");
 
-		//Testa så att detta inte hämtas från cachen
-		//The following should not be fetched from the cache since it's another userid
+		bool isSuccessfullyUpdatedSubCategory = await subCategoryService.UpdateSubCategoryAsync(new SubCategoryModel()
+			{
+				Id = 2,
+				Name = "Romansbedrägeri UPPDATERAD23",
+				SegmentId = 1,
+				Description = "TEST"
+			});
 
-		// var category2 = await categoryService.GetCategoryWithUserScore(1, "5db5968d-eb63-4515-a74c-9dc7b5d4328e");
+			//23. Get all categories, this should be fetched from db
+		List<CategoryModel> allCategoriesAfterSubCategoryUpdate = await categoryService.GetAllCategoriesAsync();
+
+		//24. Get single category. This should be fetched from the db since category 1 has been altered (included segment-id 1 has been added a new subcategory)
+		var category7 = await categoryService.GetCategoryWithUserScore(1, userId);
+
+		//25 Get category that has not been affected by update of subcategory. Should fetch from cache
+		var newUserCategoryScore5 = await categoryService.GetCategoryWithUserScore(2, "5db5968d-eb63-4515-a74c-9dc7b5d4328e");
+
 
 	}
 
