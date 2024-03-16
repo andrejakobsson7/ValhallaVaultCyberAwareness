@@ -15,8 +15,8 @@ var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddRazorComponents()
-    .AddInteractiveServerComponents()
-    .AddInteractiveWebAssemblyComponents();
+	.AddInteractiveServerComponents()
+	.AddInteractiveWebAssemblyComponents();
 
 builder.Services.AddCascadingAuthenticationState();
 builder.Services.AddScoped<IdentityUserAccessor>();
@@ -49,15 +49,23 @@ builder.Services.AddBlazorBootstrap();
 //Add cache and policies
 builder.Services.AddOutputCache(options =>
 {
-    options.AddBasePolicy(builder => builder.Expire(TimeSpan.FromDays(1)));
-    options.AddBasePolicy(builder => builder.Tag("All_Tag"));
-    options.AddPolicy("ByIdCachePolicy", policy => policy.AddPolicy<ByIdCachePolicy>());
-    options.AddPolicy("AnswerPolicy", policy => policy.Tag("AnswerPolicy_Tag"));
-    options.AddPolicy("CategoryPolicy", policy => policy.Tag("CategoryPolicy_Tag"));
-    options.AddPolicy("QuestionPolicy", policy => policy.Tag("QuestionPolicy_Tag"));
-    options.AddPolicy("SegmentPolicy", policy => policy.Tag("SegmentPolicy_Tag"));
-    options.AddPolicy("SubCategoryPolicy", policy => policy.Tag("SubCategoryPolicy_Tag"));
-    options.AddPolicy("UserAnswersPolicy", policy => policy.Tag("UserAnswersPolicy_Tag"));
+	//Set expiration to 24 h as default
+	options.AddBasePolicy(builder => builder.Expire(TimeSpan.FromDays(1)));
+	//Add a policy to enable removing the entire cache all together
+	options.AddBasePolicy(builder => builder.Tag("All_Tag"));
+	//Add custom cache policy to enable evicting specific entries by Id (userId, categoryId, segmentId, subCategoryId, questionId, answerId, userAnswerId)
+	options.AddPolicy("ByIdCachePolicy", policy => policy.AddPolicy<ByIdCachePolicy>());
+	//Add general policies for each model
+	options.AddPolicy("CategoryPolicy", policy => policy.Tag("CategoryPolicy_Tag"));
+	options.AddPolicy("SegmentPolicy", policy => policy.Tag("SegmentPolicy_Tag"));
+	//Since we make nested calls to the database we also need a shared policy for category and segment to enable evicting everything from each entities cache
+	options.AddPolicy("Category-SegmentPolicy", policy => policy.Tag("Category-SegmentPolicy_Tag"));
+	options.AddPolicy("SubCategoryPolicy", policy => policy.Tag("SubCategoryPolicy_Tag"));
+	//Since we make nested calls to the database we also need a shared policy for category, segments and subcategories to enable evicting everything from each entities cache
+	options.AddPolicy("Category-Segment-SubCategoryPolicy", policy => policy.Tag("Category-Segment-SubCategoryPolicy_Tag"));
+	options.AddPolicy("QuestionPolicy", policy => policy.Tag("QuestionPolicy_Tag"));
+	options.AddPolicy("AnswerPolicy", policy => policy.Tag("AnswerPolicy_Tag"));
+	options.AddPolicy("UserAnswersPolicy", policy => policy.Tag("UserAnswersPolicy_Tag"));
 });
 
 
@@ -65,97 +73,97 @@ builder.Services.AddControllers();
 
 builder.Services.AddScoped(http => new HttpClient
 {
-    BaseAddress = new Uri(builder.Configuration.GetSection("BaseUri").Value!)
+	BaseAddress = new Uri(builder.Configuration.GetSection("BaseUri").Value!)
 });
 
 builder.Services.AddAuthentication(options =>
-    {
-        options.DefaultScheme = IdentityConstants.ApplicationScheme;
-        options.DefaultSignInScheme = IdentityConstants.ExternalScheme;
-    })
-    .AddIdentityCookies();
+	{
+		options.DefaultScheme = IdentityConstants.ApplicationScheme;
+		options.DefaultSignInScheme = IdentityConstants.ExternalScheme;
+	})
+	.AddIdentityCookies();
 
 var connectionString = builder.Configuration.GetConnectionString("DefaultConnection") ?? throw new InvalidOperationException("Connection string 'DefaultConnection' not found.");
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
-    options.UseSqlServer(connectionString), ServiceLifetime.Transient);
+	options.UseSqlServer(connectionString), ServiceLifetime.Transient);
 
 
 builder.Services.AddCors(options =>
 {
-    options.AddPolicy("AllowAll", options =>
-    {
-        options.AllowAnyHeader();
-        options.AllowAnyMethod();
-        options.AllowAnyOrigin();
-    });
+	options.AddPolicy("AllowAll", options =>
+	{
+		options.AllowAnyHeader();
+		options.AllowAnyMethod();
+		options.AllowAnyOrigin();
+	});
 });
 
 builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 
 builder.Services.AddIdentityCore<ApplicationUser>(options => options.SignIn.RequireConfirmedAccount = true)
-    .AddRoles<IdentityRole>()
-    .AddEntityFrameworkStores<ApplicationDbContext>()
-    .AddSignInManager()
-    .AddDefaultTokenProviders();
+	.AddRoles<IdentityRole>()
+	.AddEntityFrameworkStores<ApplicationDbContext>()
+	.AddSignInManager()
+	.AddDefaultTokenProviders();
 
 builder.Services.AddSingleton<IEmailSender<ApplicationUser>, IdentityNoOpEmailSender>();
 
 using (ServiceProvider sp = builder.Services.BuildServiceProvider())
 {
-    var context = sp.GetRequiredService<ApplicationDbContext>();
-    var signInManager = sp.GetRequiredService<SignInManager<ApplicationUser>>();
-    var roleManager = sp.GetRequiredService<RoleManager<IdentityRole>>();
+	var context = sp.GetRequiredService<ApplicationDbContext>();
+	var signInManager = sp.GetRequiredService<SignInManager<ApplicationUser>>();
+	var roleManager = sp.GetRequiredService<RoleManager<IdentityRole>>();
 
-    context.Database.Migrate();
+	context.Database.Migrate();
 
-    ApplicationUser newAdmin = new()
-    {
-        UserName = "admin",
-        Email = "adminuser@mail.com",
-        EmailConfirmed = true
-    };
+	ApplicationUser newAdmin = new()
+	{
+		UserName = "admin",
+		Email = "adminuser@mail.com",
+		EmailConfirmed = true
+	};
 
-    ApplicationUser newUser = new()
-    {
-        UserName = "user",
-        Email = "user@mail.com",
-        EmailConfirmed = true
+	ApplicationUser newUser = new()
+	{
+		UserName = "user",
+		Email = "user@mail.com",
+		EmailConfirmed = true
 
-    };
+	};
 
-    var admin = signInManager.UserManager.FindByEmailAsync(newAdmin.Email).GetAwaiter().GetResult();
+	var admin = signInManager.UserManager.FindByEmailAsync(newAdmin.Email).GetAwaiter().GetResult();
 
-    if (admin == null)
-    {
-        // Skapa en ny user 
-        signInManager.UserManager.CreateAsync(newAdmin, "Password1234!").GetAwaiter().GetResult();
+	if (admin == null)
+	{
+		// Skapa en ny user 
+		signInManager.UserManager.CreateAsync(newAdmin, "Password1234!").GetAwaiter().GetResult();
 
-        // Kolla om admin rollen existerar
-        bool adminRoleExists = roleManager.RoleExistsAsync("Admin").GetAwaiter().GetResult();
+		// Kolla om admin rollen existerar
+		bool adminRoleExists = roleManager.RoleExistsAsync("Admin").GetAwaiter().GetResult();
 
-        if (!adminRoleExists)
-        {
-            IdentityRole adminRole = new()
-            {
-                Name = "Admin"
-            };
+		if (!adminRoleExists)
+		{
+			IdentityRole adminRole = new()
+			{
+				Name = "Admin"
+			};
 
-            // Skapa adminrollen
-            roleManager.CreateAsync(adminRole).GetAwaiter().GetResult();
+			// Skapa adminrollen
+			roleManager.CreateAsync(adminRole).GetAwaiter().GetResult();
 
-            // Tilldela adminrollen till den nya admin-usern
-            signInManager.UserManager.AddToRoleAsync(newAdmin, "Admin").GetAwaiter().GetResult();
+			// Tilldela adminrollen till den nya admin-usern
+			signInManager.UserManager.AddToRoleAsync(newAdmin, "Admin").GetAwaiter().GetResult();
 
-        }
+		}
 
-    }
+	}
 
-    var user = signInManager.UserManager.FindByEmailAsync(newUser.Email).GetAwaiter().GetResult();
+	var user = signInManager.UserManager.FindByEmailAsync(newUser.Email).GetAwaiter().GetResult();
 
-    if (user == null)
-    {
-        signInManager.UserManager.CreateAsync(newUser, "Password1234!").GetAwaiter().GetResult();
-    }
+	if (user == null)
+	{
+		signInManager.UserManager.CreateAsync(newUser, "Password1234!").GetAwaiter().GetResult();
+	}
 }
 
 var app = builder.Build();
@@ -168,14 +176,14 @@ app.UseOutputCache();
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
-    app.UseWebAssemblyDebugging();
-    app.UseMigrationsEndPoint();
+	app.UseWebAssemblyDebugging();
+	app.UseMigrationsEndPoint();
 }
 else
 {
-    app.UseExceptionHandler("/Error", createScopeForErrors: true);
-    // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
-    app.UseHsts();
+	app.UseExceptionHandler("/Error", createScopeForErrors: true);
+	// The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
+	app.UseHsts();
 }
 
 app.UseHttpsRedirection();
@@ -186,9 +194,9 @@ app.UseStaticFiles();
 app.UseAntiforgery();
 
 app.MapRazorComponents<App>()
-    .AddInteractiveServerRenderMode()
-    .AddInteractiveWebAssemblyRenderMode()
-    .AddAdditionalAssemblies(typeof(ValhallaVaultCyberAwareness.Client._Imports).Assembly);
+	.AddInteractiveServerRenderMode()
+	.AddInteractiveWebAssemblyRenderMode()
+	.AddAdditionalAssemblies(typeof(ValhallaVaultCyberAwareness.Client._Imports).Assembly);
 
 // Add additional endpoints required by the Identity /Account Razor components.
 app.MapAdditionalIdentityEndpoints();

@@ -78,21 +78,44 @@
 		{
 			Id = allCategoriesAfterDelete[0].Id,
 			Name = allCategoriesAfterDelete[0].Name,
-			Description = "Ny kategoribeskrivning"
+			Description = "Ny kategoribeskrivning22"
 		});
 
 		//13. Make new call to get all categories. It is fetched fresh from the db - correctly!
 		List<CategoryModel> allCategoriesAfterUpdate = await categoryService.GetAllCategoriesAsync();
 
 		//14. Make new call to get specific category by id. The id is the one that was altered in the update, so it should be fetched fresh from the db
+		//OK!
 		var category4 = await categoryService.GetCategoryWithUserScore(1, userId);
 
 		//12. Make specific call for one category by id. It has not been altered in the update, so it should still be fetched from the cache
 		//It is fetched from the cache - correctly!
 		var unRelatedCategory4 = await categoryService.GetCategoryWithUserScore(2, userId);
 
-		//13. Make call for another userid. This has not been queried before so it should be fetched from the db
+		//13. Make call for another userid. This has not been queried before so it should be fetched from the db.
+		//It is correctly fetched from the database
 		var newUserCategoryScore = await categoryService.GetCategoryWithUserScore(2, "5db5968d-eb63-4515-a74c-9dc7b5d4328e");
+
+		//14. Delete segment. Segment is nested under category. The deleted segment belongs to category-ID 2
+		// If it's queried for categories after that, it needs to hold the updated segment information, since it's included in those queries.
+		bool isSuccesfullyDeleted = await segmentService.RemoveSegmentAsync(7);
+
+		//15. Make new call to get all categories. This should be fetched fresh from the db, since the call to get all categories includes segments.
+		//It is correctly fetched fresh from db!
+		List<CategoryModel> allCategoriesAfterSegmentDelete = await categoryService.GetAllCategoriesAsync();
+
+		//16. Make new call to get single category. This has not been affected by the previous segment-removal since it belongs to another category-ID and should be fetched from the cache
+		//Is is correctly fetched from the cache!
+		var category5 = await categoryService.GetCategoryWithUserScore(1, userId);
+
+		//17. Make new call to get a single category. This has been affected by the previous segment-removal since it belongs to the category that has been changed with the segment removal.
+		//Excepted to fetch fresh from db.
+		//It is correctly fetched from the db!
+		var newUserCategoryScore2 = await categoryService.GetCategoryWithUserScore(2, "5db5968d-eb63-4515-a74c-9dc7b5d4328e");
+
+
+
+
 
 		DateTime endTimeDbCall2 = DateTime.Now;
 		// double dbdiff2 = MeasureTimeDifferenceBetweenTwoCalls(startTimeDbCall2, endTimeDbCall2);
