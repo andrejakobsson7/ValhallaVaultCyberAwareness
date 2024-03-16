@@ -1,16 +1,18 @@
 ﻿@page "/counter"
+@using Microsoft.AspNetCore.Authorization
 @using Microsoft.AspNetCore.Identity
 @using ValhallaVaultCyberAwareness.Client.Services
 @using ValhallaVaultCyberAwareness.Client.ViewModels
 @using ValhallaVaultCyberAwareness.Data
 @using ValhallaVaultCyberAwareness.Domain.Models
-@rendermode InteractiveAuto
+@rendermode InteractiveServer
 @inject ICategoryService categoryService;
 @inject AuthenticationStateProvider authStateProvider;
 @inject ISegmentService segmentService;
 @inject IQuestionService questionService
 @inject ISubCategoryService subCategoryService;
 @inject IUserAnswersService userAnswersService;
+@attribute [Authorize]
 @* @inject UserManager<ApplicationUser> UserManager
  *@
 <PageTitle>Counter</PageTitle>
