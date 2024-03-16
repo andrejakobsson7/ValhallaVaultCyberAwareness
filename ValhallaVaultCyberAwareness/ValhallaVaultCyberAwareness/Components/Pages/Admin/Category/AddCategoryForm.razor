@@ -20,7 +20,7 @@
 
     <InputText @bind-Value="Category.Description"></InputText>
 
-    <input type="submit" value="Create a category" />
+    <input class="btn btn-info" type="submit" value="Create a category" />
 
 </EditForm>
 
@@ -36,7 +36,7 @@
 
     private async Task HandleSubmit()
     {
-
+        
         var confirmation = await dialog.ShowAsync(
 
          title: "Are you sure you want to add?",

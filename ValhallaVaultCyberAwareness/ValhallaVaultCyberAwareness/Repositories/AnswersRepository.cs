@@ -33,5 +33,6 @@ namespace ValhallaVaultCyberAwareness.Repositories
 
             throw new Exception("Answer not found");
         }
+
     }
 }

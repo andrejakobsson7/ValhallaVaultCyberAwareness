@@ -3,12 +3,14 @@
 
 <ConfirmDialog @ref="dialog"></ConfirmDialog>
 
-<h3>Create a category</h3>
 <div class="container">
 
         <div class="row">
 
             <div class="col-sm">
+
+            <h3>Create a Question</h3>
+
             <EditForm Model="Question" OnSubmit="HandleSubmit" FormName="QuestionForm" Context="ArbitraryConceptualName" class="card w-50">
 
                 <label>Question: </label>
@@ -40,11 +42,11 @@
 
                     <InputCheckbox @bind-Value="Answer.IsCorrect"></InputCheckbox>
 
-                    <input type="submit" value="Add answer" />
+                    <input class="btn btn-info" type="submit" value="Add answer" />
 
                 </EditForm>
 
-                <input type="submit" value="Create a question" />
+                <input class="btn btn-info" type="submit" value="Create a question" />
 
 
             </EditForm>

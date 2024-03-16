@@ -19,6 +19,7 @@ else
                 {
                     <Question CurrentQuestion="@question" OnDelete=" async () => await OnChange()"></Question>
                 }
+
            </div>
 
            <div class="col-sm">
@@ -26,11 +27,8 @@ else
            </div>
 
         </div>
-       
 
     </div>
-
-
 
 }
 
@@ -49,3 +47,15 @@ else
         StateHasChanged();
     }
 }
+
+<style>
+
+    h3 {
+        font-weight: bold;
+    }
+
+    .container {
+        font-family: 'Trebuchet MS';
+    }
+
+</style>

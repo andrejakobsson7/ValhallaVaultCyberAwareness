@@ -3,25 +3,35 @@
 @inject AdminManager manager
 @rendermode InteractiveServer
 
-<h3>Categories: </h3>
-
 @if(Categories == null)
 {
     <h3>Loading...</h3>
 }
 else
 {
+     <div class="container">
 
-    <div class="flex-column">
+        <div class="row">
 
-        @foreach (var category in Categories)
-        {
-            <Category CurrentCategory="@category" OnDelete="async () => await OnChange()"></Category>
-        }
+           <div class="col-sm category">
 
-        <AddCategoryForm OnAdd="async () => await OnChange()"></AddCategoryForm>
+                <h3>Categories: </h3>
+
+                @foreach (var category in Categories)
+                {
+                    <Category CurrentCategory="@category" OnDelete="async () => await OnChange()"></Category>
+                }
+
+           </div>
+
+           <div class="col-sm">
+                <AddCategoryForm OnAdd="async () => await OnChange()"></AddCategoryForm>
+            </div>
+
+        </div>
 
     </div>
+    
 
 }
 
@@ -41,3 +51,14 @@ else
         StateHasChanged();
     }
 }
+
+<style>
+
+    h3 {
+        font-weight: bold;
+    }
+    .container{
+        font-family: 'Trebuchet MS';
+    }
+
+</style>

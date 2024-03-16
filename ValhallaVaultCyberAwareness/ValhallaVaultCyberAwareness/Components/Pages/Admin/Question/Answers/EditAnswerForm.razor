@@ -2,8 +2,6 @@
 
 <ConfirmDialog @ref="dialog"></ConfirmDialog>
 
-<h3>Update</h3>
-
 <EditForm Model="Answer" OnSubmit="HandleSubmit" FormName="Name" class="card w-50">
 
     <label>
@@ -16,7 +14,7 @@
 
     <InputCheckbox @bind-Value="Answer.IsCorrect"></InputCheckbox>
 
-    <input type="submit" value="Update" />
+    <input class="btn btn-info" type="submit" value="Update" />
 
 </EditForm>
 
@@ -28,7 +26,15 @@
     private ConfirmDialog dialog;
 
     [Parameter]
+    public List<AnswerModel> QuestionAnswers { get; set; } = new();
+
+    [Parameter]
     public Action? OnUpdate { get; set; }
+
+    [Parameter]
+    public Action? OnError { get; set; }
+
+
 
     private async Task HandleSubmit()
     {
@@ -40,8 +46,29 @@
 
         if (confirmation)
         {
-            await manager._answersRepository.UpdateAnswerAsync(Answer);
-            OnUpdate.Invoke();
+            int correctAnswers = 0;
+
+            foreach(var answer in QuestionAnswers)
+            {
+                if (answer.IsCorrect)
+                {
+                    correctAnswers++;
+                }
+            }
+
+            if(correctAnswers == 0 || correctAnswers > 1)
+            {
+                OnError.Invoke();
+            }
+            else
+            {
+                await manager._answersRepository.UpdateAnswerAsync(Answer);
+                OnUpdate.Invoke();
+
+            }
+
         }
+    }
+
     }
 }

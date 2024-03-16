@@ -7,10 +7,10 @@
     <div class="card-body">
 
         <h5 class="card-title">@CurrentSubCategory.Name</h5>
-         <h5 class="card-text">Segment: @CurrentSubCategory.Segment.Name</h5>
-         <p class="card-text">@CurrentSubCategory.Description</p>
-        <button class="btn btn-primary" @onclick="async () => await DeleteSubCategory()">Delete</button>
-        <button class="btn btn-primary" @onclick="Toggle">Edit</button>
+        <h5 class="card-text">Segment: @CurrentSubCategory.Segment.Name</h5>
+        <p class="card-text">@CurrentSubCategory.Description</p>
+        <button class="btn btn-info" @onclick="Toggle">Edit</button>
+        <button class="btn btn-danger" @onclick="async () => await DeleteSubCategory()">Delete</button>
 
         @if(Hide == false)
         {

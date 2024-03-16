@@ -10,8 +10,8 @@
         <h5 class="card-title">@CurrentSegment.Name</h5>
         <h5 class="card-text">Category: @CurrentSegment.Category.Name</h5>
         <p class="card-text">@CurrentSegment.Description</p>
-          <button class="btn btn-primary" @onclick="async () => await DeleteSegment()">Delete</button>
-        <button class="btn btn-primary" @onclick="Toggle">Edit</button>
+        <button class="btn btn-info" @onclick="Toggle">Edit</button>
+        <button class="btn btn-danger" @onclick="async () => await DeleteSegment()">Delete</button>
 
         @if(Hide == false)
         {

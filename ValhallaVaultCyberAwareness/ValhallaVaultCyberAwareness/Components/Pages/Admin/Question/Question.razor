@@ -23,8 +23,8 @@
             }
         }
 
-        <button class="btn btn-primary" @onclick="async () => await DeleteQuestion()">Delete</button>
-        <button class="btn btn-primary" @onclick="Toggle">Edit Question</button>
+        <button class="btn btn-info" @onclick="Toggle">Edit Question</button>
+        <button class="btn btn-danger" @onclick="async () => await DeleteQuestion()">Delete</button>
 
         <a href="Admin/Question/Answers/EditAnswersPage/@CurrentQuestion.Id">
             <button class="btn btn-primary">Edit Answers</button>

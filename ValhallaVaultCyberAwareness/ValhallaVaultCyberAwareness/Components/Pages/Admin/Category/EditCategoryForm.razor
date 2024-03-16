@@ -2,9 +2,6 @@
 
 <ConfirmDialog @ref="dialog"></ConfirmDialog>
 
-
-<h3>Update</h3>
-
 <EditForm Model="Category" OnSubmit="HandleSubmit" FormName="Name" class="card w-50">
 
     <label>
@@ -19,7 +16,7 @@
 
     <InputText @bind-Value="Category.Description"></InputText>
 
-    <input type="submit" value="Update" />
+    <input class="btn btn-info" type="submit" value="Update" />
 
 </EditForm>
 
