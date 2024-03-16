@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.OutputCaching;
 using System.Text.Json;
 using System.Text.Json.Serialization;
+using ValhallaVaultCyberAwareness.Cache;
 using ValhallaVaultCyberAwareness.Domain.Models;
 using ValhallaVaultCyberAwareness.Repositories.Interfaces;
 
@@ -59,7 +60,8 @@ namespace ValhallaVaultCyberAwareness.Controllers
 
 			if (segmentToAdd != null)
 			{
-				await RemoveFromGeneralCache(cancellationToken);
+				await CacheManager.RemoveFromGeneralCache(cancellationToken, _outputCacheStore);
+				//await RemoveFromGeneralCache(cancellationToken);
 				return Ok(segmentToAdd);
 			}
 
@@ -74,7 +76,8 @@ namespace ValhallaVaultCyberAwareness.Controllers
 			try
 			{
 				bool isSegmentUpdated = await _segmentRepo.UpdateSegmentAsync(segment);
-				await RemoveFromCategorySegmentAndGeneralCache(segment.CategoryId, segment.Id, cancellationToken);
+				await CacheManager.RemoveFromCategorySegmentAndGeneralCache(segment.CategoryId, segment.Id, cancellationToken, _outputCacheStore);
+				//await RemoveFromCategorySegmentAndGeneralCache(segment.CategoryId, segment.Id, cancellationToken);
 				return Ok();
 			}
 			catch (ArgumentNullException ex)
@@ -95,7 +98,8 @@ namespace ValhallaVaultCyberAwareness.Controllers
 			try
 			{
 				SegmentModel deletedSegment = await _segmentRepo.RemoveSegmentAsync(segmentId);
-				await RemoveFromCategorySegmentAndGeneralCache(deletedSegment.CategoryId, segmentId, cancellationToken);
+				await CacheManager.RemoveFromCategorySegmentAndGeneralCache(deletedSegment.CategoryId, segmentId, cancellationToken, _outputCacheStore);
+				//await RemoveFromCategorySegmentAndGeneralCache(deletedSegment.CategoryId, segmentId, cancellationToken);
 				return Ok();
 			}
 			//If the repository throws an argumentnullexception, it did not find the segment by the id sent along as a parameter
@@ -107,31 +111,6 @@ namespace ValhallaVaultCyberAwareness.Controllers
 			{
 				return BadRequest();
 			}
-		}
-
-		private async Task RemoveFromCategoryCache(int categoryId, CancellationToken cancellationToken)
-		{
-			//Delete the category-ID that the updated/removed segment belonged to from the cache
-			await _outputCacheStore.EvictByTagAsync(categoryId.ToString(), cancellationToken);
-		}
-
-		private async Task RemoveFromSegmentCache(int segmentId, CancellationToken cancellationToken)
-		{
-			//Delete segment by Segment-ID in the cache
-			await _outputCacheStore.EvictByTagAsync(segmentId.ToString(), cancellationToken);
-		}
-
-		private async Task RemoveFromGeneralCache(CancellationToken cancellationToken)
-		{
-			//Remove from general cache
-			await _outputCacheStore.EvictByTagAsync("Category-Segment-SubCategoryPolicy_Tag", cancellationToken);
-		}
-
-		private async Task RemoveFromCategorySegmentAndGeneralCache(int categoryId, int segmentId, CancellationToken cancellationToken)
-		{
-			await RemoveFromCategoryCache(categoryId, cancellationToken);
-			await RemoveFromSegmentCache(segmentId, cancellationToken);
-			await RemoveFromGeneralCache(cancellationToken);
 		}
 
 		public class SegmentApiModel

@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.OutputCaching;
 using System.Text.Json;
 using System.Text.Json.Serialization;
+using ValhallaVaultCyberAwareness.Cache;
 using ValhallaVaultCyberAwareness.Domain.Models;
 using ValhallaVaultCyberAwareness.Repositories;
 
@@ -81,7 +82,8 @@ namespace ValhallaVaultCyberAwareness.Controllers
 			var category = await _categoryRepo.AddCategoryAsync(newCategory);
 			if (category != null)
 			{
-				await RemoveFromGeneralCache(cancellationToken);
+				await CacheManager.RemoveFromGeneralCache(cancellationToken, _outputCacheStore);
+				//await RemoveFromGeneralCache(cancellationToken);
 				return Ok(category);
 			}
 			return BadRequest();
@@ -95,7 +97,8 @@ namespace ValhallaVaultCyberAwareness.Controllers
 			var categoryToUpdate = await _categoryRepo.UpdateCategoryAsync(category);
 			if (categoryToUpdate != null)
 			{
-				await RemoveFromCategoryAndGeneralCache(categoryToUpdate.Id, cancellationToken);
+				//await RemoveFromCategoryAndGeneralCache(categoryToUpdate.Id, cancellationToken);
+				await CacheManager.RemoveFromCategoryAndGeneralCache(categoryToUpdate.Id, cancellationToken, _outputCacheStore);
 				return Ok(categoryToUpdate);
 
 			}
@@ -111,28 +114,11 @@ namespace ValhallaVaultCyberAwareness.Controllers
 
 			if (categoryToDelete != false)
 			{
-				await RemoveFromCategoryAndGeneralCache(categoryId, cancellationToken);
+				await CacheManager.RemoveFromCategoryAndGeneralCache(categoryId, cancellationToken, _outputCacheStore);
+				//await RemoveFromCategoryAndGeneralCache(categoryId, cancellationToken);
 				return Ok(categoryToDelete);
 			}
 			return BadRequest();
-		}
-
-		private async Task RemoveFromCategoryCache(int categoryId, CancellationToken cancellationToken)
-		{
-			//Delete the category-ID that the updated/removed segment belonged to
-			await _outputCacheStore.EvictByTagAsync(categoryId.ToString(), cancellationToken);
-		}
-
-		private async Task RemoveFromGeneralCache(CancellationToken cancellationToken)
-		{
-			//Remove from general cache
-			await _outputCacheStore.EvictByTagAsync("Category-Segment-SubCategoryPolicy_Tag", cancellationToken);
-		}
-
-		private async Task RemoveFromCategoryAndGeneralCache(int categoryId, CancellationToken cancellationToken)
-		{
-			await RemoveFromCategoryCache(categoryId, cancellationToken);
-			await RemoveFromGeneralCache(cancellationToken);
 		}
 
 		//Temporary model that is returned from the API to enable that the client service can get access to navigation properties,

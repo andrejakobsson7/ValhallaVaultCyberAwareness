@@ -42,7 +42,7 @@
 		//It should evict the cache for all categories
 		bool isSuccessfullyAddedCategory = await categoryService.AddCategoryAsync(new CategoryModel()
 			{
-				Name = "Test ny kategori 1"
+				Name = "Test ny kategori 12"
 			});
 
 		//6. Make new call to get all categories
@@ -137,7 +137,7 @@
 
 		//22 Update existing subcategory in db.
 		//This should evict general cache and on ID-level in all entities
-		var newUserCategoryScore4 = await categoryService.GetCategoryWithUserScore(2, "5db5968d-eb63-4515-a74c-9dc7b5d4328e");
+		var newUserCategoryScore4 = await categoryService.GetCategoryWithUserScore(1024, "5db5968d-eb63-4515-a74c-9dc7b5d4328e");
 
 		bool isSuccessfullyUpdatedSubCategory = await subCategoryService.UpdateSubCategoryAsync(new SubCategoryModel()
 			{
@@ -155,7 +155,7 @@
 
 		//25 Get category that has not been affected by update of subcategory. Should fetch from cache
 		//THIS DOESN'T WORK, IT'S FETCHING FROM THE DATABASE
-		var newUserCategoryScore5 = await categoryService.GetCategoryWithUserScore(2, "5db5968d-eb63-4515-a74c-9dc7b5d4328e");
+		var newUserCategoryScore5 = await categoryService.GetCategoryWithUserScore(1024, "5db5968d-eb63-4515-a74c-9dc7b5d4328e");
 
 		//26 Add new useranswers
 		List<UserAnswers> newUserAnswers = new();
