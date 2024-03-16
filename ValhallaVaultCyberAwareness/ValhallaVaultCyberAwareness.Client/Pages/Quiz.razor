@@ -1,5 +1,6 @@
 ﻿@page "/quiz/{SubCategoryId:int}"
 
+@using Microsoft.AspNetCore.Authorization
 @using ValhallaVaultCyberAwareness.Client.Services
 @using ValhallaVaultCyberAwareness.Client.ViewModels
 @using ValhallaVaultCyberAwareness.Domain.Models
@@ -9,7 +10,8 @@
 @inject IUserAnswersService userAnswersService;
 
 
-@rendermode InteractiveAuto
+@rendermode InteractiveServer
+@attribute [Authorize]
 
 @if (questions == null)
 {

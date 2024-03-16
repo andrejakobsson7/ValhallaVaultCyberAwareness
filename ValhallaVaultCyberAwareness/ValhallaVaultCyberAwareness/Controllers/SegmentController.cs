@@ -87,6 +87,8 @@ namespace ValhallaVaultCyberAwareness.Controllers
             return BadRequest();
         }
 
+        //Temporary model that is returned from the API to enable that the client service can get access to navigation properties,
+        //since these are not serialized otherwise
         public class SegmentApiModel
         {
             public int Id { get; set; }

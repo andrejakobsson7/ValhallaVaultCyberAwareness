@@ -1,9 +1,12 @@
 ﻿@page "/SubCategory/{segmentId:int}"
+@using Microsoft.AspNetCore.Authorization
 @using ValhallaVaultCyberAwareness.Client.Services
 @using ValhallaVaultCyberAwareness.Domain.Models
 
 @inject ISubCategoryService SubCategoryService
 @inject IQuestionService QuestionService
+@rendermode InteractiveServer
+@attribute [Authorize]
 
 @if (SubCategories == null)
 {
