@@ -147,15 +147,32 @@
 				Description = "TEST"
 			});
 
-			//23. Get all categories, this should be fetched from db
+		//23. Get all categories, this should be fetched from db
 		List<CategoryModel> allCategoriesAfterSubCategoryUpdate = await categoryService.GetAllCategoriesAsync();
 
 		//24. Get single category. This should be fetched from the db since category 1 has been altered (included segment-id 1 has been added a new subcategory)
 		var category7 = await categoryService.GetCategoryWithUserScore(1, userId);
 
 		//25 Get category that has not been affected by update of subcategory. Should fetch from cache
+		//THIS DOESN'T WORK, IT'S FETCHING FROM THE DATABASE
 		var newUserCategoryScore5 = await categoryService.GetCategoryWithUserScore(2, "5db5968d-eb63-4515-a74c-9dc7b5d4328e");
 
+		//26 Add new useranswers
+		List<UserAnswers> newUserAnswers = new();
+		newUserAnswers.Add(new UserAnswers()
+			{
+				AnswerId = 5,
+				UserId = userId
+			});
+		bool isSuccessfullyRegisteredAnswers = await userAnswersService.AddUserAnswersAsync(newUserAnswers);
+
+		//27 Get category. Should get from db to get updated data.
+		//It gets from db!
+		var category8 = await categoryService.GetCategoryWithUserScore(1, userId);
+
+		//28 Test with another user - should still get from cache
+		//It fetches from cache!
+		var newUserCategoryScore6 = await categoryService.GetCategoryWithUserScore(2, "5db5968d-eb63-4515-a74c-9dc7b5d4328e");
 
 	}
 
