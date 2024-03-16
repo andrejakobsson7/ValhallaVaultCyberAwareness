@@ -27,7 +27,7 @@
         }
     </InputSelect>
 
-
+    <br />
     <input class="btn btn-info" type="submit" value="Update" />
 
 </EditForm>
@@ -37,10 +37,11 @@
     [Parameter]
     public SegmentModel segment { get; set; } = new();
 
-    public List<CategoryModel> Categories { get; set; } = new();
+    private List<CategoryModel> Categories { get; set; } = new();
 
     private ConfirmDialog dialog;
 
+    // Action that tells the parent component to update when invoked
     [Parameter]
     public Action? OnUpdate { get; set; }
 

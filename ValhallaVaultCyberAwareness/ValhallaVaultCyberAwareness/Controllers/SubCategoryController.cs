@@ -9,7 +9,6 @@ namespace ValhallaVaultCyberAwareness.Controllers
     public class SubCategoryController : ControllerBase
     {
         public ISubCategoryRepository _subCategoryRepo;
-
         public SubCategoryController(ISubCategoryRepository subCategoryRepo)
         {
             _subCategoryRepo = subCategoryRepo;

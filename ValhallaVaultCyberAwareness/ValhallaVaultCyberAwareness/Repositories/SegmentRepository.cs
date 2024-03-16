@@ -14,6 +14,11 @@ namespace ValhallaVaultCyberAwareness.Repositories
             _context = context;
         }
 
+        /// <summary>
+        /// Gets a segment by its id
+        /// </summary>
+        /// <param name="segmentId"></param>
+        /// <returns>A single segment</returns>
         public async Task<SegmentModel?> GetSegmentByIdAsync(int segmentId)
         {
             return await _context.Segments.FirstOrDefaultAsync(s => s.Id == segmentId);
@@ -40,6 +45,11 @@ namespace ValhallaVaultCyberAwareness.Repositories
         {
             return await _context.Segments.ToListAsync();
         }
+
+        /// <summary>
+        /// Gets all segments including their categories
+        /// </summary>
+        /// <returns>A list of segments</returns>
         public async Task<List<SegmentModel>> GetAllSegmentsWithIncludeAsync()
         {
             return await _context.Segments.Include(s => s.Category).ToListAsync();
@@ -92,7 +102,6 @@ namespace ValhallaVaultCyberAwareness.Repositories
             {
                 try
                 {
-                    _context.Attach(segmentToUpdate);
                     segmentToUpdate.Name = segment.Name;
                     segmentToUpdate.Description = segment.Description;
                     segmentToUpdate.CategoryId = segment.CategoryId;

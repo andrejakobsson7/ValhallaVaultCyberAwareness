@@ -20,19 +20,6 @@ namespace ValhallaVaultCyberAwareness.Controllers
             _segmentRepo = segmentRepo;
         }
 
-        //[HttpGet]
-        //[Route("{segmentId}")]
-        //public async Task<ActionResult<List<SegmentModel>>> GetSegmentById(int segmentId)
-        //{
-        //    var segment = await _segmentRepo.GetSegmentByIdAsync(segmentId);
-
-        //    if (segment != null)
-        //    {
-        //        return Ok(segment);
-        //    }
-        //    return BadRequest();
-        //}
-
         [HttpGet]
         [Route("{segmentId}/{userId}")]
         public async Task<IActionResult> GetCategoryWithUserScoresByUserIdAsync(int segmentId, string userId)
@@ -46,19 +33,6 @@ namespace ValhallaVaultCyberAwareness.Controllers
             }
             return BadRequest();
         }
-
-        //[HttpPost]
-        //public async Task<ActionResult<SegmentModel>> AddSegment(SegmentModel newSegment)
-        //{
-        //    var segmentToAdd = await _segmentRepo.AddSegmentAsync(newSegment);
-
-        //    if (segmentToAdd != false)
-        //    {
-        //        return Ok(segmentToAdd);
-        //    }
-
-        //    return BadRequest();
-        //}
 
         [HttpPut]
         [Route("{id}")]
@@ -96,11 +70,8 @@ namespace ValhallaVaultCyberAwareness.Controllers
             public string? Description { get; set; }
             public int CategoryId { get; set; }
             public List<SubCategoryModel> SubCategories { get; set; } = new();
-
             public List<QuestionModel> Questions { get; set; } = new();
-
             public List<AnswerModel> Answers { get; set; } = new();
-
             public List<UserAnswers> UserAnswers { get; set; } = new();
 
             public SegmentApiModel(SegmentModel segment)

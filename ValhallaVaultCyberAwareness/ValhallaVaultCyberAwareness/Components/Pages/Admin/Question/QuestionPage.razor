@@ -3,8 +3,6 @@
 @inject AdminManager manager
 @rendermode InteractiveServer
 
-<h3>Questions: </h3>
-
 @if(Questions == null)
 {
     <h3>Loading...</h3>
@@ -12,8 +10,11 @@
 else
 {
     <div class="container">
+
         <div class="row">
+
            <div class="col-sm">
+                <h3>Questions: </h3>
 
                 @foreach (var question in Questions)
                 {
@@ -23,7 +24,9 @@ else
            </div>
 
            <div class="col-sm">
+
                 <AddQuestionForm></AddQuestionForm>
+
            </div>
 
         </div>

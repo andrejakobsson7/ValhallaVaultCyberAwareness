@@ -6,6 +6,5 @@ namespace ValhallaVaultCyberAwareness.Repositories.Interfaces
     {
         public Task<AnswerModel> UpdateAnswerAsync(AnswerModel newAnswer);
         public Task<List<AnswerModel>> GetAnswersByQuestionIdAsync(int questionId);
-
     }
 }

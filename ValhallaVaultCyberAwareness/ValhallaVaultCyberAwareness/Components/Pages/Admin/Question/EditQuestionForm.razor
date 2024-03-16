@@ -2,9 +2,6 @@
 
 <ConfirmDialog @ref="dialog"></ConfirmDialog>
 
-
-<h3>Update</h3>
-
 <EditForm Model="Question" OnSubmit="HandleSubmit" FormName="Name" class="card w-50">
 
     <label>
@@ -19,6 +16,8 @@
 
     <InputText @bind-Value="Question.Explanation"></InputText>
 
+     <br />
+
     <input class="btn btn-info" type="submit" value="Update" />
 
 </EditForm>
@@ -30,6 +29,7 @@
 
     private ConfirmDialog dialog;
 
+    // Action that tells the parent component to update when invoked
     [Parameter]
     public Action? OnUpdate { get; set; }
 

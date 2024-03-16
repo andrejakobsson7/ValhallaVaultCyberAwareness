@@ -14,6 +14,11 @@ namespace ValhallaVaultCyberAwareness.Repositories
             _context = context;
         }
 
+        /// <summary>
+        /// Gets all answers by their question id
+        /// </summary>
+        /// <param name="questionId"></param>
+        /// <returns>A list of Answers</returns>
         public async Task<List<AnswerModel>> GetAnswersByQuestionIdAsync(int questionId)
         {
             return await _context.Answers.Where(a => a.QuestionId == questionId).ToListAsync();

@@ -15,6 +15,8 @@
     </label>
 
     <InputText @bind-Value="Category.Description"></InputText>
+       
+    <br />
 
     <input class="btn btn-info" type="submit" value="Update" />
 
@@ -27,12 +29,12 @@
 
     private ConfirmDialog dialog;
 
+    // Action that tells the parent component to update when invoked
     [Parameter]
     public Action? OnUpdate { get; set; }
 
     private async Task HandleSubmit()
     {
-
         var confirmation = await dialog.ShowAsync(
 
          title: "Are you sure you want to update this category?",
@@ -42,6 +44,7 @@
         if (confirmation)
         {
             await manager._categoryRepository.UpdateCategoryAsync(Category);
+            // Tell parent component to update
             OnUpdate.Invoke();
 
         }
