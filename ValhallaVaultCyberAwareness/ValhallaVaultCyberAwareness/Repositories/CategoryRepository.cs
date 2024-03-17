@@ -7,12 +7,10 @@ namespace ValhallaVaultCyberAwareness.Repositories
     public class CategoryRepository : ICategoryRepository
     {
         public ApplicationDbContext _context { get; set; }
-
         public CategoryRepository(ApplicationDbContext context)
         {
             _context = context;
         }
-
         public async Task<List<CategoryModel>> GetAllCategoriesAsync()
         {
             return await _context.Categories.ToListAsync();
@@ -56,6 +54,12 @@ namespace ValhallaVaultCyberAwareness.Repositories
                 FirstOrDefaultAsync();
         }
 
+
+        /// <summary>
+        /// Gets a category by its id
+        /// </summary>
+        /// <param name="categoryId"></param>
+        /// <returns>A single category</returns>
         public async Task<CategoryModel> GetCategoryById(int categoryId)
         {
             var category = await _context.Categories.FirstOrDefaultAsync(c => c.Id == categoryId);
@@ -92,10 +96,6 @@ namespace ValhallaVaultCyberAwareness.Repositories
             {
                 categoryToUpdate.Name = category.Name;
                 categoryToUpdate.Description = category.Description;
-
-                _context.Attach(categoryToUpdate);
-                _context.Entry(categoryToUpdate).Property(p => p.Name).IsModified = true;
-                _context.Entry(categoryToUpdate).Property(p => p.Description).IsModified = true;
 
                 await _context.SaveChangesAsync();
 

@@ -2,8 +2,6 @@
 
 <ConfirmDialog @ref="dialog"></ConfirmDialog>
 
-<h3>Update</h3>
-
 <EditForm Model="segment" OnSubmit="HandleSubmit" FormName="name" class="card w-50">
 
     <label>
@@ -29,8 +27,8 @@
         }
     </InputSelect>
 
-
-    <input type="submit" value="Update"/>
+    <br />
+    <input class="btn btn-info" type="submit" value="Update" />
 
 </EditForm>
 
@@ -39,10 +37,11 @@
     [Parameter]
     public SegmentModel segment { get; set; } = new();
 
-    public List<CategoryModel> Categories { get; set; } = new();
+    private List<CategoryModel> Categories { get; set; } = new();
 
     private ConfirmDialog dialog;
 
+    // Action that tells the parent component to update when invoked
     [Parameter]
     public Action? OnUpdate { get; set; }
 

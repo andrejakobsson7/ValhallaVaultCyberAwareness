@@ -76,9 +76,5 @@ namespace ValhallaVaultCyberAwareness.Repositories
             return await _context.SupportQuestions.FirstOrDefaultAsync(q => q.Id == id);
         }
 
-
-
-
-
     }
 }

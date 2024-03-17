@@ -2,9 +2,6 @@
 
 <ConfirmDialog @ref="dialog"></ConfirmDialog>
 
-
-<h3>Update</h3>
-
 <EditForm Model="Category" OnSubmit="HandleSubmit" FormName="Name" class="card w-50">
 
     <label>
@@ -18,8 +15,10 @@
     </label>
 
     <InputText @bind-Value="Category.Description"></InputText>
+       
+    <br />
 
-    <input type="submit" value="Update" />
+    <input class="btn btn-info" type="submit" value="Update" />
 
 </EditForm>
 
@@ -30,12 +29,12 @@
 
     private ConfirmDialog dialog;
 
+    // Action that tells the parent component to update when invoked
     [Parameter]
     public Action? OnUpdate { get; set; }
 
     private async Task HandleSubmit()
     {
-
         var confirmation = await dialog.ShowAsync(
 
          title: "Are you sure you want to update this category?",
@@ -45,6 +44,7 @@
         if (confirmation)
         {
             await manager._categoryRepository.UpdateCategoryAsync(Category);
+            // Tell parent component to update
             OnUpdate.Invoke();
 
         }

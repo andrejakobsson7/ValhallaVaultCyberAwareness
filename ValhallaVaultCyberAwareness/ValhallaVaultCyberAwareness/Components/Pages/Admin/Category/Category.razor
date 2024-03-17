@@ -4,15 +4,17 @@
 <ConfirmDialog @ref="dialog"></ConfirmDialog>
 
 <div class="card">
+
     <div class="card-body">
 
         <h5 class="card-title">@CurrentCategory.Name</h5>
         <p class="card-text">@CurrentCategory.Description</p>
-        <button class="btn btn-primary" @onclick="async () => await DeleteCategory()">Delete</button>
-        <button class="btn btn-primary" @onclick="Toggle">Edit</button>
+        <button class="btn btn-info" @onclick="Toggle">Edit</button>
+        <button class="btn btn-danger" @onclick="async () => await DeleteCategory()">Delete</button>
 
          @if(Hide == false)
         {
+            <br />
             <EditCategoryForm Category="CurrentCategory" OnUpdate="ToggleHide"></EditCategoryForm>
         }
 
@@ -22,7 +24,8 @@
 @code {
     [Parameter]
     public CategoryModel CurrentCategory { get; set; } = new();
-
+    
+    // Action that tells the parent component to update when invoked
     [Parameter]
     public Action? OnDelete { get; set; }
 

@@ -18,10 +18,21 @@ namespace ValhallaVaultCyberAwareness.Repositories
         {
             return await _context.SubCategories.ToListAsync();
         }
+
+        /// <summary>
+        /// Gets all subcategories with their segments included
+        /// </summary>
+        /// <returns>List of segments</returns>
         public async Task<List<SubCategoryModel>> GetSubCategoriesWithIncludeAsync()
         {
             return await _context.SubCategories.Include(s => s.Segment).ToListAsync();
         }
+
+        /// <summary>
+        /// Gets a single subcategory by its id
+        /// </summary>
+        /// <param name="subCategoryId"></param>
+        /// <returns>A single category</returns>
         public async Task<SubCategoryModel?> GetSubCategoryByIdAsync(int subCategoryId)
         {
             return await _context.SubCategories.FirstOrDefaultAsync(s => s.Id == subCategoryId);
@@ -29,24 +40,9 @@ namespace ValhallaVaultCyberAwareness.Repositories
 
         public async Task<SubCategoryModel> AddSubCategory(SubCategoryModel newSubCategory)
         {
-            try
-            {
-                var local = _context.SubCategories.FirstOrDefault(s => s.Id == newSubCategory.Id);
-                if (local != null)
-                {
-                    _context.Entry(local).State = EntityState.Detached;
-                }
-
-                await _context.SubCategories.AddAsync(newSubCategory);
-                await _context.SaveChangesAsync();
-                return newSubCategory;
-            }
-            catch (Exception ex)
-            {
-                var msg = ex.Message;
-                return null;
-            }
-
+            await _context.SubCategories.AddAsync(newSubCategory);
+            await _context.SaveChangesAsync();
+            return newSubCategory;
         }
 
         public async Task<bool> DeleteSubCategoryAsync(int Id)
@@ -69,8 +65,6 @@ namespace ValhallaVaultCyberAwareness.Repositories
 
             if (subCategoryToUpdate != null)
             {
-                _context.Attach(subCategoryToUpdate);
-
                 subCategoryToUpdate.Name = newSubCategory.Name;
                 subCategoryToUpdate.Description = newSubCategory.Description;
                 subCategoryToUpdate.SegmentId = newSubCategory.SegmentId;

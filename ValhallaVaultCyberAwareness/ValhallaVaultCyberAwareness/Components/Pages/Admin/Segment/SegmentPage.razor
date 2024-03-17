@@ -3,24 +3,38 @@
 @rendermode InteractiveServer
 @inject AdminManager manager
 
-<h3>Segments: </h3>
-
 @if(Segments.Any())
 {
-    <div class="flex-column">
+     <div class="container">
 
-        @foreach (var segment in Segments)
-        {
-            <Segment CurrentSegment="@segment" OnDelete=" async () => await OnChange()"></Segment>
-        }
-        <AddSegmentForm Categories="Categories" OnAdd="async () => await OnChange()"></AddSegmentForm>
-     </div>
+        <div class="row">
+
+           <div class="col-sm">
+
+                <h3>Segments: </h3>
+
+                @foreach (var segment in Segments)
+                {
+                    <Segment CurrentSegment="@segment" OnDelete=" async () => await OnChange()"></Segment>
+                }
+
+           </div>
+
+           <div class="col-sm">
+                <AddSegmentForm Categories="Categories" OnAdd="async () => await OnChange()"></AddSegmentForm>
+            </div>
+
+        </div>
+
+    </div>
+    
 }
 else
 {
     <h3>Loading...</h3>
 
 }
+
 
 @code {
     List<SegmentModel> Segments = new();
@@ -41,3 +55,15 @@ else
         StateHasChanged();
     }
 }
+
+<style>
+
+    h3 {
+        font-weight: bold;
+    }
+
+    .container {
+        font-family: 'Trebuchet MS';
+    }
+
+</style>

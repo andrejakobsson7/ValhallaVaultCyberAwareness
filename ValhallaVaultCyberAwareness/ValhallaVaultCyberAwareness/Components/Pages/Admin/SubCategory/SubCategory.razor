@@ -7,10 +7,13 @@
     <div class="card-body">
 
         <h5 class="card-title">@CurrentSubCategory.Name</h5>
-         <h5 class="card-text">Segment: @CurrentSubCategory.Segment.Name</h5>
-         <p class="card-text">@CurrentSubCategory.Description</p>
-        <button class="btn btn-primary" @onclick="async () => await DeleteSubCategory()">Delete</button>
-        <button class="btn btn-primary" @onclick="Toggle">Edit</button>
+        @if(CurrentSubCategory.Segment != null)
+        {
+            <h5 class="card-text">Segment: @CurrentSubCategory.Segment.Name</h5>
+        }
+        <p class="card-text">@CurrentSubCategory.Description</p>
+        <button class="btn btn-info" @onclick="Toggle">Edit</button>
+        <button class="btn btn-danger" @onclick="async () => await DeleteSubCategory()">Delete</button>
 
         @if(Hide == false)
         {
@@ -23,6 +26,7 @@
     [Parameter]
     public SubCategoryModel CurrentSubCategory { get; set; }
 
+    // Action that tells the parent component to update when invoked
     [Parameter]
     public Action? OnDelete { get; set; }
 

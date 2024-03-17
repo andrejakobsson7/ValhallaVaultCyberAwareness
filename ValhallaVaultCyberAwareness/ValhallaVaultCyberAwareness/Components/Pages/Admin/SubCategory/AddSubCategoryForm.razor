@@ -8,13 +8,13 @@
 <EditForm Model="SubCategory" OnSubmit=" async ()=> await HandleSubmit()" FormName="name" class="card w-50">
 
     <label>
-        Name
+        Name:
     </label>
 
     <InputText @bind-Value="SubCategory.Name"></InputText>
 
     <label>
-        Description
+        Description:
     </label>
 
     <InputText @bind-Value="SubCategory.Description"></InputText>
@@ -31,7 +31,9 @@
         }
     </InputSelect>
 
-    <input type="submit" value="Create subcategory" />
+    <br />
+
+    <input class="btn btn-info" type="submit" value="Create subcategory" />
 
 </EditForm>
 
@@ -40,10 +42,11 @@
     [SupplyParameterFromForm]
     public SubCategoryModel SubCategory { get; set; } = new();
 
-    public List<SegmentModel> Segments { get; set; } = new();
+    private List<SegmentModel> Segments { get; set; } = new();
 
     private ConfirmDialog dialog;
 
+    // Action that tells the parent component to update when invoked
     [Parameter]
     public Action? OnAdd { get; set; }
 
@@ -67,14 +70,7 @@
             await manager._subcategoryRepository.AddSubCategory(SubCategory);
 
             navManager.NavigateTo("Admin/SubCategory/SubCategoryPage", true);
-            // OnAdd?.Invoke();
-            // StateHasChanged();
         }
     }
-
-    // protected override async Task OnParametersSetAsync()
-    // {
-    //     SubCategory = null;
-    // }
 
 }

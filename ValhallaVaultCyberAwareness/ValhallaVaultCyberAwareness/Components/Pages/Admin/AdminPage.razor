@@ -2,14 +2,44 @@
 @using Microsoft.AspNetCore.Authorization
 @attribute [Authorize(Roles = "Admin")]
 
-<h3>AdminPage</h3>
+<h3>Admin page</h3>
 
-<a href="Admin/Category/CategoryPage">Manage Categories</a>
-<a href="Admin/Segment/SegmentPage">Manage Segments</a>
-<a href="Admin/SubCategory/SubCategoryPage">Manage SubCategories</a>
-<a href="Admin/Question/QuestionPage">Manage Questions</a>
-<a href="Admin/SupportResponse">Answer support questions</a>
+<p style="font-family:Tahoma">
+    Each link takes you to the corresponding table's page for management (CRUD)
+</p>
+
+<div class="d-flex flex-column">
+
+    <div class="p-1">
+        <a href="Admin/Category/CategoryPage" class="btn btn-info ">Manage Categories</a>
+    </div>
+
+    <div class="p-1">
+        <a href="Admin/Segment/SegmentPage" class="btn btn-info">Manage Segments</a>
+    </div>
+    <div class="p-1">
+        <a href="Admin/SubCategory/SubCategoryPage" class="btn btn-info">Manage SubCategories</a>
+
+    </div>
+    <div class="p-1">
+        <a href="Admin/Question/QuestionPage" class="btn btn-info">Manage Questions</a>
+
+    </div>
+    <div class="p-1">
+        <a href="Admin/SupportResponse" class="btn btn-info">Answer support questions</a>
+    </div>
+  
+</div>
 
 @code {
 
 }
+
+<style>
+
+    h3{
+        font-family:'Trebuchet MS';
+        font-weight:bold;
+    }
+
+</style>

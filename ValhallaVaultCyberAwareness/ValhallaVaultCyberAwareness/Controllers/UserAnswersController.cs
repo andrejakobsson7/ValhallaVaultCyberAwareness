@@ -9,7 +9,6 @@ namespace ValhallaVaultCyberAwareness.Controllers
     public class UserAnswersController : ControllerBase
     {
         public IUserAnswersRepository _userAnswersRepo { get; set; }
-
         public UserAnswersController(IUserAnswersRepository userAnswerRepo)
         {
             _userAnswersRepo = userAnswerRepo;

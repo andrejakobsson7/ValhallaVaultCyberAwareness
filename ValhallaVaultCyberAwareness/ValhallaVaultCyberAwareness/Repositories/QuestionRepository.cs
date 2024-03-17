@@ -14,6 +14,10 @@ namespace ValhallaVaultCyberAwareness.Repositories
             _context = context;
         }
 
+        /// <summary>
+        /// Gets all questions with answers and subcategories included
+        /// </summary>
+        /// <returns>A list of questions</returns>
         public async Task<List<QuestionModel>> GetAllQuestionsWithIncludeAsync()
         {
             return await _context.Questions.Include(q => q.Answers).Include(q => q.SubCategory).ToListAsync();
