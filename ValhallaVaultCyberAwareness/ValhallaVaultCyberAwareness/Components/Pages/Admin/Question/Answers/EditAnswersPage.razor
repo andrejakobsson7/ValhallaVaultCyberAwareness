@@ -7,10 +7,25 @@
 
 @if(Answers != null)
 {
-    foreach(var answer in Answers)
-    {
-        <EditAnswerForm Answer="answer" OnUpdate=" async () => await OnChange()"></EditAnswerForm>
-    }
+    <div class="container">
+
+       @foreach(var answer in Answers)
+        {
+        <EditAnswerForm Answer="answer" QuestionAnswers="Answers" OnUpdate=" async () => await OnChange()" OnError="OnError"></EditAnswerForm>
+        }
+
+        @if(Hide == false)
+        {
+            <br />
+
+            <Alert Color="AlertColor.Danger">
+                <strong>Please add a correct answer</strong>  <Button Color="ButtonColor.Danger" @onclick="ToggleHide">Close</Button>
+            </Alert>
+
+        }
+
+    </div>
+   
 }
 
 @code {
@@ -19,6 +34,9 @@
     public int id { get; set; }
 
     public List<AnswerModel> Answers { get; set; } = new();
+
+    private bool Hide { get; set; } = true;
+
 
     protected override async Task OnInitializedAsync()
     {
@@ -31,4 +49,29 @@
         Answers = await manager._answersRepository.GetAnswersByQuestionIdAsync(id);
         StateHasChanged();
     }
+
+    private void OnError()
+    {
+        Hide = false;
+        StateHasChanged();
+
+    }
+
+    private void ToggleHide()
+    {
+        Hide = true;
+    }
+
 }
+
+<style>
+
+    h3 {
+        font-weight: bold;
+    }
+
+    .container {
+        font-family: 'Trebuchet MS';
+    }
+
+</style>

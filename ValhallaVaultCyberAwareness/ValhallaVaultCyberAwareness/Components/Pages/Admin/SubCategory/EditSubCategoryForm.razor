@@ -27,7 +27,9 @@
         }
     </InputSelect>
 
-    <input type="submit" value="Update" />
+    <br />
+
+    <input class="btn btn-info" type="submit" value="Update" />
 
 </EditForm>
 
@@ -40,6 +42,7 @@
 
     private ConfirmDialog dialog;
 
+    // Action that tells the parent component to update when invoked
     [Parameter]
     public Action? OnUpdate { get; set; }
 
@@ -52,7 +55,6 @@
 
     private async Task HandleSubmit()
     {
-
         var confirmation = await dialog.ShowAsync(
 
             title: "Are you sure you want to update?",

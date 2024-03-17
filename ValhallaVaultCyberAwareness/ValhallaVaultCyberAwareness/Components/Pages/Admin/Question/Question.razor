@@ -7,14 +7,21 @@
     <div class="card-body">
 
         <h5 class="card-title">Question: @CurrentQuestion.Question</h5>
-         <h5 class="card-text">Subcategory: @CurrentQuestion.SubCategory.Name</h5>
-         <p class="card-text">Explanation: @CurrentQuestion.Explanation</p>
-         <h5>Answers: </h5>
+
+        @if(CurrentQuestion.SubCategory != null)
+        {
+            <h5 class="card-text">Subcategory: @CurrentQuestion.SubCategory.Name</h5>
+        }
+
+        <p class="card-text">Explanation: @CurrentQuestion.Explanation</p>
+
+        <h5>Answers: </h5>
+
         @foreach(var answer in CurrentQuestion.Answers)
         {
             if (answer.IsCorrect)
             {
-                <p style="color:green">@answer.Answer</p>
+                <p style="color:green">Correct answer: @answer.Answer</p>
             }
             else
             {
@@ -23,15 +30,18 @@
             }
         }
 
-        <button class="btn btn-primary" @onclick="async () => await DeleteQuestion()">Delete</button>
-        <button class="btn btn-primary" @onclick="Toggle">Edit Question</button>
+        <button class="btn btn-info" @onclick="Toggle">Edit Question</button>
+        <button class="btn btn-danger" @onclick="async () => await DeleteQuestion()">Delete</button>
 
-        <a href="Admin/Question/Answers/EditAnswersPage/@CurrentQuestion.Id">
-            <button class="btn btn-primary">Edit Answers</button>
-        </a>
+        <button class="btn btn-light">
+            <a href="Admin/Question/Answers/EditAnswersPage/@CurrentQuestion.Id">
+                Edit Answers
+            </a>
+        </button>
 
         @if(Hide == false)
         {
+            <br />
             <EditQuestionForm Question="CurrentQuestion" OnUpdate="ToggleHide"></EditQuestionForm>
         }
 
@@ -41,6 +51,7 @@
     [Parameter]
     public QuestionModel CurrentQuestion { get; set; }
 
+    // Action that tells the parent component to update when invoked
     [Parameter]
     public Action? OnDelete { get; set; }
 

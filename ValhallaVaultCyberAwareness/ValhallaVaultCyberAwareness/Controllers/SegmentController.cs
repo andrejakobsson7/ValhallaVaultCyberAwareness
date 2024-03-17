@@ -23,20 +23,7 @@ namespace ValhallaVaultCyberAwareness.Controllers
 			_segmentRepo = segmentRepo;
 			_outputCacheStore = outputCacheStore;
 		}
-
-		//[HttpGet]
-		//[Route("{segmentId}")]
-		//public async Task<ActionResult<List<SegmentModel>>> GetSegmentById(int segmentId)
-		//{
-		//    var segment = await _segmentRepo.GetSegmentByIdAsync(segmentId);
-
-		//    if (segment != null)
-		//    {
-		//        return Ok(segment);
-		//    }
-		//    return BadRequest();
-		//}
-
+    
 		[HttpGet]
 		[Route("{segmentId}/{userId}")]
 		[OutputCache(PolicyName = "ByIdCachePolicy", VaryByQueryKeys = new[] { "userId" })]
@@ -127,7 +114,8 @@ namespace ValhallaVaultCyberAwareness.Controllers
 				return BadRequest();
 			}
 		}
-
+        //Temporary model that is returned from the API to enable that the client service can get access to navigation properties,
+        //since these are not serialized otherwise
 		public class SegmentApiModel
 		{
 			public int Id { get; set; }

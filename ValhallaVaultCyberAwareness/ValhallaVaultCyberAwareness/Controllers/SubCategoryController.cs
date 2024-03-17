@@ -24,7 +24,6 @@ namespace ValhallaVaultCyberAwareness.Controllers
 			_subCategoryRepo = subCategoryRepo;
 			_outputCacheStore = outputCacheStore;
 		}
-
 		[HttpGet]
 		[Route("{subCategoryId}")]
 		[OutputCache(PolicyName = "ByIdCachePolicy")]
@@ -64,12 +63,12 @@ namespace ValhallaVaultCyberAwareness.Controllers
 		public async Task<ActionResult> UpdateSubCategory(SubCategoryModel subCategory, CancellationToken cancellationToken)
 		{
 			//Here we need to figure out if the subcategory is changing it's Foreign Key (segment-ID). If it does, we need to evict both the old and new segment-id and category-ID from the cache
-			//Store the original segment-info.
 			try
 			{
 				SubCategoryModel? subCategoryToUpdate = await _subCategoryRepo.GetSubCategoryByIdAsync(subCategory.Id);
 				if (subCategoryToUpdate != null)
 				{
+        	//Store the original segment- and categoryinfo.
 					int originalSegmentId = subCategoryToUpdate.SegmentId;
 					int originalCategoryId = subCategoryToUpdate.Segment!.CategoryId;
 					SubCategoryModel? updatedSubCategory = await _subCategoryRepo.UpdateSubCategoryAsync(subCategory);
@@ -80,7 +79,7 @@ namespace ValhallaVaultCyberAwareness.Controllers
 							//The subcategory has moved from one segment that belongs to another category. Evict old segment and old category by ID
 							await CacheManager.RemoveFromCategorySegmentSubCategoryAndGeneralCache(originalCategoryId, originalSegmentId, updatedSubCategory.Id, cancellationToken, _outputCacheStore);
 						}
-						//Always evivct the new categoryID and segmentID from the cache
+						//Always evivct the new/current categoryID and segmentID from the cache
 						await CacheManager.RemoveFromCategorySegmentSubCategoryAndGeneralCache(updatedSubCategory.Segment!.CategoryId, updatedSubCategory.SegmentId, updatedSubCategory.Id, cancellationToken, _outputCacheStore);
 						return Ok();
 					}

@@ -3,8 +3,6 @@
 @inject AdminManager manager
 @rendermode InteractiveServer
 
-<h3>Questions: </h3>
-
 @if(Questions == null)
 {
     <h3>Loading...</h3>
@@ -12,25 +10,28 @@
 else
 {
     <div class="container">
+
         <div class="row">
+
            <div class="col-sm">
+                <h3>Questions: </h3>
 
                 @foreach (var question in Questions)
                 {
                     <Question CurrentQuestion="@question" OnDelete=" async () => await OnChange()"></Question>
                 }
+
            </div>
 
            <div class="col-sm">
+
                 <AddQuestionForm></AddQuestionForm>
+
            </div>
 
         </div>
-       
 
     </div>
-
-
 
 }
 
@@ -49,3 +50,15 @@ else
         StateHasChanged();
     }
 }
+
+<style>
+
+    h3 {
+        font-weight: bold;
+    }
+
+    .container {
+        font-family: 'Trebuchet MS';
+    }
+
+</style>

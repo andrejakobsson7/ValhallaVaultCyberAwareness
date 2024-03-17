@@ -3,12 +3,14 @@
 
 <ConfirmDialog @ref="dialog"></ConfirmDialog>
 
-<h3>Create a category</h3>
 <div class="container">
 
         <div class="row">
 
             <div class="col-sm">
+
+            <h3>Create a Question</h3>
+
             <EditForm Model="Question" OnSubmit="HandleSubmit" FormName="QuestionForm" Context="ArbitraryConceptualName" class="card w-50">
 
                 <label>Question: </label>
@@ -24,6 +26,7 @@
                 </label>
 
                 <InputSelect @bind-Value="Question.SubCategoryId">
+                    <option>None</option>
                     @foreach (var subcategory in SubCategories)
                     {
                         <option value="@subcategory.Id">@subcategory.Name</option>
@@ -40,23 +43,39 @@
 
                     <InputCheckbox @bind-Value="Answer.IsCorrect"></InputCheckbox>
 
-                    <input type="submit" value="Add answer" />
+                    <br />
+
+                    <input class="btn btn-info" type="submit" value="Add answer" />
 
                 </EditForm>
 
-                <input type="submit" value="Create a question" />
+                <br />
+
+                <input class="btn btn-info" type="submit" value="Create a question" />
 
 
             </EditForm>
 
-            @if (Hide == false)
+           
+            @if (CorrectAnswerHide == false)
             {
+                <br />
                 <Alert Color="AlertColor.Danger">
-                    <strong>Please add a correct answer</strong>  <Button Color="ButtonColor.Danger" @onclick="Toggle">Close</Button>
+                    <strong>Please add a correct answer</strong>  <Button Color="ButtonColor.Light" @onclick="ToggleCorrectHide">Close</Button>
                 </Alert>
 
 
             }
+
+            @if (MultipleCorrectAnswersHide == false)
+            {
+                <br />
+                <Alert Color="AlertColor.Danger">
+                    <strong>Only 1 correct answer allowed</strong>  <Button Color="ButtonColor.Light" @onclick="ToggleMultipleCorrectHide">Close</Button>
+                </Alert>
+
+            }
+
             </div>
 
         <div class="col-sm">    
@@ -95,21 +114,22 @@
 
  
 @code {
+
     [SupplyParameterFromForm(FormName ="QuestionForm")]
     public QuestionModel Question { get; set; } = new();
 
-    public AnswerModel Answer { get; set; } = new();
+    private AnswerModel Answer { get; set; } = new();
 
     public List<AnswerModel> QuestionAnwers { get; set; } = new();
 
-    public List<SubCategoryModel> SubCategories { get; set; } = new();
+    private List<SubCategoryModel> SubCategories { get; set; } = new();
 
     private ConfirmDialog dialog;
 
-    private bool Hide { get; set; } = true;
+    private bool CorrectAnswerHide { get; set; } = true;
 
-    [Parameter]
-    public Action? OnAdd { get; set; }
+    private bool MultipleCorrectAnswersHide { get; set; } = true;
+
 
     protected override async Task OnInitializedAsync()
     {
@@ -128,6 +148,7 @@
         {
             bool noCorrectAnswer = true;
 
+            // Checks if there any correct answers in the answers list
             foreach(var answer in QuestionAnwers)
             {
                 if(answer.IsCorrect == true)
@@ -136,9 +157,10 @@
                 }
             }
 
+            // If there are no correct answers, show error alert
             if (noCorrectAnswer)
             {
-                Hide = false;
+                CorrectAnswerHide = false;
             }
 
             else
@@ -151,7 +173,7 @@
                 await manager._questionRepository.AddQuestionAsync(Question);
                 navManager.NavigateTo("Admin/Question/Questionpage", true);
             }
-  
+
         }
     }
 
@@ -165,19 +187,51 @@
 
         if (confirmation)
         {
-            AnswerModel newAnswer = new()
+            // Check if there already are correct answers in the list
+            if (QuestionAnwers.Any())
+            {
+                foreach (var answer in QuestionAnwers)
                 {
-                    Answer = Answer.Answer,
-                    IsCorrect = Answer.IsCorrect
-                };
+                    if (Answer.IsCorrect && answer.IsCorrect)
+                    {
+                        // Show error alert
+                        MultipleCorrectAnswersHide = false;
+                    }
+                    else
+                    {
+                        AnswerModel newAnswer = new()
+                            {
+                                Answer = Answer.Answer,
+                                IsCorrect = Answer.IsCorrect
+                            };
 
-            QuestionAnwers.Add(newAnswer);
+                        QuestionAnwers.Add(newAnswer);
+                        break;
+                    }
+                }
+            }
+            else
+            {
+                AnswerModel newAnswer = new()
+                    {
+                        Answer = Answer.Answer,
+                        IsCorrect = Answer.IsCorrect
+                    };
+
+                QuestionAnwers.Add(newAnswer);
+            }
+           
         }
     }
 
-    private void Toggle()
+    private void ToggleCorrectHide()
     {
-        Hide = true;
+        CorrectAnswerHide = true;
+    }
+
+    private void ToggleMultipleCorrectHide()
+    {
+        MultipleCorrectAnswersHide = true;
     }
 
 }

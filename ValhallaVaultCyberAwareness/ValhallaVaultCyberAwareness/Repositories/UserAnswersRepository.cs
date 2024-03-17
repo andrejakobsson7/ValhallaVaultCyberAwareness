@@ -60,10 +60,5 @@ namespace ValhallaVaultCyberAwareness.Repositories
         {
             return await _context.UserAnswers.FirstOrDefaultAsync(ua => ua.AnswerId == answerId && ua.UserId == userId);
         }
-
-
-
-
-
     }
 }

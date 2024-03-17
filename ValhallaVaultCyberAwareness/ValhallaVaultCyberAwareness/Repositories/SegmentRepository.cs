@@ -14,7 +14,7 @@ namespace ValhallaVaultCyberAwareness.Repositories
 			_context = context;
 		}
 
-		/// <summary>
+  	/// <summary>
 		/// Retrieves one segment with included data (subcategories). 
 		/// </summary>
 		/// <param name="segmentId"></param>
@@ -23,6 +23,13 @@ namespace ValhallaVaultCyberAwareness.Repositories
 		{
 			return await _context.Segments.FirstOrDefaultAsync(s => s.Id == segmentId);
 		}
+        /// <summary>
+        /// Gets a single segment by Id along with it's subcategories, questions, answers and all registered useranswers, so we can calculate how many correct answers the user has in this particular segment.
+        /// 
+        /// </summary>
+        /// <param name="segmentId"></param>
+        /// <param name="userId"></param>
+        /// <returns>A segment or null if not found</returns>
 		public async Task<SegmentModel?> GetSegmentWithUserScoresByUserIdAsync(int segmentId, string userId)
 		{
 			return await _context.Segments.Where(s => s.Id == segmentId).
@@ -37,6 +44,10 @@ namespace ValhallaVaultCyberAwareness.Repositories
 		{
 			return await _context.Segments.ToListAsync();
 		}
+        /// <summary>
+        /// Gets all segments including their categories
+        /// </summary>
+        /// <returns>A list of segments</returns>
 		public async Task<List<SegmentModel>> GetAllSegmentsWithIncludeAsync()
 		{
 			return await _context.Segments.Include(s => s.Category).ToListAsync();
@@ -106,7 +117,6 @@ namespace ValhallaVaultCyberAwareness.Repositories
 					return false;
 				}
 			}
-
 		}
 	}
 }

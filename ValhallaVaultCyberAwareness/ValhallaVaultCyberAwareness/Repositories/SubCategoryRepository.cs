@@ -18,10 +18,19 @@ namespace ValhallaVaultCyberAwareness.Repositories
 		{
 			return await _context.SubCategories.ToListAsync();
 		}
+            /// <summary>
+        /// Gets all subcategories with their segments included
+        /// </summary>
+        /// <returns>List of segments</returns>
 		public async Task<List<SubCategoryModel>> GetSubCategoriesWithIncludeAsync()
 		{
 			return await _context.SubCategories.Include(s => s.Segment).ToListAsync();
 		}
+            /// <summary>
+        /// Gets a single subcategory by its id
+        /// </summary>
+        /// <param name="subCategoryId"></param>
+        /// <returns>A single category</returns>
 		public async Task<SubCategoryModel?> GetSubCategoryByIdAsync(int subCategoryId)
 		{
 			return await _context.SubCategories.Where(s => s.Id == subCategoryId).Include(s => s.Segment).FirstOrDefaultAsync();
