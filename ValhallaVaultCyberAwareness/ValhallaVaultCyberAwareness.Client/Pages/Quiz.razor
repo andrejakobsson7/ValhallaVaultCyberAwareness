@@ -19,6 +19,11 @@
 {
     <p>Loading...</p>
 }
+else if(questions.Count == 0)
+{
+    <p>There is no questions registered in this subcategory.</p>
+    <a class="btn btn-primary" href="/Hem">Return to home</a>
+}
 else
 {
     
@@ -175,8 +180,8 @@ else
                       </div>
                       <div class="card-body mt-2">
 
-                            <!-- Button to allow the user to return to the CategoryPage -->
-                            <button onclick="window.location.href = 'https://localhost:7107/CategoryPage'">Return to Category Menu</button>
+                            <!-- Button to allow the user to return to the Home Page -->
+                            <a class="btn btn-primary" href="/Hem">Return to Home</a>
                         </div>
                    </div>
                 </div>
