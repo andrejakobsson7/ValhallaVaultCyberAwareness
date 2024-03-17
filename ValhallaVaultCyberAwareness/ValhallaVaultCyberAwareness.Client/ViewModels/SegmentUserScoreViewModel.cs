@@ -39,7 +39,7 @@ namespace ValhallaVaultCyberAwareness.Client.ViewModels
             }
             else
             {
-                UserCompletionPercentage = 0;
+                UserCompletionPercentage = 100;
                 AvailableSubCategoryIndex = -1;
             }
             //Calculate which subcategory the user is eligible to start from.

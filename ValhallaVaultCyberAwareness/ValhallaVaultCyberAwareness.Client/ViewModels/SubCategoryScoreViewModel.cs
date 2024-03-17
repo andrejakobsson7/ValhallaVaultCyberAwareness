@@ -40,7 +40,7 @@ namespace ValhallaVaultCyberAwareness.Client.ViewModels
             }
             else
             {
-                UserCompletionPercentage = 0;
+                UserCompletionPercentage = 100;
             }
             //If the success percentage is over the threshold or NaN (which will be the case if the subcategory doesn't contain any questions).
             if (UserCompletionPercentage >= CompletionPercentage || Double.IsNaN(UserCompletionPercentage))
