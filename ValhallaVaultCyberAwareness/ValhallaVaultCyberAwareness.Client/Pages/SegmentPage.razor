@@ -7,9 +7,9 @@
 @inject ISegmentService SegmentService
 @inject AuthenticationStateProvider authStateProvider
 @rendermode InteractiveServer
-@attribute [Authorize]
 
-<PageTitle>Quiz Segments</PageTitle>
+@attribute [StreamRendering]
+@attribute [Authorize]
 
 <!-- Check if content has loaded. If it has not display Loading-->
 @if (segments == null)
@@ -20,33 +20,49 @@ else
 {
     // Div to display cards as a row instead of top to bottom
     <div class="row">
+
+        <!-- Create a display card for each SubCategory -->
         @foreach (var SubCategoryItem in segments.SubCategoryScores)
         {
             <div class="col-4">
                 <div class="card border-dark text-center w-75 mt-5">
+
+                    <!-- Image card, currently using a placeholder image -->
                     <img class="card-img-top" src="https://variety.com/wp-content/uploads/2023/04/Twitter-Logo-Doge-Dogecoin.png" alt="Card image cap" />
                     <div class="card-img-overlay">
+
+                        <!-- Display the Name for each SubCategory -->
                         <h4 class="card-title">@SubCategoryItem.SubCategoryName</h4>
                     </div>
                     <div class="card-footer">
-                        <p>@segments.SegmentDescription</p>
-                        <ul>
-                           
-                            
-                                <li>@SubCategoryItem.SubCategoryName - 
 
-                                    @SubCategoryItem.CorrectUserAnswers
-                                    
-                                    / @SubCategoryItem.TotalQuestions
-                                </li>
-                            
-                        </ul>
-                        <p class="card-description">@segments.SegmentDescription</p>
+                        <!-- Display the users score for each SubCategory -->
+                        <p>Quiz Score: @SubCategoryItem.CorrectUserAnswers / @SubCategoryItem.TotalQuestions</p>
+
+                        <!--
+                            Display the description for each SubCategory
+
+                            SubCategories currently have no Description seeded
+                            As such there is no description displayed until it is added
+                        -->
+                        <p class="card-description">@SubCategoryItem.SubCategoryDescription</p>
                     </div>
                     <div class="card-footer">
+                        <!--
+                            The following if/else statements were adapted from André Jakobsson's code
+                            We then worked together to adapt it to this page
+                        -->
+                        <!--
+                            Check if the user has unlocked the SubCategory quiz
+                            See SegmentUserScoreViewModel.cs for more information
+
+                            (else if) Make sure there are existing questions in the quiz
+                        -->
                         @if (segments.AvailableSubCategoryIndex >= segments.SubCategoryScores.IndexOf(SubCategoryItem))
                         {
-                            <a href="@($"https://localhost:7107/quiz/{SubCategoryItem.SubCategoryId}")" class="stretched-link"></a>
+
+                            <!-- Link that will take you to the Quiz only accesible if SubCategory is unlocked -->
+                            <a href="/quiz/@SubCategoryItem.SubCategoryId" class="stretched-link"></a>
                         }
                         else if (segments.AvailableSubCategoryIndex == -1)
                         {
@@ -54,6 +70,8 @@ else
                         }
                         else
                         {
+
+                            <!-- Display a lock symbol and message -->
                             <p>
                                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-lock-fill" viewBox="0 0 16 16">
                                     <path d="M8 1a2 2 0 0 1 2 2v4H6V3a2 2 0 0 1 2-2m3 6V3a3 3 0 0 0-6 0v4a2 2 0 0 0-2 2v5a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2" />
@@ -68,19 +86,29 @@ else
 }
 
 @code {
+    /*
+       This parameter uses the {SegmentId:int} sent through the
+       WebAdress to determine which SubCategories to present
+    */
     [Parameter]
     public int SegmentId { get; set; }
-    // Create a list of all segments using GetSegments();
-    private SegmentUserScoreViewModel segments;
 
+    // This string holds the {Id} of the current user
     public string? UserId { get; set; }
 
+    /*
+        This List holds the SubCategories and related properties
+        That are fetched from the Database
+    */
+    private SegmentUserScoreViewModel segments;
 
     protected override async Task OnInitializedAsync()
     {
+        // Use the injected {AuthenticationStateProvider} to get the current users {Id}
         var authState = await authStateProvider.GetAuthenticationStateAsync();
         UserId = authState.User.FindFirst(c => c.Type.Contains("nameidentifier"))?.Value;
 
+        // Fetch the SubCategories based on the {Id} of the selected Segment
         segments = await SegmentService.GetSegmentWithUserScore(SegmentId, UserId);
 
     }

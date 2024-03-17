@@ -9,10 +9,12 @@
 @inject AuthenticationStateProvider authStateProvider
 @inject IUserAnswersService userAnswersService;
 
-
-@rendermode InteractiveServer
+@attribute [StreamRendering]
 @attribute [Authorize]
 
+@rendermode InteractiveServer
+
+<!-- Check if content has loaded. If it hasn't display "Loading..." -->
 @if (questions == null)
 {
     <p>Loading...</p>
@@ -25,6 +27,11 @@ else
             <div class="col-10">
                 <div class="card border-dark text-center">
                     <div class="card-body">
+                        <!-- 
+                            Display which question the user is currently on out of the total
+                            {currentQuestionIndex} is an int that tracks how many answers
+                            Have been submitted using the {NextQuestion} method
+                        -->
                         <h5>Question: @($"{ currentQuestionIndex + 1}") / @questions.Count</h5>
                     </div>
                 </div>
@@ -32,6 +39,8 @@ else
         </div>
         <!-- 
             Check if the quiz has been completed or if the quiz should be presented
+            {quizComplete} is a boolean flipped by {CompleteQuiz} which is used once
+            All the questions have been answered
         -->
         @if (!quizComplete)
         {
@@ -39,18 +48,25 @@ else
                 <div class="col-7">
                     <div class="card border-dark text-center">
                         <div class="card-body mt-2">
+
+                            <!-- Display the question-text for the user -->
                             <p>@questions[currentQuestionIndex].Question</p>
                         </div>
                         <div class="card-body">
+                            <!--
+                                Display answers if an answer has not already been submitted one
+                                {answerSubmitted} is a bool flipped by {SubmitAnswer}
+                            -->
                             @if (!answerSubmitted)
                             {
                                 <div>
-                                    <!--
-                                        Create a button for each answer
-                                    -->
+
+                                    <!-- Create a button for each answer -->
                                     @foreach (var answerItem in questions[currentQuestionIndex].Answers)
                                     {
                                         <div class="mt-1">
+
+                                            <!-- Display each answer as a button -->
                                             <button class="btn border-dark" @onclick="() => AnswerSelected(answerItem.Id)">@answerItem.Answer</button>
                                         </div>
                                     }
@@ -61,6 +77,11 @@ else
                             <div>
                                 <!--
                                     Display a submit button that is disabled if no answer is highlighted
+                                    It checks if an answer is hightlighted using the bool {IsAnswerSeleted}
+                                    Which is flipped by {AnswerSelected} when a button is clicked
+
+                                    Once the Submit-button is clicked the answer-buttons and the Submit-button
+                                    Are both hidden using the bool {answerSubmitted} which is flipped by {SubmitAnswer}
                                 -->
                                 @if (!answerSubmitted)
                                 {
@@ -68,28 +89,44 @@ else
                                 }
                             </div>
                             <!--
-                                When an answer has been submitted correctly
-                                Display if the answer is correct as well as an explanation and button to continue
+                                When an answer has been submitted display if the answer is correct or not
+                                Then present the explanation tied to the question as well as a button to continue
                             -->
                             @if (answerSubmitted)
                             {
                                 <div>
+
+                                    <!-- Check if the {Id} of the answer selected matches the {Id} of the correct answer -->
                                     @if (selectedAnswer == questions[currentQuestionIndex].CorrectAnswerId)
                                     {
                                         <h5 class="bg-success text-light">You answered correctly!</h5>
+
+                                        <!-- Send the {Id} and the {userId} to be added to {List<UserAnswers> userAnswers}-->
                                         AddAnswerId(selectedAnswer, userId);
 
+                                        <!-- Increase the count of how many correct answers the user has -->
                                         QuizScoreCount++;
                                     }
                                     else
                                     {
                                         <h5 class="bg-danger text-light">You answered incorrectly!</h5>
+
+                                        <!-- Send the {Id} and the {userId} to be added to {List<UserAnswers> userAnswers}-->
                                         AddAnswerId(selectedAnswer, userId);
                                     }
+
+                                    <!-- Display the answer the user submitted using the {Id} of the selected answer -->
                                     <h5>You answered: @questions[currentQuestionIndex].Answers.FirstOrDefault(a => a.Id == selectedAnswer)?.Answer</h5>
                                     <p class="mt-2">
+
+                                        <!-- Display the explanation tied to the question -->
                                         Explanation: @questions.FirstOrDefault()?.Explanation
                                     </p>
+                                    <!--
+                                        Check how many questions the user has completed
+                                        If the user has completed the same amount of questions as the total
+                                        Then the quiz ends and the {quizComplete} bool is flipped by {CompleteQuiz}
+                                    -->
                                     @if (currentQuestionIndex + 1 != questions.Count)
                                     {
                                         <button @onclick="NextQuestion">Next Question</button>
@@ -107,6 +144,11 @@ else
         }
         else
         {
+            <!--
+                If the quiz has been completed
+                Display the score as well as tell the
+                User if they passed the quiz
+            -->
             <div class="row justify-content-center mt-5">
                 <div class="col-7">
                    <div class="card border-dark text-center">
@@ -114,7 +156,14 @@ else
                           <h5 class="card-title">Quiz Complete!</h5>
                       </div>
                       <div class="card-body mt-2">
+                          <!--
+                              Display {QuizScoreCount} to show how many correct answers the user had
+                              Display {questions.Count} to show the total amount of questions
+                              Calculate the percentage of correct answers to total answers and display it
+                          -->
                           <h6>Your score: @QuizScoreCount / @questions.Count - @(Math.Round(((double)QuizScoreCount / questions.Count) * 100, 2))%</h6>
+
+                            <!-- Check if the user scored >= 80% of the total possible score -->
                             @if ((double)QuizScoreCount / questions.Count * 100 >= 80)
                             {
                                 <h6>You've passed the quiz!</h6>
@@ -125,6 +174,8 @@ else
                             }
                       </div>
                       <div class="card-body mt-2">
+
+                            <!-- Button to allow the user to return to the CategoryPage -->
                             <button onclick="window.location.href = 'https://localhost:7107/CategoryPage'">Return to Category Menu</button>
                         </div>
                    </div>
@@ -132,6 +183,8 @@ else
             </div>
         }
     </div>
+
+    <!-- Div used to pad out the bottom of the page -->
     <div class="mt-5">
 
     </div>
@@ -139,17 +192,26 @@ else
 
 
 @code {
+    /* 
+       This parameter uses the {SubCategoryId:int} sent through the
+       WebAdress to determine which Quiz to present
+    */
     [Parameter]
     public int SubCategoryId { get; set; }
 
+    // This string holds the {Id} of the current user
     public string? userId { get; set; }
 
+    /*
+        This List holds the questions and related properties
+        That are fetched from the Database
+    */
     private List<QuestionAnswerViewModel>? questions;
 
-    // Holds the answers from user
+    // This List holds the {AnswerId} and {UserId} to be sent to the Database
     private List<UserAnswers> userAnswers = new();
 
-
+    // These variables help control the UI and logic of the quiz
     bool IsAnswerSelected { get; set; } = false;
     private int currentQuestionIndex = 0;
     private bool quizComplete = false;
@@ -159,15 +221,20 @@ else
 
     protected override async Task OnInitializedAsync()
     {
+        // Fetch the questions for the quiz based on the {Id} of the selected SubCategory
         questions = await questionService.ImprovedGetQuestionsBySubCategoryId(SubCategoryId);
+
+        // Use the injected {AuthenticationStateProvider} to get the current users {Id}
         var authState = await authStateProvider.GetAuthenticationStateAsync();
         userId = authState.User.FindFirst(c => c.Type.Contains("nameidentifier"))?.Value;
     }
     private async Task AnswerSelected(int answerId)
     {
+        // Save the {Id} of the answer the user selected as an int
         selectedAnswer = answerId;
+
         IsAnswerSelected = true;
-        StateHasChanged(); // Ensure the UI updates after setting the property
+        StateHasChanged();
     }
     private async Task SubmitAnswer()
     {
@@ -176,11 +243,17 @@ else
     }
     private async Task AddAnswerId(int answerId, string userId)
     {
+        /*
+           Add {AnswerId} and {UserId} to {userAnswers} when an answer is submitted
+           When the quiz is complete the variables are sent to the Database using {CompleteQuiz}
+        */
         userAnswers.Add(new UserAnswers() {AnswerId = answerId, UserId = userId});
     }
     private async Task NextQuestion()
     {
         answerSubmitted = false;
+
+        // Increase the count of the current question after the previous question is completed
         currentQuestionIndex++;
 
         // Check if there are more questions
@@ -196,6 +269,8 @@ else
     private async Task CompleteQuiz()
     {
         quizComplete = true;
+
+        // Send the variables in {userAnswers} to the Database in order to be added
         bool isSuccessful = await userAnswersService.AddUserAnswersAsync(userAnswers);
     }
 }
