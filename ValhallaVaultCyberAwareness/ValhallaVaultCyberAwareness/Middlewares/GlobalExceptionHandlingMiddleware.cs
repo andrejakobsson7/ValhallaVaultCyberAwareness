@@ -35,6 +35,7 @@ namespace ValhallaVaultCyberAwareness.Middlewares
             context.Response.StatusCode = (int)HttpStatusCode.InternalServerError;
 
             // Create a ProblemDetails model and set its properties to valuable information about the exception
+            // Including StackTrace (if avaliable)
             var response = new ProblemDetails
             {
                 Status = context.Response.StatusCode,
