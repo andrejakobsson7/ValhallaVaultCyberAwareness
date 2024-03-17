@@ -60,7 +60,8 @@ namespace ValhallaVaultCyberAwareness.Controllers
 
 			if (segmentToAdd != null)
 			{
-				await CacheManager.RemoveFromGeneralCache(cancellationToken, _outputCacheStore);
+				//Evict by category-Id from the cache since we have now altered the info when making call per specific category-id
+				await CacheManager.RemoveFromCategoryAndGeneralCache(segmentToAdd.CategoryId, cancellationToken, _outputCacheStore);
 				return Ok(segmentToAdd);
 			}
 
@@ -74,9 +75,26 @@ namespace ValhallaVaultCyberAwareness.Controllers
 		{
 			try
 			{
-				bool isSegmentUpdated = await _segmentRepo.UpdateSegmentAsync(segment);
-				await CacheManager.RemoveFromCategorySegmentAndGeneralCache(segment.CategoryId, segment.Id, cancellationToken, _outputCacheStore);
-				return Ok();
+				//Here we need to figure out if the segment is changing it's Foreign Key (Category-id). If it does, we need to evict both the old and new category-id from the cache
+				//Store the original segment-info.
+				SegmentModel? segmentToUpdate = await _segmentRepo.GetSegmentByIdAsync(segment.Id);
+				if (segmentToUpdate != null)
+				{
+					int originalCategoryId = segmentToUpdate.CategoryId;
+					bool isSuccessfullyUpdated = await _segmentRepo.UpdateSegmentAsync(segment);
+					if (isSuccessfullyUpdated)
+					{
+						if (segment.CategoryId != originalCategoryId)
+						{
+							//Evict the old category-Id from the cache
+							await CacheManager.RemoveFromCategoryCache(originalCategoryId, cancellationToken, _outputCacheStore);
+						}
+						//Always evict the new category-id from the cache
+						await CacheManager.RemoveFromCategorySegmentAndGeneralCache(segment.CategoryId, segment.Id, cancellationToken, _outputCacheStore);
+						return Ok();
+					}
+				}
+				return NotFound();
 			}
 			catch (ArgumentNullException ex)
 			{
@@ -95,7 +113,7 @@ namespace ValhallaVaultCyberAwareness.Controllers
 		{
 			try
 			{
-				SegmentModel deletedSegment = await _segmentRepo.RemoveSegmentAsync(segmentId);
+				SegmentModel? deletedSegment = await _segmentRepo.RemoveSegmentAsync(segmentId);
 				await CacheManager.RemoveFromCategorySegmentAndGeneralCache(deletedSegment.CategoryId, segmentId, cancellationToken, _outputCacheStore);
 				return Ok();
 			}

@@ -154,7 +154,7 @@
 		var category7 = await categoryService.GetCategoryWithUserScore(1, userId);
 
 		//25 Get category that has not been affected by update of subcategory. Should fetch from cache
-		//THIS DOESN'T WORK, IT'S FETCHING FROM THE DATABASE
+		//It's correctly fetching from the cache!
 		var newUserCategoryScore5 = await categoryService.GetCategoryWithUserScore(2, "5db5968d-eb63-4515-a74c-9dc7b5d4328e");
 
 		//26 Add new useranswers
@@ -174,6 +174,105 @@
 		//It fetches from cache!
 		var newUserCategoryScore6 = await categoryService.GetCategoryWithUserScore(2, "5db5968d-eb63-4515-a74c-9dc7b5d4328e");
 
+		//29 Add new segment
+		//When a new segment is added, we need to evict the category-ID from the cache and the general cache for categories/segment/subcategories
+		bool isSuccessfullyAddedSegment = await segmentService.AddSegmentAsync(new SegmentModel()
+			{
+				Name = "New segment",
+				Description = "Test add new segment",
+				CategoryId = 1
+			});
+		//30 Get category ID 1. This should now fetch from the db, since it has been altered after the addition of a new segment in it.
+		//It is correctly fetching from the db!
+		var category9 = await categoryService.GetCategoryWithUserScore(1, userId);
+
+		//31 Get all categories. This should also fetch from the db, since it includes segments.
+		//It is correctly fetching from the db!
+		List<CategoryModel> allCategoriesAfterSegmentAdd = await categoryService.GetAllCategoriesAsync();
+
+		//32 Test change categoryID for a segment
+		bool isSuccessfullyUpdatedSegment = await segmentService.UpdateSegmentAsync(new SegmentModel()
+			{
+				Id = 21,
+				Name = "New segment",
+				Description = "Updated segmentdescription",
+				//Change from categoryId 1 to 2
+				CategoryId = 1
+			});
+		//33. Make call to get category with ID 1. This has now been altered, since it has losed one category. It should fetch from db
+		//It fetches from the DB - correctly!
+		var category10 = await categoryService.GetCategoryWithUserScore(1, userId);
+
+		//33 Make call to get category with ID 2. This has now been altered, since it has losed one category. It should fetch from db
+		//It fetches from the DB - correctly!
+		var newUserCategoryScore7 = await categoryService.GetCategoryWithUserScore(2, "5db5968d-eb63-4515-a74c-9dc7b5d4328e");
+
+		//34 Make call to get all categories. Since it includes segment, it should fetch fresh from db
+		//It fetches from the DB - correctly!
+		List<CategoryModel> allCategoriesAfterSegmentUpdate = await categoryService.GetAllCategoriesAsync();
+
+		//35 Update subcategory. DONT' change the segmentId
+		bool isSuccessfullyUpdatedSubCategory2 = await subCategoryService.UpdateSubCategoryAsync(new SubCategoryModel()
+			{
+				Id = 4,
+				Name = "Nytt telefonbedrägeri",
+				SegmentId = 1
+			});
+		//36. Make call to get category by ID 1. This has been altered by the update of subcategory above (since segment 1 belongs to category-id 1) so it should fetch from the db
+		//It is correctly fetching from the db
+		var category11 = await categoryService.GetCategoryWithUserScore(1, userId);
+
+		//37. Make call to get category by ID 2. This has not been altered by the updated of subcategory above, so it should fetch from the cache
+		//It is still fetched from the cache
+		var newUserCategoryScore8 = await categoryService.GetCategoryWithUserScore(2, "5db5968d-eb63-4515-a74c-9dc7b5d4328e");
+
+		//38. Make call to get all categories. This should fetch fresh from the db
+		//It is correctly fetched from the db
+		List<CategoryModel> allCategoriesAfterSubCategoryUpdate2 = await categoryService.GetAllCategoriesAsync();
+
+		//39 Update subcategory. CHANGE the segmentId, it stays in the same category
+		bool isSuccessfullyUpdatedSubCategory3 = await subCategoryService.UpdateSubCategoryAsync(new SubCategoryModel()
+			{
+				Id = 4,
+				Name = "Nytt telefonbedrägeri",
+				SegmentId = 1
+			});
+
+		//36. Make call to get category by ID 1. This has been altered by the update of subcategory above (since segment 1 belongs to category-id 1) so it should fetch from the db
+		//It is correctly fetching from DB
+		var category12 = await categoryService.GetCategoryWithUserScore(1, userId);
+
+		//37. Make call to get category by ID 2. This has not been altered in the update above, since segment 1 and 2 belongs to the same category
+		//It correctly fetches from db
+
+		var newUserCategoryScore9 = await categoryService.GetCategoryWithUserScore(2, "5db5968d-eb63-4515-a74c-9dc7b5d4328e");
+
+		//38. Make call to get all categories. This should fetch fresh from the db
+		//It correctly fetches from db
+		List<CategoryModel> allCategoriesAfterSubCategoryUpdate3 = await categoryService.GetAllCategoriesAsync();
+
+		//Update subcategory, change segment that belongs to another category
+		bool isSuccessfullyUpdatedSubCategory4 = await subCategoryService.UpdateSubCategoryAsync(new SubCategoryModel()
+			{
+				Id = 4,
+				Name = "Nytt telefonbedrägeri22",
+				SegmentId = 4
+			});
+
+			//Make call to get category by ID 1. This has been altered so should fetch from db
+		var category13 = await categoryService.GetCategoryWithUserScore(1, userId);
+
+		//37. Make call to get category by ID 2. This has been altered in the update above, since one of it's segments has been added a new subcategory
+		//Should fetch from db
+		var newUserCategoryScore10 = await categoryService.GetCategoryWithUserScore(2, "5db5968d-eb63-4515-a74c-9dc7b5d4328e");
+
+		//36. Make call to get category by ID 1. This has been altered by the update of subcategory above (since it has lost one of it's segments), so it should get fresh data from db
+		//
+		var category14 = await categoryService.GetCategoryWithUserScore(1, userId);
+
+		//38. Make call to get all categories. This should fetch fresh from the db
+		//
+		List<CategoryModel> allCategoriesAfterSubCategoryUpdate4 = await categoryService.GetAllCategoriesAsync();
 	}
 
 

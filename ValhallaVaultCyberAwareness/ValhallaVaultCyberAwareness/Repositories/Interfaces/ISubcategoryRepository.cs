@@ -10,8 +10,8 @@ namespace ValhallaVaultCyberAwareness.Repositories.Interfaces
 		public Task<List<SubCategoryModel>> GetSubCategoriesWithIncludeAsync();
 		public Task<SubCategoryModel?> GetSubCategoryByIdAsync(int subCategoryId);
 		public Task<SubCategoryModel> AddSubCategory(SubCategoryModel newSubCategory);
-		public Task<SubCategoryModel> DeleteSubCategoryAsync(int subCategoryId);
-		public Task<SubCategoryModel> UpdateSubCategoryAsync(SubCategoryModel newSubCategory);
+		public Task<SubCategoryModel?> DeleteSubCategoryAsync(int subCategoryId);
+		public Task<SubCategoryModel?> UpdateSubCategoryAsync(SubCategoryModel newSubCategory);
 
 
 	}

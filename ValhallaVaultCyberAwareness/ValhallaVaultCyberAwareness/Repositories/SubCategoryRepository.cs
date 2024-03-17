@@ -24,7 +24,7 @@ namespace ValhallaVaultCyberAwareness.Repositories
 		}
 		public async Task<SubCategoryModel?> GetSubCategoryByIdAsync(int subCategoryId)
 		{
-			return await _context.SubCategories.FirstOrDefaultAsync(s => s.Id == subCategoryId);
+			return await _context.SubCategories.Where(s => s.Id == subCategoryId).Include(s => s.Segment).FirstOrDefaultAsync();
 		}
 
 		public async Task<SubCategoryModel> AddSubCategory(SubCategoryModel newSubCategory)
@@ -49,7 +49,7 @@ namespace ValhallaVaultCyberAwareness.Repositories
 
 		}
 
-		public async Task<SubCategoryModel> DeleteSubCategoryAsync(int subCategoryId)
+		public async Task<SubCategoryModel?> DeleteSubCategoryAsync(int subCategoryId)
 		{
 			SubCategoryModel? subCategory = await GetSubCategoryByIdWithIncludedData(subCategoryId);
 
@@ -73,25 +73,32 @@ namespace ValhallaVaultCyberAwareness.Repositories
 			}
 		}
 
-		public async Task<SubCategoryModel> UpdateSubCategoryAsync(SubCategoryModel newSubCategory)
+		public async Task<SubCategoryModel?> UpdateSubCategoryAsync(SubCategoryModel newSubCategory)
 		{
 			var subCategoryToUpdate = await GetSubCategoryByIdWithIncludedData(newSubCategory.Id);
-
-			if (subCategoryToUpdate != null)
+			if (subCategoryToUpdate == null)
 			{
-				_context.Attach(subCategoryToUpdate);
-
-				subCategoryToUpdate.Name = newSubCategory.Name;
-				subCategoryToUpdate.Description = newSubCategory.Description;
-				subCategoryToUpdate.SegmentId = newSubCategory.SegmentId;
-
-				await _context.SaveChangesAsync();
-
-				return subCategoryToUpdate;
+				throw new ArgumentNullException(message: $"Subcategory with Id {newSubCategory.Id} could not be found", null);
 			}
+			else
+			{
+				try
+				{
+					_context.Attach(subCategoryToUpdate);
 
-			throw new Exception("Sub category not found");
+					subCategoryToUpdate.Name = newSubCategory.Name;
+					subCategoryToUpdate.Description = newSubCategory.Description;
+					subCategoryToUpdate.SegmentId = newSubCategory.SegmentId;
 
+					await _context.SaveChangesAsync();
+
+					return await GetSubCategoryByIdWithIncludedData(subCategoryToUpdate.Id);
+				}
+				catch (Exception)
+				{
+					return null;
+				}
+			}
 		}
 
 		private async Task<SubCategoryModel> GetSubCategoryByIdWithIncludedData(int subCategoryId)

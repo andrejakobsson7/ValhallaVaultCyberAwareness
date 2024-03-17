@@ -10,8 +10,8 @@ namespace ValhallaVaultCyberAwareness.Repositories.Interfaces
 		public Task<SegmentModel?> GetSegmentWithUserScoresByUserIdAsync(int segmentId, string userId);
 		public Task<List<SegmentModel>> GetAllSegmentsAsync();
 		public Task<List<SegmentModel>> GetAllSegmentsWithIncludeAsync();
-		public Task<SegmentModel> AddSegmentAsync(SegmentModel newSegment);
-		public Task<SegmentModel> RemoveSegmentAsync(int segmentId);
+		public Task<SegmentModel?> AddSegmentAsync(SegmentModel newSegment);
+		public Task<SegmentModel?> RemoveSegmentAsync(int segmentId);
 		public Task<bool> UpdateSegmentAsync(SegmentModel segment);
 	}
 }

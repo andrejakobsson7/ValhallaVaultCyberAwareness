@@ -60,21 +60,41 @@ namespace ValhallaVaultCyberAwareness.Controllers
 
 		[HttpPut]
 		[Route("{subCategoryId}")]
-		//Maybe I can't use ByIdCachePolicy here??
 		[OutputCache(PolicyName = "ByIdCachePolicy")]
 		public async Task<ActionResult> UpdateSubCategory(SubCategoryModel subCategory, CancellationToken cancellationToken)
 		{
-			var updatedSubCategory = await _subCategoryRepo.UpdateSubCategoryAsync(subCategory);
-
-			if (updatedSubCategory != null)
+			//Here we need to figure out if the subcategory is changing it's Foreign Key (segment-ID). If it does, we need to evict both the old and new segment-id and category-ID from the cache
+			//Store the original segment-info.
+			try
 			{
-				//When a subcategory is updated, we need to update the general cache and remove from category, segment and subcategory by respective ID, since we have calls per ID where subcategory is included.
-				await CacheManager.RemoveFromCategorySegmentSubCategoryAndGeneralCache(updatedSubCategory.Segment!.CategoryId, updatedSubCategory.SegmentId, updatedSubCategory.Id, cancellationToken, _outputCacheStore);
-				var subCategoryJson = JsonSerializer.Serialize(updatedSubCategory, _jsonSerializerOptions);
-				return Ok(subCategoryJson);
-
+				SubCategoryModel? subCategoryToUpdate = await _subCategoryRepo.GetSubCategoryByIdAsync(subCategory.Id);
+				if (subCategoryToUpdate != null)
+				{
+					int originalSegmentId = subCategoryToUpdate.SegmentId;
+					int originalCategoryId = subCategoryToUpdate.Segment!.CategoryId;
+					SubCategoryModel? updatedSubCategory = await _subCategoryRepo.UpdateSubCategoryAsync(subCategory);
+					if (updatedSubCategory != null)
+					{
+						if (updatedSubCategory.SegmentId != originalSegmentId && updatedSubCategory.Segment.CategoryId != originalCategoryId)
+						{
+							//The subcategory has moved from one segment that belongs to another category. Evict old segment and old category by ID
+							await CacheManager.RemoveFromCategorySegmentSubCategoryAndGeneralCache(originalCategoryId, originalSegmentId, updatedSubCategory.Id, cancellationToken, _outputCacheStore);
+						}
+						//Always evivct the new categoryID and segmentID from the cache
+						await CacheManager.RemoveFromCategorySegmentSubCategoryAndGeneralCache(updatedSubCategory.Segment!.CategoryId, updatedSubCategory.SegmentId, updatedSubCategory.Id, cancellationToken, _outputCacheStore);
+						return Ok();
+					}
+				}
+				return NotFound();
 			}
-			return BadRequest();
+			catch (ArgumentNullException ex)
+			{
+				return NotFound(ex.Message);
+			}
+			catch (Exception)
+			{
+				return BadRequest();
+			}
 		}
 
 		[HttpDelete]

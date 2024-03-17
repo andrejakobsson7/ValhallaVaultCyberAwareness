@@ -61,7 +61,7 @@ namespace ValhallaVaultCyberAwareness.Repositories
 			}
 		}
 
-		public async Task<SegmentModel> RemoveSegmentAsync(int segmentId)
+		public async Task<SegmentModel?> RemoveSegmentAsync(int segmentId)
 		{
 			SegmentModel? segmentToRemove = await GetSegmentByIdWithoutIncludedDataAsync(segmentId);
 			if (segmentToRemove == null)
