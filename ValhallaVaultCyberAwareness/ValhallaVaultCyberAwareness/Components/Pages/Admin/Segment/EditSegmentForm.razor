@@ -37,7 +37,8 @@
     [Parameter]
     public SegmentModel segment { get; set; } = new();
 
-    private List<CategoryModel> Categories { get; set; } = new();
+    [Parameter]
+    public List<CategoryModel> Categories { get; set; } = new();
 
     private ConfirmDialog dialog;
 
@@ -45,10 +46,10 @@
     [Parameter]
     public Action? OnUpdate { get; set; }
 
-    protected override async Task OnInitializedAsync()
-    {
-        Categories = await manager._categoryRepository.GetAllCategoriesAsync();
-    }
+    // protected override async Task OnInitializedAsync()
+    // {
+    //     Categories = await manager._categoryRepository.GetAllCategoriesAsync();
+    // }
 
     private async Task HandleSubmit()
     {

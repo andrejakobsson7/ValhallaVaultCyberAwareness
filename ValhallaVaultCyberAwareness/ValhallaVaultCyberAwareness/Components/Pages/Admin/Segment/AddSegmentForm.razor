@@ -50,10 +50,10 @@
     [Parameter]
     public Action? OnAdd { get; set; }
 
-    protected override async Task OnInitializedAsync()
-    {
-        Categories = await manager._categoryRepository.GetAllCategoriesAsync();
-    }
+    // protected override async Task OnInitializedAsync()
+    // {
+    //     Categories = await manager._categoryRepository.GetAllCategoriesAsync();
+    // }
 
     private async Task HandleSubmit()
     {
