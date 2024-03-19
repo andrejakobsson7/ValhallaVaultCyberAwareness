@@ -1,4 +1,4 @@
-﻿@page "/Hem"
+﻿@page "/hem"
 @using Microsoft.AspNetCore.Authorization
 @using ValhallaVaultCyberAwareness.Client.Services
 @using ValhallaVaultCyberAwareness.Client.ViewModels
@@ -6,7 +6,6 @@
 @inject ICategoryService categoryService
 @inject AuthenticationStateProvider authStateProvider
 @inject NavigationManager NavigationManager
-@inject ICategoryService categoryService
 @attribute [StreamRendering]
 @attribute [Authorize]
 @rendermode InteractiveServer
@@ -31,6 +30,11 @@ else
                         <div class="card-header">
                             <a href="/category/@category.CategoryId"><h5>@category.CategoryName</h5></a>
                             <p>Du har klarat @category.CompletedSegments av @category.TotalSegments segment</p>
+                            <div class="progress">
+                                <div class="progress-bar" role="progressbar" style="width:@GetCompletionPercentage(category.CompletedSegments, category.TotalSegments)%">
+                                    @GetCompletionPercentage(category.CompletedSegments, category.TotalSegments)%
+                                </div>
+                            </div>
                         </div>
                         <div class="card-body">
                             <ul class="list-group" style="list-style:none">
@@ -70,8 +74,16 @@ else
         var authState = await authStateProvider.GetAuthenticationStateAsync();
         userId = authState.User.FindFirst(c => c.Type.Contains("nameidentifier"))?.Value;
         allCategories = await categoryService.GetAllCategoriesWithUserScores(userId);
+    }
 
+    private double GetCompletionPercentage(int completedSegments, int totalSegments)
+    {
+        if (totalSegments == 0)
+        {
+            return 0;
+        }
+
+        return (completedSegments / (double)totalSegments) * 100;
     }
 }
-
             
