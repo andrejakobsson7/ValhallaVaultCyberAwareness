@@ -7,7 +7,6 @@ namespace ValhallaVaultCyberAwareness.Client.ViewModels
         public int SegmentId { get; set; }
         public string? SegmentName { get; set; }
         public string? SegmentDescription { get; set; }
-        public List<QuestionModel> SegmentQuestions { get; set; } = new();
         public List<SubCategoryScoreViewModel> SubCategoryScores { get; set; } = new();
         public int CorrectUserAnswers { get; set; }
         public int TotalQuestions { get; set; }
