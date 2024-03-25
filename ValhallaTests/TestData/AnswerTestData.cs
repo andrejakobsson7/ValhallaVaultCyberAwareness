@@ -12,7 +12,6 @@ namespace ValhallaTests.TestData
                     Answer = "Klicka på länken och logga in för att uppdatera din information.",
                     IsCorrect = false,
                     QuestionId = 15,
-                    Question = QuestionTestData.Questions.First(q => q.Id == 15),
                     UserAnswers = UserAnswerTestData.UserAnswers.Where(ua => ua.AnswerId == 43 && ua.UserId == "Kalle").ToList(),
                 },
                 new AnswerModel()
@@ -21,7 +20,6 @@ namespace ValhallaTests.TestData
                     Answer = "Ignorera e-postmeddelandet och radera det omedelbart.",
                     IsCorrect = true,
                     QuestionId = 15,
-                    Question = QuestionTestData.Questions.First(q => q.Id == 15),
                     UserAnswers = UserAnswerTestData.UserAnswers.Where(ua => ua.AnswerId == 44 && ua.UserId == "Kalle").ToList(),
                 },
                 new AnswerModel()
@@ -30,7 +28,6 @@ namespace ValhallaTests.TestData
                     Answer = "Skicka ditt kontonummer och lösenord som begärt.",
                     IsCorrect = false,
                     QuestionId = 15,
-                    Question = QuestionTestData.Questions.First(q => q.Id == 15),
                     UserAnswers = UserAnswerTestData.UserAnswers.Where(ua => ua.AnswerId == 45 && ua.UserId == "Kalle").ToList(),
 
                 },
@@ -40,7 +37,6 @@ namespace ValhallaTests.TestData
                     Answer = "Kontrollera att PIN-koden är synlig för andra.",
                     IsCorrect = false,
                     QuestionId = 16,
-                    Question = QuestionTestData.Questions.First(q => q.Id == 16),
                     UserAnswers = UserAnswerTestData.UserAnswers.Where(ua => ua.AnswerId == 46 && ua.UserId == "Kalle").ToList(),
 
                 },
@@ -50,7 +46,6 @@ namespace ValhallaTests.TestData
                     Answer = "Inspektera terminalen för ovanliga tillbehör eller lösa delar.",
                     IsCorrect = true,
                     QuestionId = 16,
-                    Question = QuestionTestData.Questions.First(q => q.Id == 16),
                     UserAnswers = UserAnswerTestData.UserAnswers.Where(ua => ua.AnswerId == 47 && ua.UserId == "Kalle").ToList(),
                 },
                 new AnswerModel()
@@ -59,7 +54,6 @@ namespace ValhallaTests.TestData
                     Answer = "Använd kortet utan att oroa dig.",
                     IsCorrect = false,
                     QuestionId = 16,
-                    Question = QuestionTestData.Questions.First(q => q.Id == 16),
                     UserAnswers = UserAnswerTestData.UserAnswers.Where(ua => ua.AnswerId == 48 && ua.UserId == "Kalle").ToList(),
                 },
                 new AnswerModel()
@@ -68,7 +62,6 @@ namespace ValhallaTests.TestData
                     Answer = "Ignorera det och anta att det är en felaktighet.",
                     IsCorrect = false,
                     QuestionId = 17,
-                    Question = QuestionTestData.Questions.First(q => q.Id == 17),
                     UserAnswers = UserAnswerTestData.UserAnswers.Where(ua => ua.AnswerId == 49 && ua.UserId == "Kalle").ToList(),
                 },
                 new AnswerModel()
@@ -77,7 +70,6 @@ namespace ValhallaTests.TestData
                     Answer = "Kontakta din kreditkortsutgivare omedelbart för att rapportera misstänkt bedrägeri.",
                     IsCorrect = true,
                     QuestionId = 17,
-                    Question = QuestionTestData.Questions.First(q => q.Id == 17),
                     UserAnswers = UserAnswerTestData.UserAnswers.Where(ua => ua.AnswerId == 50 && ua.UserId == "Kalle").ToList(),
                 },
                 new AnswerModel()
@@ -86,7 +78,6 @@ namespace ValhallaTests.TestData
                     Answer = "Vänta och se om det löser sig av sig självt.",
                     IsCorrect = false,
                     QuestionId = 17,
-                    Question = QuestionTestData.Questions.First(q => q.Id == 17),
                     UserAnswers = UserAnswerTestData.UserAnswers.Where(ua => ua.AnswerId == 51 && ua.UserId == "Kalle").ToList(),
                 },
                 new AnswerModel()
@@ -95,7 +86,6 @@ namespace ValhallaTests.TestData
                     Answer = "Öppna fakturan och betala den om den verkar legitim.",
                     IsCorrect = false,
                     QuestionId = 18,
-                    Question = QuestionTestData.Questions.First(q => q.Id == 18),
                     UserAnswers = UserAnswerTestData.UserAnswers.Where(ua => ua.AnswerId == 52 && ua.UserId == "Kalle").ToList(),
 
                 },
@@ -105,7 +95,6 @@ namespace ValhallaTests.TestData
                     Answer = "Kontakta din kreditkortsutgivare omedelbart för att rapportera misstänkt bedrägeri.",
                     IsCorrect = true,
                     QuestionId = 18,
-                    Question = QuestionTestData.Questions.First(q => q.Id == 18),
                     UserAnswers = UserAnswerTestData.UserAnswers.Where(ua => ua.AnswerId == 53 && ua.UserId == "Kalle").ToList(),
                 },
                 new AnswerModel()
@@ -114,7 +103,6 @@ namespace ValhallaTests.TestData
                     Answer = "Vänta och se om det löser sig av sig självt.",
                     IsCorrect = false,
                     QuestionId = 18,
-                    Question = QuestionTestData.Questions.First(q => q.Id == 18),
                     UserAnswers = UserAnswerTestData.UserAnswers.Where(ua => ua.AnswerId == 54 && ua.UserId == "Kalle").ToList(),
                 },
                 new AnswerModel()
@@ -123,7 +111,6 @@ namespace ValhallaTests.TestData
                     Answer = "Ta kortet och använd det för egna inköp.",
                     IsCorrect = false,
                     QuestionId = 19,
-                    Question = QuestionTestData.Questions.First(q => q.Id == 19),
                     UserAnswers = UserAnswerTestData.UserAnswers.Where(ua => ua.AnswerId == 55 && ua.UserId == "Kalle").ToList(),
                 },
                 new AnswerModel()
@@ -132,7 +119,6 @@ namespace ValhallaTests.TestData
                     Answer = "Ge kortet till personalen på caféet.",
                     IsCorrect = true,
                     QuestionId = 19,
-                    Question = QuestionTestData.Questions.First(q => q.Id == 19),
                     UserAnswers = UserAnswerTestData.UserAnswers.Where(ua => ua.AnswerId == 56 && ua.UserId == "Kalle").ToList(),
                 },
                 new AnswerModel()
@@ -141,7 +127,6 @@ namespace ValhallaTests.TestData
                     Answer = "Klipp sönder kortet.",
                     IsCorrect = false,
                     QuestionId = 19,
-                    Question = QuestionTestData.Questions.First(q => q.Id == 19),
                     UserAnswers = UserAnswerTestData.UserAnswers.Where(ua => ua.AnswerId == 57 && ua.UserId == "Kalle").ToList(),
                 },
                 new AnswerModel()
@@ -150,7 +135,6 @@ namespace ValhallaTests.TestData
                     Answer = "Glöm bort det och låt betalningarna fortsätta.",
                     IsCorrect = false,
                     QuestionId = 20,
-                    Question = QuestionTestData.Questions.First(q => q.Id == 20),
                     UserAnswers = UserAnswerTestData.UserAnswers.Where(ua => ua.AnswerId == 58 && ua.UserId == "Kalle").ToList(),
                 },
                 new AnswerModel()
@@ -159,7 +143,6 @@ namespace ValhallaTests.TestData
                     Answer = "Uppdatera betalningsuppgifterna hos varje tjänsteleverantör.",
                     IsCorrect = true,
                     QuestionId = 20,
-                    Question = QuestionTestData.Questions.First(q => q.Id == 20),
                     UserAnswers = UserAnswerTestData.UserAnswers.Where(ua => ua.AnswerId == 59 && ua.UserId == "Kalle").ToList(),
 
                 },
@@ -169,7 +152,6 @@ namespace ValhallaTests.TestData
                     Answer = "Avbryt alla automatiska betalningar.",
                     IsCorrect = false,
                     QuestionId = 20,
-                    Question = QuestionTestData.Questions.First(q => q.Id == 20),
                     UserAnswers = UserAnswerTestData.UserAnswers.Where(ua => ua.AnswerId == 60 && ua.UserId == "Kalle").ToList(),
                 }
         };

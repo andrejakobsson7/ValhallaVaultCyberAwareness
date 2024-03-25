@@ -12,7 +12,6 @@ namespace ValhallaTests.TestData
                 Name = "Segment 1",
                 Description = "Beskrivning av segment 1",
                 CategoryId = 1,
-                Category = CategoryTestData.Categories.First(c => c.Id == 1),
                 SubCategories = SubCategoryTestData.SubCategories.Where(s => s.SegmentId == 1).ToList()
             },
         };

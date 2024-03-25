@@ -7,8 +7,6 @@ namespace ValhallaVaultCyberAwareness.Client.ViewModels
         public int SegmentId { get; set; }
         public string? SegmentName { get; set; }
         public string? SegmentDescription { get; set; }
-        public List<SubCategoryModel> SegmentSubCategories { get; set; } = new();
-        public List<QuestionModel> SegmentQuestions { get; set; } = new();
         public List<SubCategoryScoreViewModel> SubCategoryScores { get; set; } = new();
         public int CorrectUserAnswers { get; set; }
         public int TotalQuestions { get; set; }
@@ -21,48 +19,110 @@ namespace ValhallaVaultCyberAwareness.Client.ViewModels
 
         public SegmentUserScoreViewModel(SegmentModel segment)
         {
-            SegmentId = segment.Id;
-            SegmentName = segment.Name;
-            SegmentDescription = segment.Description;
-            SegmentSubCategories = segment.SubCategories;
-            SubCategoryScores = segment.SubCategories.Select(s => new SubCategoryScoreViewModel(s)).ToList();
-            CompletedSubcategories = SubCategoryScores.Where(s => s.UserHasCompletedSubCategory).Count();
-            TotalSubCategories = SubCategoryScores.Count();
-            //Calculate all correct useranswers in each subcategory and aggregate it to the segments total.
-            CorrectUserAnswers = SubCategoryScores.Aggregate(0, (total, subCategoryScore) => total + subCategoryScore.CorrectUserAnswers);
+            SegmentId = GetSegmentId(segment.Id);
+            SegmentName = GetSegmentName(segment.Name);
+            SegmentDescription = GetSegmentDescription(segment.Description);
+            SubCategoryScores = ProjectSubCategoriesToViewModels(segment.SubCategories);
+            CompletedSubcategories = GetCompletedSubCategories(SubCategoryScores);
+            TotalSubCategories = GetTotalSubCategories(segment.SubCategories);
+            CorrectUserAnswers = GetCorrectUserAnswersInSegment(SubCategoryScores);
+            TotalQuestions = GetTotalQuestionsInSegment(SubCategoryScores);
+            UserCompletionPercentage = GetUserCompletionPercentage(TotalQuestions, CorrectUserAnswers);
+            AvailableSubCategoryIndex = GetSubCategoryStartIndex(SubCategoryScores, TotalQuestions);
+            UserHasCompletedSegment = GetUserCompletedSegment(SubCategoryScores);
+        }
+
+        public int GetSegmentId(int id)
+        {
+            return id;
+        }
+
+        public string GetSegmentName(string name)
+        {
+            return name;
+        }
+
+        public string GetSegmentDescription(string description)
+        {
+            return description;
+        }
+        public int GetTotalSubCategories(List<SubCategoryModel> subCategories)
+        {
+            return subCategories.Count;
+        }
+
+        public List<SubCategoryScoreViewModel> ProjectSubCategoriesToViewModels(List<SubCategoryModel> subCategories)
+        {
+            List<SubCategoryScoreViewModel> subCategoryScores = subCategories.Select(s => new SubCategoryScoreViewModel(s)).ToList();
+            return subCategoryScores;
+        }
+
+        public int GetCompletedSubCategories(List<SubCategoryScoreViewModel> subCategoryScores)
+        {
+            return subCategoryScores.Where(s => s.UserHasCompletedSubCategory).Count();
+        }
+
+        public int GetTotalQuestionsInSegment(List<SubCategoryScoreViewModel> subCategoryScores)
+        {
             //Calculate all questions in each subcategory and aggregate it to the segments total.
-            TotalQuestions = SubCategoryScores.Aggregate(0, (total, subCategoryScore) => total + subCategoryScore.TotalQuestions);
-            //Calculate user success percentage in this segment.
-            if (TotalQuestions > 0)
+            return subCategoryScores.Aggregate(0, (total, subCategoryScore) => total + subCategoryScore.TotalQuestions);
+        }
+
+        public int GetCorrectUserAnswersInSegment(List<SubCategoryScoreViewModel> subCategoryScores)
+        {
+            //Calculate all correct useranswers in each subcategory and aggregate it to the segments total.
+            return subCategoryScores.Aggregate(0, (total, subCategoryScore) => total + subCategoryScore.CorrectUserAnswers);
+        }
+
+        public double GetUserCompletionPercentage(int totalQuestions, int correctUserAnswers)
+        {
+            if (totalQuestions > 0)
             {
-                UserCompletionPercentage = Math.Round(((double)CorrectUserAnswers / (double)TotalQuestions) * 100, 2);
+                return Math.Round(((double)correctUserAnswers / (double)totalQuestions) * 100, 2);
             }
             else
             {
-                UserCompletionPercentage = 100;
-                AvailableSubCategoryIndex = -1;
+                return 100;
             }
-            //Calculate which subcategory the user is eligible to start from.
-            for (int i = 0; i < SubCategoryScores.Count; i++)
+
+        }
+
+        public int GetSubCategoryStartIndex(List<SubCategoryScoreViewModel> subCategoryScores, int totalQuestions)
+        {
+            if (totalQuestions > 0)
             {
-                if (SubCategoryScores[i].UserHasCompletedSubCategory)
+                int availableSubCategoryIndex = 0;
+                for (int i = 0; i < subCategoryScores.Count; i++)
                 {
-                    AvailableSubCategoryIndex++;
+                    if (subCategoryScores[i].UserHasCompletedSubCategory)
+                    {
+                        availableSubCategoryIndex++;
+                    }
+                    else
+                    {
+                        break;
+                    }
                 }
-                else
-                {
-                    break;
-                }
-            }
-            //Check if the user has completed all subcategories. If the user has completed all subcategories, the segment is completed.
-            if (SubCategoryScores.Any(s => s.UserHasCompletedSubCategory == false))
-            {
-                UserHasCompletedSegment = false;
+                return availableSubCategoryIndex;
             }
             else
             {
-                UserHasCompletedSegment = true;
+                return -1;
             }
         }
+
+        public bool GetUserCompletedSegment(List<SubCategoryScoreViewModel> subCategoryScores)
+        {
+            //Check if the user has completed all subcategories. If the user has completed all subcategories, the segment is completed.
+            if (subCategoryScores.All(s => s.UserHasCompletedSubCategory == true))
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+
     }
 }
