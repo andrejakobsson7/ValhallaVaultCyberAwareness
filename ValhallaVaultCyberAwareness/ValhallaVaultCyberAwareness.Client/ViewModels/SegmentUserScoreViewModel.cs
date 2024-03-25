@@ -28,8 +28,13 @@ namespace ValhallaVaultCyberAwareness.Client.ViewModels
             CorrectUserAnswers = GetCorrectUserAnswersInSegment(SubCategoryScores);
             TotalQuestions = GetTotalQuestionsInSegment(SubCategoryScores);
             UserCompletionPercentage = GetUserCompletionPercentage(TotalQuestions, CorrectUserAnswers);
-            AvailableSubCategoryIndex = GetSubCategoryStartIndex(SubCategoryScores, TotalQuestions);
+            AvailableSubCategoryIndex = GetSubCategoryStartIndex(SubCategoryScores);
             UserHasCompletedSegment = GetUserCompletedSegment(SubCategoryScores);
+        }
+
+        public SegmentUserScoreViewModel()
+        {
+
         }
 
         public int GetSegmentId(int id)
@@ -87,9 +92,9 @@ namespace ValhallaVaultCyberAwareness.Client.ViewModels
 
         }
 
-        public int GetSubCategoryStartIndex(List<SubCategoryScoreViewModel> subCategoryScores, int totalQuestions)
+        public int GetSubCategoryStartIndex(List<SubCategoryScoreViewModel> subCategoryScores)
         {
-            if (totalQuestions > 0)
+            if (TotalQuestions > 0)
             {
                 int availableSubCategoryIndex = 0;
                 for (int i = 0; i < subCategoryScores.Count; i++)
