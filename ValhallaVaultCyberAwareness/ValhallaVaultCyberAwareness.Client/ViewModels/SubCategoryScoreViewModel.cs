@@ -11,14 +11,14 @@ namespace ValhallaVaultCyberAwareness.Client.ViewModels
         public int TotalQuestions { get; set; }
         public double UserCompletionPercentage { get; set; }
         public bool UserHasCompletedSubCategory { get; set; }
-        private double CompletionPercentage { get; set; } = 80.0;
+        public double CompletionPercentage { get; set; } = 80.0;
 
 
         public SubCategoryScoreViewModel(SubCategoryModel subCategory)
         {
             SubCategoryId = SetSubCategoryId(subCategory.Id);
             SubCategoryName = SetSubCategoryName(subCategory.Name);
-            SubCategoryDescription = SetSubCategoryDescription(SubCategoryDescription);
+            SubCategoryDescription = SetSubCategoryDescription(subCategory.Description);
             TotalQuestions = SetTotalQuestions(subCategory.Questions);
             CorrectUserAnswers = SetCorrectUserAnswers(subCategory.Questions);
             //Calculate the success percentage
