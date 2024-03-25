@@ -15,7 +15,7 @@
 
                 @foreach (var segment in Segments)
                 {
-                    <Segment CurrentSegment="@segment" OnDelete=" async () => await OnChange()"></Segment>
+                    <Segment CurrentSegment="@segment" Categories="Categories" OnDelete=" async () => await OnChange()"></Segment>
                 }
 
            </div>
@@ -45,7 +45,7 @@ else
     {
         Segments = await manager._segmentRepository.GetAllSegmentsWithIncludeAsync();
 
-        // Categories = await manager._categoryRepository.GetAllCategoriesAsync();
+        Categories = await manager._categoryRepository.GetAllCategoriesAsync();
 
     }
 

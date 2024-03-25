@@ -18,7 +18,7 @@
 
         @if(Hide == false)
         {
-            <EditSegmentForm segment ="CurrentSegment" OnUpdate="ToggleHide"></EditSegmentForm>
+            <EditSegmentForm Categories="Categories" segment ="CurrentSegment" OnUpdate="ToggleHide"></EditSegmentForm>
         }
 
      </div>
@@ -26,6 +26,9 @@
 @code {
     [Parameter]
     public SegmentModel CurrentSegment { get; set; }
+
+    [Parameter]
+    public List<CategoryModel> Categories { get; set; } = new();
 
     async Task DeleteSegment()
     {

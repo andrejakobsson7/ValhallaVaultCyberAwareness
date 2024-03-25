@@ -6,6 +6,7 @@ using ValhallaVaultCyberAwareness.Components;
 using ValhallaVaultCyberAwareness.Components.Account;
 using ValhallaVaultCyberAwareness.Data;
 using ValhallaVaultCyberAwareness.Managers;
+using ValhallaVaultCyberAwareness.Middlewares;
 using ValhallaVaultCyberAwareness.Repositories;
 using ValhallaVaultCyberAwareness.Repositories.Interfaces;
 
@@ -40,13 +41,11 @@ builder.Services.AddScoped<IQuestionService, QuestionService>();
 builder.Services.AddScoped<IAnswerService, AnswerService>();
 builder.Services.AddScoped<ISupportQuestionService, SupportQuestionService>();
 builder.Services.AddScoped<ISupportResponseService, SupportResponseService>();
-
 builder.Services.AddScoped<AdminManager>();
 builder.Services.AddScoped<IUserAnswersService, UserAnswersService>();
+
 builder.Services.AddBlazorBootstrap();
-
-
-
+builder.Services.AddTransient<GlobalExceptionHandlingMiddleware>();
 builder.Services.AddControllers();
 
 builder.Services.AddScoped(http => new HttpClient
@@ -161,7 +160,7 @@ else
     app.UseHsts();
 }
 
-app.UseHttpsRedirection();
+app.UseMiddleware<GlobalExceptionHandlingMiddleware>();
 
 app.MapControllers();
 
