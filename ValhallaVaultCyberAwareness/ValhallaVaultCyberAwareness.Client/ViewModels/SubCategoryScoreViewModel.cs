@@ -16,11 +16,40 @@ namespace ValhallaVaultCyberAwareness.Client.ViewModels
 
         public SubCategoryScoreViewModel(SubCategoryModel subCategory)
         {
-            SubCategoryId = subCategory.Id;
-            SubCategoryName = subCategory.Name;
-            SubCategoryDescription = subCategory.Description;
-            TotalQuestions = subCategory.Questions.Count;
-            foreach (QuestionModel question in subCategory.Questions)
+            SubCategoryId = SetSubCategoryId(subCategory.Id);
+            SubCategoryName = SetSubCategoryName(subCategory.Name);
+            SubCategoryDescription = SetSubCategoryDescription(SubCategoryDescription);
+            TotalQuestions = SetTotalQuestions(subCategory.Questions);
+            CorrectUserAnswers = SetCorrectUserAnswers(subCategory.Questions);
+            //Calculate the success percentage
+            UserCompletionPercentage = CalculateSuccessPercentage(TotalQuestions, CorrectUserAnswers);
+            UserHasCompletedSubCategory = SetUserHasCompletedSubCategory();
+        }
+
+        public int SetSubCategoryId(int id)
+        {
+            return id;
+        }
+
+        public string SetSubCategoryName(string name)
+        {
+            return name;
+        }
+
+        public string SetSubCategoryDescription(string description)
+        {
+            return description;
+        }
+        public int SetTotalQuestions(List<QuestionModel> questions)
+        {
+            return questions.Count;
+        }
+
+        public int SetCorrectUserAnswers(List<QuestionModel> questions)
+        {
+            int correctUserAnswers = 0;
+
+            foreach (QuestionModel question in questions)
             {
                 //Find out the correct answer
                 AnswerModel correctAnswer = question.Answers.First(a => a.IsCorrect);
@@ -29,30 +58,41 @@ namespace ValhallaVaultCyberAwareness.Client.ViewModels
                 if (correctAnswer.UserAnswers.Any())
                 {
                     //Add to the total count of correct answers in this subcategory
-                    CorrectUserAnswers++;
-
+                    correctUserAnswers++;
                 }
             }
-            //Calculate the success percentage
+
+            return correctUserAnswers;
+
+        }
+
+        public double CalculateSuccessPercentage(int totalQuestions, int correctUserAnswers)
+        {
             if (TotalQuestions > 0)
             {
-                UserCompletionPercentage = Math.Round(((double)CorrectUserAnswers / (double)TotalQuestions) * 100, 2);
+                return Math.Round(((double)correctUserAnswers / (double)totalQuestions) * 100, 2);
             }
             else
             {
-                UserCompletionPercentage = 100;
+                return 100;
             }
+
+        }
+
+        public bool SetUserHasCompletedSubCategory()
+        {
             //If the success percentage is over the threshold or NaN (which will be the case if the subcategory doesn't contain any questions).
             if (UserCompletionPercentage >= CompletionPercentage || Double.IsNaN(UserCompletionPercentage))
             {
                 //Add true as the value if the user has passed enough in this subcategory.
-                UserHasCompletedSubCategory = true;
+                return true;
             }
             else
             {
                 //If not, add false as the value
-                UserHasCompletedSubCategory = false;
+                return false;
             }
         }
+
     }
 }
