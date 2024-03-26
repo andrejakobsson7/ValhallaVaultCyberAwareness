@@ -22,7 +22,7 @@ namespace ValhallaVaultCyberAwareness.Controllers
 
         [HttpGet]
         [Route("{segmentId}/{userId}")]
-        public async Task<IActionResult> GetCategoryWithUserScoresByUserIdAsync(int segmentId, string userId)
+        public async Task<IActionResult> GetSegmentWithUserScoresByUserIdAsync(int segmentId, string userId)
         {
             var segmentScore = await _segmentRepo.GetSegmentWithUserScoresByUserIdAsync(segmentId, userId);
             if (segmentScore != null)
