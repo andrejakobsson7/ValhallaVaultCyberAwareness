@@ -18,7 +18,7 @@ namespace ValhallaVaultCyberAwareness.Client.ViewModels
         {
             SubCategoryId = SetSubCategoryId(subCategory.Id);
             SubCategoryName = SetSubCategoryName(subCategory.Name);
-            SubCategoryDescription = SetSubCategoryDescription(SubCategoryDescription);
+            SubCategoryDescription = SetSubCategoryDescription(subCategory.Description);
             TotalQuestions = SetTotalQuestions(subCategory.Questions);
             CorrectUserAnswers = SetCorrectUserAnswers(subCategory.Questions);
             //Calculate the success percentage
