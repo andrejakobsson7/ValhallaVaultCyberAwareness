@@ -8,6 +8,13 @@ namespace ValhallaTests
     {
         private SegmentModel _segment;
         private SegmentUserScoreViewModel _segmentScore;
+        private List<SubCategoryScoreViewModel> _completedSubCategoryScores;
+        private List<SubCategoryScoreViewModel> _failedSubCategoryScores;
+        private List<SubCategoryScoreViewModel> _allSubCategoryScores;
+        private List<SubCategoryScoreViewModel> _emptyListofSubCategoryScores = new();
+
+
+
 
         [Fact]
         private void SetUp()
@@ -16,6 +23,21 @@ namespace ValhallaTests
             Assert.NotNull(_segment);
             _segmentScore = new();
             Assert.NotNull(_segmentScore);
+        }
+
+        [Fact]
+        private void SetUpSegmentScoreWithSubcategoryScores()
+        {
+            _segment = SegmentTestData.Segments.First();
+            Assert.NotNull(_segment);
+            _segmentScore = new(_segment);
+            Assert.NotNull(_segmentScore);
+            _completedSubCategoryScores = _segmentScore.SubCategoryScores.Where(s => s.UserHasCompletedSubCategory).ToList();
+            Assert.NotEmpty(_completedSubCategoryScores);
+            _failedSubCategoryScores = _segmentScore.SubCategoryScores.Where(s => s.UserHasCompletedSubCategory == false).ToList();
+            Assert.NotEmpty(_failedSubCategoryScores);
+            _allSubCategoryScores = _segmentScore.SubCategoryScores.ToList();
+            Assert.NotEmpty(_allSubCategoryScores);
         }
 
         [Fact]
@@ -68,52 +90,107 @@ namespace ValhallaTests
         }
 
         [Fact]
-        private void ConvertToSubCategoryViewModel()
+        private void ConvertToSubCategoryViewModels()
         {
             SetUp();
             _segmentScore.SubCategoryScores = _segmentScore.ProjectSubCategoriesToViewModels(_segment.SubCategories);
             Assert.NotNull(_segmentScore.SubCategoryScores);
+            Assert.NotEmpty(_segmentScore.SubCategoryScores);
         }
 
         [Fact]
-        private void SetSubCategoryCompletionPercentage()
+        private void ConvertEmptyListToSubCategoryViewModels()
         {
-            ConvertToSubCategoryViewModel();
+            SetUp();
+            List<SubCategoryModel> emptySubCategoryList = new();
+            _segmentScore.SubCategoryScores = _segmentScore.ProjectSubCategoriesToViewModels(emptySubCategoryList);
+            Assert.NotNull(_segmentScore.SubCategoryScores);
+            Assert.Empty(_segmentScore.SubCategoryScores);
+        }
+
+        [Fact]
+        private void SetCompletedSubcategories()
+        {
+            ConvertToSubCategoryViewModels();
             _segmentScore.CompletedSubcategories = _segmentScore.GetCompletedSubCategories(_segmentScore.SubCategoryScores);
-            Assert.Equal(0, _segmentScore.CompletedSubcategories);
+            Assert.Equal(1, _segmentScore.CompletedSubcategories);
         }
 
         [Fact]
         private void SetTotalQuestionsInSegment()
         {
-            ConvertToSubCategoryViewModel();
+            ConvertToSubCategoryViewModels();
             _segmentScore.TotalQuestions = _segmentScore.GetTotalQuestionsInSegment(_segmentScore.SubCategoryScores);
             Assert.Equal(6, _segmentScore.TotalQuestions);
         }
 
         [Fact]
+        private void SetTotalQuestionsInSegmentFromEmptySubcategoryList()
+        {
+            ConvertEmptyListToSubCategoryViewModels();
+            _segmentScore.TotalQuestions = _segmentScore.GetTotalQuestionsInSegment(_segmentScore.SubCategoryScores);
+            Assert.Equal(0, _segmentScore.TotalQuestions);
+        }
+
+        [Fact]
         private void SetCorrectUserAnswersInSegment()
         {
-            ConvertToSubCategoryViewModel();
+            ConvertToSubCategoryViewModels();
             _segmentScore.CorrectUserAnswers = _segmentScore.GetCorrectUserAnswersInSegment(_segmentScore.SubCategoryScores);
             Assert.Equal(4, _segmentScore.CorrectUserAnswers);
         }
 
         [Fact]
+        private void SetCorrectUserAnswersInSegmentFromEmptySubcategoryList()
+        {
+            ConvertEmptyListToSubCategoryViewModels();
+            _segmentScore.CorrectUserAnswers = _segmentScore.GetCorrectUserAnswersInSegment(_segmentScore.SubCategoryScores);
+            Assert.Equal(0, _segmentScore.CorrectUserAnswers);
+        }
+
+        [Fact]
         private void SetSubCategoryStartIndex()
         {
-            SetTotalQuestionsInSegment();
-            _segmentScore.AvailableSubCategoryIndex = _segmentScore.GetSubCategoryStartIndex(_segmentScore.SubCategoryScores);
+            SetUpSegmentScoreWithSubcategoryScores();
+            //Test where the first subcategory (id 0) is completed, so user should be eligible to start from the next.
+            _segmentScore.AvailableSubCategoryIndex = _segmentScore.GetSubCategoryStartIndex(_completedSubCategoryScores);
+            Assert.Equal(1, _segmentScore.AvailableSubCategoryIndex);
+            //Test where no subcategory is completed, so the user should be eligible to start from the first.
+            _segmentScore.AvailableSubCategoryIndex = _segmentScore.GetSubCategoryStartIndex(_failedSubCategoryScores);
             Assert.Equal(0, _segmentScore.AvailableSubCategoryIndex);
+            //Test where the first subcategory is not completed, but the second one is. User should be eligible to start from the first.
+            _segmentScore.AvailableSubCategoryIndex = _segmentScore.GetSubCategoryStartIndex(_allSubCategoryScores);
+            Assert.Equal(0, _segmentScore.AvailableSubCategoryIndex);
+        }
+
+        [Fact]
+        private void SetSubCategoryStartIndexFromEmptySubcategoryList()
+        {
+            SetTotalQuestionsInSegmentFromEmptySubcategoryList();
+            _segmentScore.AvailableSubCategoryIndex = _segmentScore.GetSubCategoryStartIndex(_segmentScore.SubCategoryScores);
+            Assert.Equal(-1, _segmentScore.AvailableSubCategoryIndex);
         }
 
         [Fact]
         private void SetUserCompletedSegment()
         {
-            SetTotalQuestionsInSegment();
-            _segmentScore.UserHasCompletedSegment = _segmentScore.GetUserCompletedSegment(_segmentScore.SubCategoryScores);
-            Assert.False(_segmentScore.UserHasCompletedSegment);
-        }
+            SetUpSegmentScoreWithSubcategoryScores();
 
+            //Test where 1 subcategory is completed and 1 failed
+            _segmentScore.UserHasCompletedSegment = _segmentScore.GetUserCompletedSegment(_allSubCategoryScores);
+            Assert.False(_segmentScore.UserHasCompletedSegment);
+
+            //Test where all subcategories are completed
+            _segmentScore.UserHasCompletedSegment = _segmentScore.GetUserCompletedSegment(_completedSubCategoryScores);
+            Assert.True(_segmentScore.UserHasCompletedSegment);
+
+            //Test where all subcategories are failed
+            _segmentScore.UserHasCompletedSegment = _segmentScore.GetUserCompletedSegment(_failedSubCategoryScores);
+            Assert.False(_segmentScore.UserHasCompletedSegment);
+
+            //Test where subcategory is an empty list
+            _segmentScore.UserHasCompletedSegment = _segmentScore.GetUserCompletedSegment(_emptyListofSubCategoryScores);
+            Assert.True(_segmentScore.UserHasCompletedSegment);
+        }
     }
 }
