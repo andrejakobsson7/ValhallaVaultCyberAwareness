@@ -41,7 +41,8 @@ namespace ValhallaVaultCyberAwareness.Middlewares
                 Status = context.Response.StatusCode,
                 Type = "Server error",
                 Title = e.Message,
-                Detail = e.StackTrace?.ToString()
+                //Detail = e.StackTrace?.ToString()
+                Detail = e.InnerException.ToString()
             };
 
             var options = new JsonSerializerOptions

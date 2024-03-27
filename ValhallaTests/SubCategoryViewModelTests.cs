@@ -16,92 +16,60 @@ namespace ValhallaTests
         }
 
         [Fact]
-        public void SetId()
+        public void TestSetId()
         {
             Reset();
             Assert.Equal(_scoreViewModel.SubCategoryId, _subCategory.Id);
         }
 
         [Fact]
-        public void SetName()
+        public void TestSetName()
         {
             Reset();
             Assert.Equal(_scoreViewModel.SubCategoryName, _subCategory.Name);
         }
 
         [Fact]
-        public void SetDecsription()
+        public void TestSetDecsription()
         {
             Reset();
             Assert.Equal(_scoreViewModel.SubCategoryDescription, _subCategory.Description);
         }
 
         [Fact]
-        public void SetQuestionCount()
+        public void TestSetQuestionCount()
         {
             Reset();
             Assert.Equal(_scoreViewModel.TotalQuestions, _subCategory.Questions.Count);
         }
 
         [Fact]
-        public void SetCorrectUserAnswers()
+        public void TestSetCorrectUserAnswers()
         {
             Reset();
 
-            int correctUserAnswers = 0;
-
-            foreach (var question in _subCategory.Questions)
-            {
-                AnswerModel correctAnswer = question.Answers.First(a => a.IsCorrect);
-
-                //Check if the user has correctly answered this question
-                if (correctAnswer.UserAnswers.Any())
-                {
-                    //Add to the total count of correct answers in this subcategory
-                    correctUserAnswers++;
-                }
-            }
+            int correctUserAnswers = _scoreViewModel.SetCorrectUserAnswers(_subCategory.Questions);
 
             Assert.Equal(_scoreViewModel.CorrectUserAnswers, correctUserAnswers);
 
         }
 
         [Fact]
-        public void CalculateSuccessPercentage()
+        public void TestCalculateSuccessPercentage()
         {
             Reset();
 
-            double percentage = 0;
-
-            if (_scoreViewModel.TotalQuestions > 0)
-            {
-                percentage = Math.Round(((double)_scoreViewModel.CorrectUserAnswers / (double)_scoreViewModel.TotalQuestions) * 100, 2);
-            }
-            else
-            {
-                percentage = 100;
-            }
+            double percentage = _scoreViewModel.CalculateSuccessPercentage(_scoreViewModel.TotalQuestions, _scoreViewModel.CorrectUserAnswers);
 
             Assert.Equal(_scoreViewModel.UserCompletionPercentage, percentage);
         }
 
         [Fact]
-        public void SetUserHasCompletedSubCategory()
+        public void TestUserHasCompletedSubCategory()
         {
             Reset();
 
-            bool hasCompletedSubCategory;
-
-            if (_scoreViewModel.UserCompletionPercentage >= _scoreViewModel.CompletionPercentage || Double.IsNaN(_scoreViewModel.UserCompletionPercentage))
-            {
-                //Add true as the value if the user has passed enough in this subcategory.
-                hasCompletedSubCategory = true;
-            }
-            else
-            {
-                //If not, add false as the value
-                hasCompletedSubCategory = false;
-            }
+            bool hasCompletedSubCategory = _scoreViewModel.SetUserHasCompletedSubCategory();
 
             Assert.Equal(_scoreViewModel.UserHasCompletedSubCategory, hasCompletedSubCategory);
         }
