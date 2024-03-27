@@ -11,7 +11,7 @@ namespace ValhallaVaultCyberAwareness.Client.ViewModels
         public int TotalQuestions { get; set; }
         public double UserCompletionPercentage { get; set; }
         public bool UserHasCompletedSubCategory { get; set; }
-        private double CompletionPercentage { get; set; } = 80.0;
+        public double CompletionPercentage { get; set; } = 80.0;
 
 
         public SubCategoryScoreViewModel(SubCategoryModel subCategory)

@@ -25,8 +25,22 @@ namespace ValhallaVaultCyberAwareness.Controllers
                 return Ok(subCategory);
             }
 
-            return BadRequest();
+            return NotFound();
         }
+
+        //[HttpGet]
+        //[Route("{subCategoryId}")]
+        //public async Task<IActionResult> GetSubCategoryByIdWithInclude(int subCategoryId)
+        //{
+        //    var subCategory = await _subCategoryRepo.GetSubCategoryByIdAsync(subCategoryId);
+
+        //    if (subCategory != null)
+        //    {
+        //        return Ok(subCategory);
+        //    }
+
+        //    return BadRequest();
+        //}
 
         [HttpPost]
         public async Task<ActionResult<SubCategoryModel>> AddSubCategory(SubCategoryModel newSubCategory)
