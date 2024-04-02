@@ -28,8 +28,8 @@ namespace ValhallaVaultCyberAwareness.Authentication
                 //Check that the route values are not empty, because if they are, it has not been provided required parameters to locate the endpoint.
                 if (IsRequestValid(context))
                 {
-                    //Since support page is open for everyone, it should never authenticate any credentials.
-                    if (IsRequestSupportQuestion(context))
+                    //Since support page is open for everyone, it should never authenticate any credentials when handling post and get.
+                    if (IsRequestSupportQuestion(context) && IsRequestOfTypeGetOrPost(context))
                     {
                         await _next(context);
                         return;
@@ -177,6 +177,16 @@ namespace ValhallaVaultCyberAwareness.Authentication
         private bool IsRequestOfTypeGet(HttpContext context)
         {
             return context.Request.Method == "GET";
+        }
+
+        private bool IsRequestOfTypePost(HttpContext context)
+        {
+            return context.Request.Method == "POST";
+        }
+
+        private bool IsRequestOfTypeGetOrPost(HttpContext context)
+        {
+            return IsRequestOfTypeGet(context) || IsRequestOfTypePost(context);
         }
 
         private bool IsRequestAskingForUserScores(HttpContext context)
