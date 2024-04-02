@@ -8,9 +8,10 @@ namespace ValhallaVaultCyberAwareness.Client.Services
     {
         public HttpClient Client { get; set; }
 
-        public SubCategoryService(HttpClient client)
+        public SubCategoryService(HttpClient client, ValhallaHeaderService valhallaHeaderService)
         {
             Client = client;
+            valhallaHeaderService.ConfigureHeaders(Client);
         }
 
         public async Task<List<SubCategoryModel>> GetSubCategoriesBySegmentIdAsync(int subCategoryId)

@@ -8,9 +8,10 @@ namespace ValhallaVaultCyberAwareness.Client.Services
     public class QuestionService : IQuestionService
     {
         public HttpClient Client { get; set; }
-        public QuestionService(HttpClient client)
+        public QuestionService(HttpClient client, ValhallaHeaderService valhallaHeaderService)
         {
             Client = client;
+            valhallaHeaderService.ConfigureHeaders(Client);
         }
 
         public async Task<List<QuestionModel>> GetQuestionsBySubCategoryId(int subCategoryId)
