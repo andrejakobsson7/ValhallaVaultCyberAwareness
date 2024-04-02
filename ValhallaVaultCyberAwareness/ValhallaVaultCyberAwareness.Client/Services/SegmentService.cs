@@ -36,7 +36,6 @@ namespace ValhallaVaultCyberAwareness.Client.Services
 
         public async Task<bool> AddSegmentAsync(SegmentModel newSegment)
         {
-            Client.DefaultRequestHeaders.Add("IsAdmin", "True");
             var apiResponse = await Client.PostAsJsonAsync("/api/segment/", newSegment);
             if (apiResponse.IsSuccessStatusCode)
             {
@@ -47,7 +46,6 @@ namespace ValhallaVaultCyberAwareness.Client.Services
 
         public async Task<bool> RemoveSegmentAsync(int segmentId)
         {
-            Client.DefaultRequestHeaders.Add("IsAdmin", "True");
             var apiResponse = await Client.DeleteAsync($"/api/segment/{segmentId}/");
             if (apiResponse.IsSuccessStatusCode)
             {
