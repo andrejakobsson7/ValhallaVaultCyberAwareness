@@ -7,15 +7,17 @@ namespace ValhallaVaultCyberAwareness.Authentication
     public class BasicAuthHandler
     {
         private readonly RequestDelegate _next;
+        private readonly string _realm;
         private string? _username;
         private string? _password;
         private bool _isVerifiedCredentials;
         private bool _isAdmin;
         private string? _providedRouteUserId = null;
 
-        public BasicAuthHandler(RequestDelegate next)
+        public BasicAuthHandler(RequestDelegate next, string realm)
         {
             _next = next;
+            _realm = realm;
         }
 
         public async Task InvokeAsync(HttpContext context, UserManager<ApplicationUser> userManager)
