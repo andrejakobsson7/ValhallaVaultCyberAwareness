@@ -17,12 +17,15 @@ namespace ValhallaVaultCyberAwareness.Controllers
         [HttpPost]
         public async Task<IActionResult> AddUserAnswersAsync(List<UserAnswers> newUserAnswers)
         {
-            bool isSuccesfullyAdded = await _userAnswersRepo.AddUserAnswersAsync(newUserAnswers);
-            if (isSuccesfullyAdded)
+            try
             {
-                return Ok();
+                await _userAnswersRepo.AddUserAnswersAsync(newUserAnswers);
+                return StatusCode(201, "Useranswers have been successfully registered");
             }
-            return BadRequest();
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
         }
 
 
