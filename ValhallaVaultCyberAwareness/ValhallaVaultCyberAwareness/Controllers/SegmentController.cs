@@ -24,40 +24,68 @@ namespace ValhallaVaultCyberAwareness.Controllers
         [Route("{segmentId}/{userId}")]
         public async Task<IActionResult> GetSegmentWithUserScoresByUserIdAsync(int segmentId, string userId)
         {
-            var segmentScore = await _segmentRepo.GetSegmentWithUserScoresByUserIdAsync(segmentId, userId);
-            if (segmentScore != null)
+            try
             {
-                var segmentScoresJson = JsonSerializer.Serialize(segmentScore, _jsonSerializerOptions);
-                return Ok(segmentScoresJson);
+                var segmentScore = await _segmentRepo.GetSegmentWithUserScoresByUserIdAsync(segmentId, userId);
+                if (segmentScore != null)
+                {
+                    var segmentScoresJson = JsonSerializer.Serialize(segmentScore, _jsonSerializerOptions);
+                    return Ok(segmentScoresJson);
+                }
+                else
+                {
+                    return BadRequest();
+                }
             }
-            return BadRequest();
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+
+        }
+
+        [HttpPost]
+        public async Task<ActionResult<SegmentModel>> AddSegmentAsync(SegmentModel segment)
+        {
+            try
+            {
+                SegmentModel newSegment = await _segmentRepo.AddSegmentAsync(segment);
+                return StatusCode(201, newSegment);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
         }
 
         [HttpPut]
         [Route("{id}")]
-        public async Task<ActionResult<SegmentModel>> UpdateSegment(SegmentModel segment)
+        public async Task<ActionResult<SegmentModel>> UpdateSegmentAsync(SegmentModel segment)
         {
-            var updatedSegment = await _segmentRepo.UpdateSegmentAsync(segment);
-
-            if (updatedSegment != false)
+            try
             {
+                SegmentModel? updatedSegment = await _segmentRepo.UpdateSegmentAsync(segment);
                 return Ok(updatedSegment);
-
             }
-            return BadRequest();
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
         }
 
         [HttpDelete]
         [Route("{id}")]
         public async Task<ActionResult<SegmentModel>> DeleteSegment(int id)
         {
-            var segmentToDelete = await _segmentRepo.RemoveSegmentAsync(id);
-
-            if (segmentToDelete != false)
+            try
             {
-                return Ok(segmentToDelete);
+                bool isSegmentDeleted = await _segmentRepo.RemoveSegmentAsync(id);
+                return Ok("Segment was successfully deleted");
             }
-            return BadRequest();
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
         }
     }
 }
