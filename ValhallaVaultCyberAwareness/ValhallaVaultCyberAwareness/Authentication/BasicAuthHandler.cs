@@ -23,53 +23,58 @@ namespace ValhallaVaultCyberAwareness.Authentication
         public async Task InvokeAsync(HttpContext context, UserManager<ApplicationUser> userManager)
         {
             //This ensures that all ordinary pages (such as start page, login, register) work, because they don't come over the api.
-            if (IsRequestComingOverApi(context))
+            if (IsRequestComingOverApi(context) == false)
             {
-                //Check that the route values are not empty, because if they are, it has not been provided required parameters to locate the endpoint.
-                if (IsRequestValid(context))
+                await _next(context);
+                return;
+            }
+            //Check that the route values are not empty, because if they are, it has not been provided required parameters to locate the endpoint.
+            if (IsRequestValid(context) == false)
+            {
+                await SetNotFound(context);
+                return;
+            }
+            //Since support page is open for everyone, it should never authenticate any credentials when handling post and get.
+            if (IsRequestSupportQuestion(context) && IsRequestOfTypeGetOrPost(context))
+            {
+                await _next(context);
+                return;
+            }
+            //In all other cases, verify the authentication.
+            //This ensures that the authorization header is present and returns 401 Unauthorized otherwise.
+            if (IsAuthorizationKeyInHeader(context) == false)
+            {
+                await SetUnauthorizedMissingAuthorizationHeader(context);
+                return;
+            }
+            //Decrypt the credentials sent along and set field variables in this class.
+            DecryptCredentials(context);
+            //When the client application sends a request it send username as -1. Then we trust that the client app has handled the authorization.
+            if (_username == "-1")
+            {
+                await _next(context);
+                return;
+            }
+            else
+            {
+                //Find user by provided username
+                ApplicationUser user = await userManager.FindByNameAsync(_username);
+                if (user == null)
                 {
-                    //Since support page is open for everyone, it should never authenticate any credentials when handling post and get.
-                    if (IsRequestSupportQuestion(context) && IsRequestOfTypeGetOrPost(context))
+                    await SetUnauthorizedWrongCredentials(context);
+                    return;
+                }
+                else
+                {
+                    //Verify the password if the user is found
+                    _isVerifiedCredentials = await userManager.CheckPasswordAsync(user, _password);
+                    if (_isVerifiedCredentials == false)
                     {
-                        await _next(context);
+                        await SetUnauthorizedWrongCredentials(context);
                         return;
                     }
                     else
                     {
-                        //In all other cases, verify the authentication.
-                        //This ensures that the authorization header is present and returns 401 Unauthorized otherwise.
-                        if (IsAuthorizationKeyInHeader(context) == false)
-                        {
-                            await SetUnauthorizedMissingAuthorizationHeader(context);
-                            return;
-                        }
-
-                    }
-                    //If the request is coming over the api, we authenticate the credentials (unless it's coming from supportquestion, which is handled above).
-                    DecryptCredentials(context);
-                    //When the client application sends a request it send username as -1. Then we trust that the client app has handled the authorization.
-                    if (_username == "-1")
-                    {
-                        await _next(context);
-                        return;
-                    }
-                    //Find user by provided username
-                    ApplicationUser user = await userManager.FindByNameAsync(_username);
-                    if (user != null)
-                    {
-                        //Verify the password if the user is found
-                        _isVerifiedCredentials = await userManager.CheckPasswordAsync(user, _password);
-                        if (_isVerifiedCredentials == false)
-                        {
-                            //If the password verification failes, try and see if the user has passed the hashed password.
-                            _isVerifiedCredentials = _password == user.PasswordHash;
-                        }
-                    }
-                    //If either one of the password tries above works, the credentials are verified and we continue to check if the user is an admin,
-                    //which is needed for post/delete/update in most models
-                    if (_isVerifiedCredentials)
-                    {
-                        //Check get method and that it's not trying to access another user's scores
                         if (IsRequestOfTypeGet(context))
                         {
                             if (IsRequestAskingForUserScores(context))
@@ -87,7 +92,7 @@ namespace ValhallaVaultCyberAwareness.Authentication
                                     return;
                                 }
                             }
-                            //Allow everyone to get
+                            //Allow everyone to make gets
                             else
                             {
                                 await _next(context);
@@ -100,6 +105,7 @@ namespace ValhallaVaultCyberAwareness.Authentication
                             await _next(context);
                             return;
                         }
+                        //In all other cases (post/update/delete), an admin role is required.
                         else
                         {
                             _isAdmin = await userManager.IsInRoleAsync(user, "Admin");
@@ -115,26 +121,14 @@ namespace ValhallaVaultCyberAwareness.Authentication
                             }
                         }
                     }
-                    else
-                    {
-                        //If username and/or password is not matching, we return status code 401 and error message.
-                        await SetUnauthorizedWrongCredentials(context);
-                        return;
-                    }
                 }
-                else
-                {
-                    await SetNotFound(context);
-                    return;
-                }
-
-
             }
-            else
-            {
-                await _next(context);
-                return;
-            }
+        }
+
+        private async Task SetNotFoundInvalidUserId(HttpContext context)
+        {
+            context.Response.StatusCode = 404;
+            await context.Response.WriteAsync($"User with username {_username} could not be found");
         }
 
         private async Task SetNotFound(HttpContext context)
@@ -222,10 +216,15 @@ namespace ValhallaVaultCyberAwareness.Authentication
             context.Response.StatusCode = 403;
             await context.Response.WriteAsync("You are not allowed to access another user's scores");
         }
-
+        private async Task SetForbiddenPostingScoreForAnotherUser(HttpContext context)
+        {
+            context.Response.StatusCode = 403;
+            await context.Response.WriteAsync("You are not allowed to post scores for another user");
+        }
         private bool IsUserAnswers(HttpContext context)
         {
             return context.Request.Path.Value.ToLower().Contains("useranswers");
         }
     }
 }
+
