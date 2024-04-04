@@ -160,7 +160,7 @@ else
     app.UseHsts();
 }
 
-app.UseMiddleware<GlobalExceptionHandlingMiddleware>();
+//app.UseMiddleware<GlobalExceptionHandlingMiddleware>();
 
 app.MapControllers();
 

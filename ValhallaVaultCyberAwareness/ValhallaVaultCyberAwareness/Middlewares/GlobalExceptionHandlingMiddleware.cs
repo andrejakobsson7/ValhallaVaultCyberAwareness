@@ -1,5 +1,4 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using System.Net;
 using System.Net.Mime;
 using System.Text.Json;
 
@@ -32,17 +31,17 @@ namespace ValhallaVaultCyberAwareness.Middlewares
             context.Response.ContentType = MediaTypeNames.Application.Json;
 
             // Set the statuscode to 500
-            context.Response.StatusCode = (int)HttpStatusCode.InternalServerError;
+            //context.Response.StatusCode = (int)HttpStatusCode.InternalServerError;
 
             // Create a ProblemDetails model and set its properties to valuable information about the exception
             // Including StackTrace (if avaliable)
             var response = new ProblemDetails
             {
                 Status = context.Response.StatusCode,
-                Type = "Server error",
+                Type = context.GetType().ToString(),
                 Title = e.Message,
                 //Detail = e.StackTrace?.ToString()
-                Detail = e.InnerException.ToString()
+                Detail = e.InnerException.Message
             };
 
             var options = new JsonSerializerOptions
