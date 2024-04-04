@@ -33,12 +33,24 @@ namespace ValhallaVaultCyberAwareness.Repositories
         /// <returns>A segment or null if not found</returns>
         public async Task<SegmentModel?> GetSegmentWithUserScoresByUserIdAsync(int segmentId, string userId)
         {
-            return await _context.Segments.Where(s => s.Id == segmentId).
-                Include(s => s.SubCategories).
-                ThenInclude(s => s.Questions.Where(q => q.Answers.Any(a => a.IsCorrect))).
-                ThenInclude(q => q.Answers).
-                ThenInclude(a => a.UserAnswers.Where(u => u.UserId == userId)).
-                FirstOrDefaultAsync();
+            try
+            {
+                return await _context.Segments.Where(s => s.Id == segmentId).
+                    Include(s => s.SubCategories).
+                    ThenInclude(s => s.Questions.Where(q => q.Answers.Any(a => a.IsCorrect))).
+                    ThenInclude(q => q.Answers).
+                    ThenInclude(a => a.UserAnswers.Where(u => u.UserId == userId)).
+                    FirstOrDefaultAsync();
+            }
+            catch (ArgumentNullException ex)
+            {
+                throw new ArgumentNullException(ex.Message);
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+
         }
 
         public async Task<List<SegmentModel>> GetAllSegmentsAsync()
@@ -62,11 +74,20 @@ namespace ValhallaVaultCyberAwareness.Repositories
 
         public async Task<SegmentModel> AddSegmentAsync(SegmentModel newSegment)
         {
-            _context.Attach(newSegment);
-            await _context.Segments.AddAsync(newSegment);
-            await _context.SaveChangesAsync();
-
-            return newSegment;
+            try
+            {
+                await _context.Segments.AddAsync(newSegment);
+                await _context.SaveChangesAsync();
+                return newSegment;
+            }
+            catch (DbUpdateException ex)
+            {
+                throw new DbUpdateException($"Something went wrong when saving to the database: Detailed information about the exception:\n{ex.Message}\nInner exception:\n{ex.InnerException.Message}");
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
         }
 
         public async Task<bool> RemoveSegmentAsync(int segmentId)
@@ -74,7 +95,7 @@ namespace ValhallaVaultCyberAwareness.Repositories
             SegmentModel? segmentToRemove = await GetSegmentByIdWithoutIncludedDataAsync(segmentId);
             if (segmentToRemove == null)
             {
-                return false;
+                throw new ArgumentException($"Segment with id {segmentId} could not be found");
             }
             else
             {
@@ -84,19 +105,23 @@ namespace ValhallaVaultCyberAwareness.Repositories
                     await _context.SaveChangesAsync();
                     return true;
                 }
-                catch (Exception)
+                catch (DbUpdateException ex)
                 {
-                    return false;
+                    throw new DbUpdateException($"Something went wrong when saving to the database. Detailed information about the exception:\n{ex.Message}\n{ex.InnerException.Message}");
+                }
+                catch (Exception ex)
+                {
+                    throw new Exception(ex.Message);
                 }
             }
         }
 
-        public async Task<bool> UpdateSegmentAsync(SegmentModel segment)
+        public async Task<SegmentModel?> UpdateSegmentAsync(SegmentModel segment)
         {
             SegmentModel? segmentToUpdate = await GetSegmentByIdWithoutIncludedDataAsync(segment.Id);
             if (segmentToUpdate == null)
             {
-                return false;
+                throw new ArgumentException($"Segment with id {segment.Id} could not be found");
             }
             else
             {
@@ -106,11 +131,15 @@ namespace ValhallaVaultCyberAwareness.Repositories
                     segmentToUpdate.Description = segment.Description;
                     segmentToUpdate.CategoryId = segment.CategoryId;
                     await _context.SaveChangesAsync();
-                    return true;
+                    return segmentToUpdate;
                 }
-                catch (Exception)
+                catch (DbUpdateException ex)
                 {
-                    return false;
+                    throw new DbUpdateException($"Something went wrong when saving to the database.\nDetailed information about the exception:\n {ex.Message}\n{ex.InnerException.Message}");
+                }
+                catch (Exception ex)
+                {
+                    throw new Exception(ex.Message);
                 }
             }
 

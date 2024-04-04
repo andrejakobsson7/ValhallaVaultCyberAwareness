@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using ValhallaVaultCyberAwareness.Authentication;
 using ValhallaVaultCyberAwareness.Client.Services;
 using ValhallaVaultCyberAwareness.Components;
 using ValhallaVaultCyberAwareness.Components.Account;
@@ -41,6 +42,7 @@ builder.Services.AddScoped<IQuestionService, QuestionService>();
 builder.Services.AddScoped<IAnswerService, AnswerService>();
 builder.Services.AddScoped<ISupportQuestionService, SupportQuestionService>();
 builder.Services.AddScoped<ISupportResponseService, SupportResponseService>();
+builder.Services.AddScoped<ValhallaHeaderService>();
 builder.Services.AddScoped<AdminManager>();
 builder.Services.AddScoped<IUserAnswersService, UserAnswersService>();
 
@@ -160,7 +162,8 @@ else
     app.UseHsts();
 }
 
-//app.UseMiddleware<GlobalExceptionHandlingMiddleware>();
+app.UseMiddleware<BasicAuthHandler>("BasicAuth");
+app.UseMiddleware<GlobalExceptionHandlingMiddleware>();
 
 app.MapControllers();
 

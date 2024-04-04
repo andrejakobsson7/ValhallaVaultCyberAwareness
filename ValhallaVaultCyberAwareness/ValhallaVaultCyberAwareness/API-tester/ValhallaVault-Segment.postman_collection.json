@@ -1,0 +1,1281 @@
+{
+	"info": {
+		"_postman_id": "ede8e9f5-0ef0-4c3c-a95d-b985f95f5f1f",
+		"name": "ValhallaVault-Segment",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "33871340",
+		"_collection_link": "https://www.postman.com/andynr7/workspace/postmandemo/collection/33871340-ede8e9f5-0ef0-4c3c-a95d-b985f95f5f1f?action=share&source=collection_link&creator=33871340"
+	},
+	"item": [
+		{
+			"name": "Unauthorized",
+			"item": [
+				{
+					"name": "Unauthorized trying to post new segment",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\": \"new segment\",\r\n    \"description\": \"description for new segment\",\r\n    \"categoryid\": 1\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseaddress}}/segment",
+							"host": [
+								"{{baseaddress}}"
+							],
+							"path": [
+								"segment"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Unauthorized put segment",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"id\": 5,\r\n    \"name\": \"del 2\",\r\n    \"description\":\"new description\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseaddress}}/segment/5",
+							"host": [
+								"{{baseaddress}}"
+							],
+							"path": [
+								"segment",
+								"5"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Unauthorized delete segment",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseaddress}}/segment/5",
+							"host": [
+								"{{baseaddress}}"
+							],
+							"path": [
+								"segment",
+								"5"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Unauthorized get segmentscore",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseaddress}}/segment/5/532fdc53-0e3a-4857-a413-455d2d373527",
+							"host": [
+								"{{baseaddress}}"
+							],
+							"path": [
+								"segment",
+								"5",
+								"532fdc53-0e3a-4857-a413-455d2d373527"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"type": "text/javascript",
+						"packages": {},
+						"exec": [
+							""
+						]
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"packages": {},
+						"exec": [
+							"pm.test(\"Status code is 401\", function () {\r",
+							"    pm.response.to.have.status(401);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Error text is Unauthorized\", function() {\r",
+							"    pm.expect(pm.response.text()).to.include(\"Unauthorized\")\r",
+							"})"
+						]
+					}
+				}
+			]
+		},
+		{
+			"name": "Ordinary user",
+			"item": [
+				{
+					"name": "User post new segment",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 403\", function () {\r",
+									"    pm.response.to.have.status(403);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Error message missing role-info\", function () {\r",
+									"    pm.expect(pm.response.text()).to.include(\"You don't have the required role to perform this operation\");\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\": \"new segment\",\r\n    \"description\": \"description for new segment\",\r\n    \"categoryid\": 1\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseaddress}}/segment",
+							"host": [
+								"{{baseaddress}}"
+							],
+							"path": [
+								"segment"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Put segment",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 403\", function () {\r",
+									"    pm.response.to.have.status(403);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Error message missing role-info\", function () {\r",
+									"    pm.expect(pm.response.text()).to.include(\"You don't have the required role to perform this operation\");\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"id\": 5,\r\n    \"name\": \"del 2\",\r\n    \"description\":\"new description\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseaddress}}/segment/5",
+							"host": [
+								"{{baseaddress}}"
+							],
+							"path": [
+								"segment",
+								"5"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete segment",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 403\", function () {\r",
+									"    pm.response.to.have.status(403);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Error message missing role-info\", function () {\r",
+									"    pm.expect(pm.response.text()).to.include(\"You don't have the required role to perform this operation\");\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseaddress}}/segment/5",
+							"host": [
+								"{{baseaddress}}"
+							],
+							"path": [
+								"segment",
+								"5"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get personal segmentscore",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseaddress}}/segment/5/532fdc53-0e3a-4857-a413-455d2d373527",
+							"host": [
+								"{{baseaddress}}"
+							],
+							"path": [
+								"segment",
+								"5",
+								"532fdc53-0e3a-4857-a413-455d2d373527"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get other users segmentscore",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 403\", function () {\r",
+									"    pm.response.to.have.status(403);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Error message not allowed to access other user's scores\", function () {\r",
+									"    pm.expect(pm.response.text()).to.include(\"You are not allowed to access another user's scores\");\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseaddress}}/segment/5/532fdc53-0e3a-4857-a413-455d2d373527x",
+							"host": [
+								"{{baseaddress}}"
+							],
+							"path": [
+								"segment",
+								"5",
+								"532fdc53-0e3a-4857-a413-455d2d373527x"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get missing userid parameter",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 404\", function () {\r",
+									"    pm.response.to.have.status(404);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Error message missing role-info\", function () {\r",
+									"    pm.expect(pm.response.text()).to.include(\"Missing parameters for the attempted resource\");\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseaddress}}/segment/5/",
+							"host": [
+								"{{baseaddress}}"
+							],
+							"path": [
+								"segment",
+								"5",
+								""
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"auth": {
+				"type": "basic",
+				"basic": [
+					{
+						"key": "password",
+						"value": "{{ordinary-user-validpassword}}",
+						"type": "string"
+					},
+					{
+						"key": "username",
+						"value": "{{ordinary-user-username}}",
+						"type": "string"
+					}
+				]
+			},
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"type": "text/javascript",
+						"packages": {},
+						"exec": [
+							""
+						]
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"packages": {},
+						"exec": [
+							""
+						]
+					}
+				}
+			]
+		},
+		{
+			"name": "Admin",
+			"item": [
+				{
+					"name": "Positive scenarios",
+					"item": [
+						{
+							"name": "POSITIVE Admin post new segment",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Status code is 201\", function () {",
+											"    pm.response.to.have.status(201);",
+											"});",
+											"pm.test(\"Compare newly added id with set environment variable\", () => {",
+											"    var jsonData = pm.response.json();",
+											"    console.log(jsonData);",
+											"    var newSegmentId = jsonData.id;",
+											"    console.log(newSegmentId);",
+											"    pm.environment.set(\"addedSegmentId\", newSegmentId);",
+											"    console.log(pm.environment.get(\"addedSegmentId\"));",
+											"    pm.expect(pm.environment.get(\"addedSegmentId\")).to.eql(newSegmentId);",
+											"    console.log(newSegmentId === pm.environment.get(\"addedSegmentId\"));",
+											"})",
+											"",
+											"pm.test(\"Compare newly added segment's categoryId with set environment variable\", () => {",
+											"    var jsonData = pm.response.json();",
+											"    console.log(jsonData);",
+											"    var newSegmentForeignKey = jsonData.categoryId;",
+											"    console.log(newSegmentForeignKey);",
+											"    pm.environment.set(\"addedSegmentForeignKey\", newSegmentForeignKey);",
+											"    console.log(pm.environment.get(\"addedSegmentForeignKey\"));",
+											"    pm.expect(pm.environment.get(\"addedSegmentForeignKey\")).to.eql(newSegmentForeignKey);",
+											"    console.log(newSegmentForeignKey === pm.environment.get(\"addedSegmentForeignKey\"));",
+											"})",
+											"",
+											"",
+											""
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"name\": \"new segment\",\r\n    \"description\": \"description for new segment\",\r\n    \"categoryid\": 1\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseaddress}}/segment",
+									"host": [
+										"{{baseaddress}}"
+									],
+									"path": [
+										"segment"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "POSITIVE Put segment",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Status code is 200\", function () {\r",
+											"    pm.response.to.have.status(200);\r",
+											"});\r",
+											"\r",
+											"pm.test(\"Verify updated segment name is UPDATED\", function () {\r",
+											"    var responseData = pm.response.json();\r",
+											"    pm.expect(responseData).to.be.an('object');\r",
+											"    pm.expect(responseData.name).to.equal(\"UPDATED\");\r",
+											"});"
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"id\": {{addedSegmentId}},\r\n    \"name\": \"UPDATED\",\r\n    \"categoryid\": {{addedSegmentForeignKey}}\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseaddress}}/segment/{{addedSegmentId}}",
+									"host": [
+										"{{baseaddress}}"
+									],
+									"path": [
+										"segment",
+										"{{addedSegmentId}}"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "POSITIVE Get personal segmentscore",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Status code is 200\", function () {\r",
+											"    pm.response.to.have.status(200);\r",
+											"});\r",
+											"\r",
+											"pm.test(\"Verify segment name and description on get after update\", function () {\r",
+											"    var responseData = pm.response.json();\r",
+											"    pm.expect(responseData).to.be.an('object');\r",
+											"    pm.expect(responseData.Name).to.equal(\"UPDATED\");\r",
+											"\t\tpm.expect(responseData.Description).to.equal(null);\r",
+											"});"
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{baseaddress}}/segment/{{addedSegmentId}}/{{admin-userid}}",
+									"host": [
+										"{{baseaddress}}"
+									],
+									"path": [
+										"segment",
+										"{{addedSegmentId}}",
+										"{{admin-userid}}"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "POSITIVE Delete segment",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Status code is 200\", function () {\r",
+											"    pm.response.to.have.status(200);\r",
+											"});\r",
+											"\r",
+											"pm.test(\"Verify confirmation\", function () {\r",
+											"    pm.expect(pm.response.text()).to.include(\"Segment was successfully deleted\");\r",
+											"});"
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"method": "DELETE",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseaddress}}/segment/{{addedSegmentId}}",
+									"host": [
+										"{{baseaddress}}"
+									],
+									"path": [
+										"segment",
+										"{{addedSegmentId}}"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Negative scenarios",
+					"item": [
+						{
+							"name": "NEGATIVE Admin post new segment Copy",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Status code is 400\", function () {",
+											"    pm.response.to.have.status(400);",
+											"});",
+											"",
+											"pm.test(\"Error message include foreign key error\", function () {",
+											"\tpm.expect(pm.response.text()).to.include(\"The INSERT statement conflicted with the FOREIGN KEY constraint\");",
+											"});",
+											""
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"name\": \"new segment\",\r\n    \"description\": \"description for new segment\",\r\n    \"categoryid\": -1\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseaddress}}/segment",
+									"host": [
+										"{{baseaddress}}"
+									],
+									"path": [
+										"segment"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "NEGATIVE Delete segment",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Status code is 400\", function () {\r",
+											"    pm.response.to.have.status(400);\r",
+											"});\r",
+											"\r",
+											"pm.test(\"Verify unsuccesful operation\", function () {\r",
+											"    pm.expect(pm.response.text()).to.include(\"Segment with id -1 could not be found\");\r",
+											"});"
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"method": "DELETE",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseaddress}}/segment/-1",
+									"host": [
+										"{{baseaddress}}"
+									],
+									"path": [
+										"segment",
+										"-1"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "NEGATIVE Put segment",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Status code is 400\", function () {\r",
+											"    pm.response.to.have.status(400);\r",
+											"});\r",
+											"\r",
+											"pm.test(\"Verify unsuccesful operation\", function () {\r",
+											"    pm.expect(pm.response.text()).to.include(\"Segment with id -1 could not be found\");\r",
+											"});"
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"id\": -1,\r\n    \"name\": \"UPDATED\",\r\n    \"categoryid\": {{addedSegmentForeignKey}}\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseaddress}}/segment/-1",
+									"host": [
+										"{{baseaddress}}"
+									],
+									"path": [
+										"segment",
+										"-1"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "NEGATIVE other users segmentscore",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Status code is 403\", function () {\r",
+											"    pm.response.to.have.status(403);\r",
+											"});\r",
+											"\r",
+											"pm.test(\"Error message not allowed to access other user's scores\", function () {\r",
+											"    pm.expect(pm.response.text()).to.include(\"You are not allowed to access another user's scores\");\r",
+											"});"
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{baseaddress}}/segment/{{addedSegmentId}}/{{ordinary-user-username}}",
+									"host": [
+										"{{baseaddress}}"
+									],
+									"path": [
+										"segment",
+										"{{addedSegmentId}}",
+										"{{ordinary-user-username}}"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				}
+			],
+			"auth": {
+				"type": "basic",
+				"basic": [
+					{
+						"key": "password",
+						"value": "{{admin-validpassword}}",
+						"type": "string"
+					},
+					{
+						"key": "username",
+						"value": "{{admin-username}}",
+						"type": "string"
+					}
+				]
+			},
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"type": "text/javascript",
+						"packages": {},
+						"exec": [
+							""
+						]
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"packages": {},
+						"exec": [
+							""
+						]
+					}
+				}
+			]
+		},
+		{
+			"name": "Invalid credentials",
+			"item": [
+				{
+					"name": "Invalid password",
+					"item": [
+						{
+							"name": "Invalid password",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											""
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"name\": \"new segment\",\r\n    \"description\": \"description for new segment\",\r\n    \"categoryid\": 1\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseaddress}}/segment",
+									"host": [
+										"{{baseaddress}}"
+									],
+									"path": [
+										"segment"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Invalid password",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											""
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"name\": \"new segment\",\r\n    \"description\": \"description for new segment\",\r\n    \"categoryid\": 1\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseaddress}}/segment/5",
+									"host": [
+										"{{baseaddress}}"
+									],
+									"path": [
+										"segment",
+										"5"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Invalid password",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											""
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"method": "DELETE",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseaddress}}/segment/5",
+									"host": [
+										"{{baseaddress}}"
+									],
+									"path": [
+										"segment",
+										"5"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Invalid password",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											""
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"method": "GET",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseaddress}}/segment/5/532fdc53-0e3a-4857-a413-455d2d373527",
+									"host": [
+										"{{baseaddress}}"
+									],
+									"path": [
+										"segment",
+										"5",
+										"532fdc53-0e3a-4857-a413-455d2d373527"
+									]
+								}
+							},
+							"response": []
+						}
+					],
+					"auth": {
+						"type": "basic",
+						"basic": [
+							{
+								"key": "password",
+								"value": "{{ordinary-user-invalidpassword}}",
+								"type": "string"
+							},
+							{
+								"key": "username",
+								"value": "{{ordinary-user-username}}",
+								"type": "string"
+							}
+						]
+					},
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"type": "text/javascript",
+								"packages": {},
+								"exec": [
+									""
+								]
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"packages": {},
+								"exec": [
+									"pm.test(\"Status code is 401\", function () {\r",
+									"    pm.response.to.have.status(401);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Error text is Wrong username/password\", function() {\r",
+									"    pm.expect(pm.response.text()).to.include(\"Wrong username and/or password\")\r",
+									"})"
+								]
+							}
+						}
+					]
+				},
+				{
+					"name": "Invalid username",
+					"item": [
+						{
+							"name": "Invalid username",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"name\": \"new segment\",\r\n    \"description\": \"description for new segment\",\r\n    \"categoryid\": 1\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseaddress}}/segment",
+									"host": [
+										"{{baseaddress}}"
+									],
+									"path": [
+										"segment"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Invalid username",
+							"request": {
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"name\": \"new segment\",\r\n    \"description\": \"description for new segment\",\r\n    \"categoryid\": 1\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseaddress}}/segment/5",
+									"host": [
+										"{{baseaddress}}"
+									],
+									"path": [
+										"segment",
+										"5"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Invalid username",
+							"request": {
+								"method": "DELETE",
+								"header": [],
+								"url": {
+									"raw": "{{baseaddress}}/segment/5",
+									"host": [
+										"{{baseaddress}}"
+									],
+									"path": [
+										"segment",
+										"5"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Invalid username",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{baseaddress}}/segment/5/532fdc53-0e3a-4857-a413-455d2d373527",
+									"host": [
+										"{{baseaddress}}"
+									],
+									"path": [
+										"segment",
+										"5",
+										"532fdc53-0e3a-4857-a413-455d2d373527"
+									]
+								}
+							},
+							"response": []
+						}
+					],
+					"auth": {
+						"type": "basic",
+						"basic": [
+							{
+								"key": "password",
+								"value": "{{ordinary-user-invalidpassword}}",
+								"type": "string"
+							},
+							{
+								"key": "username",
+								"value": "{{non-existing-username}}",
+								"type": "string"
+							}
+						]
+					},
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"type": "text/javascript",
+								"packages": {},
+								"exec": [
+									""
+								]
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"packages": {},
+								"exec": [
+									"pm.test(\"Status code is 401\", function () {\r",
+									"    pm.response.to.have.status(401);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Error text is Wrong username/password\", function() {\r",
+									"    pm.expect(pm.response.text()).to.include(\"Wrong username and/or password\")\r",
+									"})"
+								]
+							}
+						}
+					]
+				}
+			],
+			"auth": {
+				"type": "basic",
+				"basic": [
+					{
+						"key": "password",
+						"value": "",
+						"type": "string"
+					},
+					{
+						"key": "username",
+						"value": "",
+						"type": "string"
+					}
+				]
+			},
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"type": "text/javascript",
+						"packages": {},
+						"exec": [
+							""
+						]
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"packages": {},
+						"exec": [
+							""
+						]
+					}
+				}
+			]
+		}
+	]
+}

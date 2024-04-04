@@ -82,13 +82,18 @@ namespace ValhallaVaultCyberAwareness.Controllers
         [Route("{id}")]
         public async Task<ActionResult<SubCategoryModel>> DeleteSubCategory(int id)
         {
-            var subCategoryToDelete = await _subCategoryRepo.DeleteSubCategoryAsync(id);
-
-            if (subCategoryToDelete != false)
+            try
             {
-                return Ok(subCategoryToDelete);
+                var subCategoryToDelete = await _subCategoryRepo.DeleteSubCategoryAsync(id);
+                return Ok("Sub category was successfully deleted.");
+
             }
-            return BadRequest();
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+
+            }
+
         }
     }
 }

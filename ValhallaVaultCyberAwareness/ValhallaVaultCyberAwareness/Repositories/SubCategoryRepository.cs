@@ -42,14 +42,14 @@ namespace ValhallaVaultCyberAwareness.Repositories
 
         public async Task<SubCategoryModel> AddSubCategory(SubCategoryModel newSubCategory)
         {
-            if (newSubCategory.Name == null)
-            {
-                throw new DbUpdateException("Name cannot be null.");
-            }
-            else if (await _segmentRepository.GetSegmentByIdAsync(newSubCategory.SegmentId) == null)
-            {
-                throw new DbUpdateException("Segment does not exist.");
-            }
+            //if (newSubCategory.Name == null)
+            //{
+            //    throw new DbUpdateException("Name cannot be null.");
+            //}
+            //else if (await _segmentRepository.GetSegmentByIdAsync(newSubCategory.SegmentId) == null)
+            //{
+            //    throw new DbUpdateException("Segment does not exist.");
+            //}
             try
             {
                 await _context.SubCategories.AddAsync(newSubCategory);
@@ -67,14 +67,24 @@ namespace ValhallaVaultCyberAwareness.Repositories
         {
             var subCategory = await _context.SubCategories.FirstOrDefaultAsync(s => s.Id == Id);
 
-            if (subCategory != null)
+            if (subCategory == null)
+            {
+                throw new ArgumentException($"Sub category does not exist.");
+
+            }
+            try
             {
                 _context.SubCategories.Remove(subCategory);
                 await _context.SaveChangesAsync();
                 return true;
+
+            }
+            catch (Exception ex)
+            {
+                throw new DbUpdateException(ex.InnerException.Message);
+
             }
 
-            return false;
         }
 
         public async Task<SubCategoryModel> UpdateSubCategoryAsync(SubCategoryModel newSubCategory)
@@ -93,7 +103,7 @@ namespace ValhallaVaultCyberAwareness.Repositories
                 return subCategoryToUpdate;
             }
 
-            throw new Exception("SubCategory does not exist.");
+            throw new ArgumentException("SubCategory does not exist.");
 
         }
     }

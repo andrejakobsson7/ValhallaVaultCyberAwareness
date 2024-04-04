@@ -22,80 +22,69 @@ namespace ValhallaVaultCyberAwareness.Controllers
 
         [HttpGet]
         [Route("{segmentId}/{userId}")]
-        public async Task<IActionResult> GetCategoryWithUserScoresByUserIdAsync(int segmentId, string userId)
+        public async Task<IActionResult> GetSegmentWithUserScoresByUserIdAsync(int segmentId, string userId)
         {
-            var segmentScore = await _segmentRepo.GetSegmentWithUserScoresByUserIdAsync(segmentId, userId);
-            if (segmentScore != null)
+            try
             {
-                SegmentApiModel apiSegmentScore = new SegmentApiModel(segmentScore);
-                var segmentScoresJson = JsonSerializer.Serialize(apiSegmentScore, _jsonSerializerOptions);
-                return Ok(segmentScoresJson);
+                var segmentScore = await _segmentRepo.GetSegmentWithUserScoresByUserIdAsync(segmentId, userId);
+                if (segmentScore != null)
+                {
+                    var segmentScoresJson = JsonSerializer.Serialize(segmentScore, _jsonSerializerOptions);
+                    return Ok(segmentScoresJson);
+                }
+                else
+                {
+                    return BadRequest();
+                }
             }
-            return BadRequest();
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+
+        }
+
+        [HttpPost]
+        public async Task<ActionResult<SegmentModel>> AddSegmentAsync(SegmentModel segment)
+        {
+            try
+            {
+                SegmentModel newSegment = await _segmentRepo.AddSegmentAsync(segment);
+                return StatusCode(201, newSegment);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
         }
 
         [HttpPut]
         [Route("{id}")]
-        public async Task<ActionResult<SegmentModel>> UpdateSegment(SegmentModel segment)
+        public async Task<ActionResult<SegmentModel>> UpdateSegmentAsync(SegmentModel segment)
         {
-            var updatedSegment = await _segmentRepo.UpdateSegmentAsync(segment);
-
-            if (updatedSegment != false)
+            try
             {
+                SegmentModel? updatedSegment = await _segmentRepo.UpdateSegmentAsync(segment);
                 return Ok(updatedSegment);
-
             }
-            return BadRequest();
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
         }
 
         [HttpDelete]
         [Route("{id}")]
         public async Task<ActionResult<SegmentModel>> DeleteSegment(int id)
         {
-            var segmentToDelete = await _segmentRepo.RemoveSegmentAsync(id);
-
-            if (segmentToDelete != false)
+            try
             {
-                return Ok(segmentToDelete);
+                bool isSegmentDeleted = await _segmentRepo.RemoveSegmentAsync(id);
+                return Ok("Segment was successfully deleted");
             }
-            return BadRequest();
-        }
-
-        //Temporary model that is returned from the API to enable that the client service can get access to navigation properties,
-        //since these are not serialized otherwise
-        public class SegmentApiModel
-        {
-            public int Id { get; set; }
-            public string Name { get; set; } = null!;
-            public string? Description { get; set; }
-            public int CategoryId { get; set; }
-            public List<SubCategoryModel> SubCategories { get; set; } = new();
-            public List<QuestionModel> Questions { get; set; } = new();
-            public List<AnswerModel> Answers { get; set; } = new();
-            public List<UserAnswers> UserAnswers { get; set; } = new();
-
-            public SegmentApiModel(SegmentModel segment)
+            catch (Exception ex)
             {
-                Id = segment.Id;
-                Name = segment.Name;
-                Description = segment.Description;
-                CategoryId = segment.CategoryId;
-                foreach (var subCategory in segment.SubCategories)
-                {
-                    SubCategories.Add(subCategory);
-                    foreach (var question in subCategory.Questions)
-                    {
-                        Questions.Add(question);
-                        foreach (var answer in question.Answers)
-                        {
-                            Answers.Add(answer);
-                            foreach (var userAnswer in answer.UserAnswers)
-                            {
-                                UserAnswers.Add(userAnswer);
-                            }
-                        }
-                    }
-                }
+                return BadRequest(ex.Message);
             }
         }
     }

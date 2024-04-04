@@ -7,9 +7,10 @@ namespace ValhallaVaultCyberAwareness.Client.Services
     {
         public HttpClient Client { get; set; }
 
-        public UserAnswersService(HttpClient client)
+        public UserAnswersService(HttpClient client, ValhallaHeaderService valhallaHeaderService)
         {
             Client = client;
+            valhallaHeaderService.ConfigureHeaders(client);
         }
 
         public async Task<bool> AddUserAnswersAsync(List<UserAnswers> newUserAnswers)

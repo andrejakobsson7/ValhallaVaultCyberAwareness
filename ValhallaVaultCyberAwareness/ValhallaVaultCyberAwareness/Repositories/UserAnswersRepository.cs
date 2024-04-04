@@ -31,9 +31,13 @@ namespace ValhallaVaultCyberAwareness.Repositories
                 await _context.SaveChangesAsync();
                 return true;
             }
-            catch (Exception)
+            catch (DbUpdateException ex)
             {
-                return false;
+                throw new DbUpdateException($"Something went wrong when saving to the database: Detailed information about the exception:\n{ex.Message}\nInner exception:\n{ex.InnerException.Message}");
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
             }
         }
 
