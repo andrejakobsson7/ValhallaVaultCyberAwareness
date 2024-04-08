@@ -1,26 +1,28 @@
-﻿@inject AdminManager manager
+﻿@using ValhallaVaultCyberAwareness.Client.ViewModels
+@inject AdminManager manager
 
 <ConfirmDialog @ref="dialog"></ConfirmDialog>
 
-<EditForm Model="segment" OnSubmit="HandleSubmit" FormName="name" class="card w-50">
-
+<EditForm Model="segmentVM" OnValidSubmit="HandleSubmit" FormName="name" class="card w-50">
+    <DataAnnotationsValidator />
+    <ValidationSummary class="text-danger" role="alert" />
     <label>
         Name
     </label>
 
-    <InputText @bind-Value="segment.Name"></InputText>
+    <InputText @bind-Value="segmentVM.Name"></InputText>
 
     <label>
         Description
     </label>
 
-    <InputText @bind-Value="segment.Description"></InputText>
+    <InputText @bind-Value="segmentVM.Description"></InputText>
 
     <label>
         Category:
     </label>
 
-    <InputSelect @bind-Value="segment.CategoryId">
+    <InputSelect @bind-Value="segmentVM.CategoryId">
         @foreach (var category in Categories)
         {
             <option value="@category.Id">@category.Name</option>
@@ -29,6 +31,10 @@
 
     <br />
     <input class="btn btn-info" type="submit" value="Update" />
+    @if (String.IsNullOrEmpty(ErrorMessage) == false)
+    {
+        <p class="text-danger" role="alert">@ErrorMessage</p>
+    }
 
 </EditForm>
 
@@ -36,6 +42,10 @@
 @code {
     [Parameter]
     public SegmentModel segment { get; set; } = new();
+
+    private SegmentViewModel segmentVM { get; set; } = new();
+
+    private string? ErrorMessage;
 
     [Parameter]
     public List<CategoryModel> Categories { get; set; } = new();
@@ -46,10 +56,10 @@
     [Parameter]
     public Action? OnUpdate { get; set; }
 
-    // protected override async Task OnInitializedAsync()
-    // {
-    //     Categories = await manager._categoryRepository.GetAllCategoriesAsync();
-    // }
+    protected override async Task OnInitializedAsync()
+    {
+        segmentVM = new(segment);
+    }
 
     private async Task HandleSubmit()
     {
@@ -62,8 +72,19 @@
 
         if (confirmation)
         {
-            await manager._segmentRepository.UpdateSegmentAsync(segment);
-            OnUpdate?.Invoke();
+            segment.Name = segmentVM.Name;
+            segment.Description = segmentVM.Description;
+            segment.CategoryId = segmentVM.CategoryId;
+            try
+            {
+                await manager._segmentRepository.UpdateSegmentAsync(segment);
+                OnUpdate?.Invoke();
+            }
+            catch (Exception ex)
+            {
+                ErrorMessage = ex.Message;
+            }
+
         }
 
     }
