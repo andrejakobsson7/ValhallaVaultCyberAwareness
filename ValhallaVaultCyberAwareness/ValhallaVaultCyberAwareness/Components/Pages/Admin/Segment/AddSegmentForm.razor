@@ -1,12 +1,14 @@
-﻿@inject AdminManager manager
+﻿@using ValhallaVaultCyberAwareness.Client.ViewModels
+@inject AdminManager manager
 @inject NavigationManager navManager
 
 <ConfirmDialog @ref="dialog"></ConfirmDialog>
 
 <h3>Create a segment: </h3>
 
-<EditForm Model="segment" OnSubmit="HandleSubmit" FormName="name" class="card w-50">
-
+<EditForm Model="segment" OnValidSubmit="HandleSubmit" FormName="name" class="card w-50">
+    <DataAnnotationsValidator />
+    <ValidationSummary class="text-danger" role="alert" />    
     <label>
         Name
     </label>
@@ -33,18 +35,23 @@
 
     <br />
     <input class="btn btn-info" type="submit" value="Create a segment" />
-
+    @if(String.IsNullOrEmpty(ErrorMessage) == false)
+    {
+        <p class="text-danger" role="alert">@ErrorMessage</p>
+    }
 </EditForm>
 
 
 @code {
     [SupplyParameterFromForm]
-    public SegmentModel segment { get; set; } = new();
+    public SegmentViewModel segment { get; set; } = new();
 
     [Parameter]
     public List<CategoryModel> Categories { get; set; } = new();
 
     private ConfirmDialog dialog;
+
+    private string? ErrorMessage;
 
     // Action that tells the parent component to update when invoked
     [Parameter]
@@ -66,12 +73,22 @@
 
         if (confirmation)
         {
-            await manager._segmentRepository.AddSegmentAsync(segment);
-            navManager.NavigateTo("Admin/Segment/SegmentPage", true);
-
+            SegmentModel newSegment = new()
+                {
+                    Name = segment.Name,
+                    Description = segment.Description,
+                    CategoryId = segment.CategoryId
+                };
+            try
+            {
+                await manager._segmentRepository.AddSegmentAsync(newSegment);
+                navManager.NavigateTo("Admin/Segment/SegmentPage", true);
+            }
+            catch (Exception ex)
+            {
+                ErrorMessage = ex.Message;
+            }
         }
-
-      
     }
 
 }
