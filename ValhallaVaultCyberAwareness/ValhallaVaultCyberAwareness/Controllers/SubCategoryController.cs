@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using ValhallaVaultCyberAwareness.Domain.Models;
 using ValhallaVaultCyberAwareness.Repositories.Interfaces;
 
@@ -9,6 +10,7 @@ namespace ValhallaVaultCyberAwareness.Controllers
     public class SubCategoryController : ControllerBase
     {
         public ISubCategoryRepository _subCategoryRepo;
+
         public SubCategoryController(ISubCategoryRepository subCategoryRepo)
         {
             _subCategoryRepo = subCategoryRepo;
@@ -25,61 +27,73 @@ namespace ValhallaVaultCyberAwareness.Controllers
                 return Ok(subCategory);
             }
 
-            return NotFound();
+            return NotFound("Subcategory does not exist.");
         }
 
-        //[HttpGet]
-        //[Route("{subCategoryId}")]
-        //public async Task<IActionResult> GetSubCategoryByIdWithInclude(int subCategoryId)
-        //{
-        //    var subCategory = await _subCategoryRepo.GetSubCategoryByIdAsync(subCategoryId);
+        [HttpGet]
+        public async Task<IActionResult> GetAllSubcategories()
+        {
+            var subCategories = await _subCategoryRepo.GetSubCategoriesAsync();
 
-        //    if (subCategory != null)
-        //    {
-        //        return Ok(subCategory);
-        //    }
+            if (subCategories != null)
+            {
+                return Ok(subCategories);
+            }
 
-        //    return BadRequest();
-        //}
+            return BadRequest();
+        }
 
         [HttpPost]
         public async Task<ActionResult<SubCategoryModel>> AddSubCategory(SubCategoryModel newSubCategory)
         {
-            var subCategoryToAdd = await _subCategoryRepo.AddSubCategory(newSubCategory);
-
-            if (subCategoryToAdd != null)
+            try
             {
+                var subCategoryToAdd = await _subCategoryRepo.AddSubCategory(newSubCategory);
                 return Ok(subCategoryToAdd);
             }
+            catch (DbUpdateException ex)
+            {
+                return BadRequest(ex.Message);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
 
-            return BadRequest();
         }
 
         [HttpPut]
         [Route("{id}")]
         public async Task<ActionResult<SubCategoryModel>> UpdateSubCategory(SubCategoryModel subCategory)
         {
-            var updatedSubCategory = await _subCategoryRepo.UpdateSubCategoryAsync(subCategory);
-
-            if (updatedSubCategory != null)
+            try
             {
+                var updatedSubCategory = await _subCategoryRepo.UpdateSubCategoryAsync(subCategory);
                 return Ok(updatedSubCategory);
 
             }
-            return BadRequest();
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
         }
 
         [HttpDelete]
         [Route("{id}")]
         public async Task<ActionResult<SubCategoryModel>> DeleteSubCategory(int id)
         {
-            var subCategoryToDelete = await _subCategoryRepo.DeleteSubCategoryAsync(id);
-
-            if (subCategoryToDelete != false)
+            try
             {
-                return Ok(subCategoryToDelete);
+                var subCategoryToDelete = await _subCategoryRepo.DeleteSubCategoryAsync(id);
+                return Ok("Sub category was successfully deleted.");
+
             }
-            return BadRequest();
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+
+            }
+
         }
     }
 }
