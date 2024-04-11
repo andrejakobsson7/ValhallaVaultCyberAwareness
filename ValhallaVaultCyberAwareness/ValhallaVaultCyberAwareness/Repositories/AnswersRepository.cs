@@ -24,6 +24,21 @@ namespace ValhallaVaultCyberAwareness.Repositories
             return await _context.Answers.Where(a => a.QuestionId == questionId).ToListAsync();
         }
 
+        public async Task<List<AnswerModel>> AddAnswersAsync(List<AnswerModel> answers)
+        {
+            try
+            {
+                await _context.AddRangeAsync(answers);
+                await _context.SaveChangesAsync();
+                return answers;
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+
+        }
+
         public async Task<AnswerModel> UpdateAnswerAsync(AnswerModel newAnswer)
         {
             var answerToUpdate = await _context.Answers.FirstOrDefaultAsync(a => a.Id == newAnswer.Id);
