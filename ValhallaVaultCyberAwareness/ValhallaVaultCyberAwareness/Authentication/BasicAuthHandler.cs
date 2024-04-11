@@ -125,12 +125,6 @@ namespace ValhallaVaultCyberAwareness.Authentication
             }
         }
 
-        private async Task SetNotFoundInvalidUserId(HttpContext context)
-        {
-            context.Response.StatusCode = 404;
-            await context.Response.WriteAsync($"User with username {_username} could not be found");
-        }
-
         private async Task SetNotFound(HttpContext context)
         {
             context.Response.StatusCode = 404;

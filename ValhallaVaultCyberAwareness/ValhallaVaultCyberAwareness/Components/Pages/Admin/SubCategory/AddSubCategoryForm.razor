@@ -1,29 +1,31 @@
-﻿@inject AdminManager manager
+﻿@using ValhallaVaultCyberAwareness.Client.ViewModels
+@inject AdminManager manager
 @inject NavigationManager navManager
 
 <ConfirmDialog @ref="dialog"></ConfirmDialog>
 
 <h3>Create a SubCategory: </h3>
 
-<EditForm Model="SubCategory" OnSubmit=" async ()=> await HandleSubmit()" FormName="name" class="card w-50">
-
+<EditForm Model="subcategory" OnValidSubmit=" async ()=> await HandleSubmit()" FormName="name" class="card w-50">
+    <DataAnnotationsValidator />
+    <ValidationSummary class="text-danger" role="alert" />
     <label>
         Name:
     </label>
 
-    <InputText @bind-Value="SubCategory.Name"></InputText>
+    <InputText @bind-Value="subcategory.Name"></InputText>
 
     <label>
         Description:
     </label>
 
-    <InputText @bind-Value="SubCategory.Description"></InputText>
+    <InputText @bind-Value="subcategory.Description"></InputText>
 
     <label>
         Segment:
     </label>
 
-    <InputSelect @bind-Value="SubCategory.SegmentId">
+    <InputSelect @bind-Value="subcategory.SegmentId">
         <option>None</option>
         @foreach (var segment in Segments)
         {
@@ -34,17 +36,24 @@
     <br />
 
     <input class="btn btn-info" type="submit" value="Create subcategory" />
+    @if (String.IsNullOrEmpty(ErrorMessage) == false)
+    {
+        <p class="text-danger" role="alert">@ErrorMessage</p>
+    }
 
 </EditForm>
 
 
 @code {
     [SupplyParameterFromForm]
-    public SubCategoryModel SubCategory { get; set; } = new();
+    public SubCategoryViewModel subcategory { get; set; } = new();
 
     private List<SegmentModel> Segments { get; set; } = new();
 
     private ConfirmDialog dialog;
+
+    private string? ErrorMessage;
+
 
     // Action that tells the parent component to update when invoked
     [Parameter]
@@ -67,9 +76,23 @@
 
         if (confirmation)
         {
-            await manager._subcategoryRepository.AddSubCategory(SubCategory);
+            SubCategoryModel newSubCategory = new()
+                {
+                    Name = subcategory.Name,
+                    Description = subcategory.Description,
+                    SegmentId = subcategory.SegmentId
+                };
+            try
+            {
+                await manager._subcategoryRepository.AddSubCategory(newSubCategory);
 
-            navManager.NavigateTo("Admin/SubCategory/SubCategoryPage", true);
+                navManager.NavigateTo("Admin/SubCategory/SubCategoryPage", true);
+            }
+            catch (Exception ex)
+            {
+                ErrorMessage = ex.Message;
+
+            }
         }
     }
 
