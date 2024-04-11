@@ -3,9 +3,9 @@
 
 <ConfirmDialog @ref="dialog"></ConfirmDialog>
 
-<div class="card">
+<div id="Question-@QuestionId" class="card question">
     <div class="card-body">
-
+        <p class="QuestionNumber">Question nr:@QuestionId</p>
         <h5 class="card-title">Question: @CurrentQuestion.Question</h5>
 
         @if(CurrentQuestion.SubCategory != null)
@@ -50,6 +50,9 @@
 @code {
     [Parameter]
     public QuestionModel CurrentQuestion { get; set; }
+    
+    [Parameter]
+    public int QuestionId { get; set; }
 
     // Action that tells the parent component to update when invoked
     [Parameter]

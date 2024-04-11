@@ -13,15 +13,18 @@ else
 
         <div class="row">
 
-           <div class="col-sm question">
+            <div class="col-sm question">
                 <h3>Questions: </h3>
-
-                @foreach (var question in Questions)
-                {
+                @{
                     int questionId = 0;
-                    questionId++;
-                    <Question CurrentQuestion="@question" OnDelete=" async () => await OnChange()"></Question>
+
+                    @foreach (var question in Questions)
+                    {
+                        questionId++;
+                        <Question CurrentQuestion="@question" QuestionId="@questionId" OnDelete=" async () => await OnChange()"></Question>
+                    }
                 }
+                
 
            </div>
 
