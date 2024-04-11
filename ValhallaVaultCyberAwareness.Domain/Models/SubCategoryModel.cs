@@ -22,5 +22,6 @@ namespace ValhallaVaultCyberAwareness.Domain.Models
         public SegmentModel? Segment { get; set; }
 
         public List<QuestionModel> Questions { get; set; } = new();
+
     }
 }

@@ -46,10 +46,10 @@ namespace ValhallaVaultCyberAwareness.Repositories
             //{
             //    throw new DbUpdateException("Name cannot be null.");
             //}
-            //else if (await _segmentRepository.GetSegmentByIdAsync(newSubCategory.SegmentId) == null)
-            //{
-            //    throw new DbUpdateException("Segment does not exist.");
-            //}
+            if (await _segmentRepository.GetSegmentByIdAsync(newSubCategory.SegmentId) == null)
+            {
+                throw new DbUpdateException("Segment does not exist.");
+            }
             try
             {
                 await _context.SubCategories.AddAsync(newSubCategory);

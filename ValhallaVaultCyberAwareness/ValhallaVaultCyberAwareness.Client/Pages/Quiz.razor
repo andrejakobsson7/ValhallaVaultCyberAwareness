@@ -37,7 +37,7 @@ else
                             {currentQuestionIndex} is an int that tracks how many answers
                             Have been submitted using the {NextQuestion} method
                         -->
-                        <h5>Question: @($"{ currentQuestionIndex + 1}") / @questions.Count</h5>
+                        <h5 id="questionIndex" >Question: @($"{ currentQuestionIndex + 1}") / @questions.Count</h5>
                     </div>
                 </div>
             </div>
@@ -138,7 +138,7 @@ else
                                     }
                                     else
                                     {
-                                        <button @onclick="CompleteQuiz">Quiz Complete</button>
+                                        <button id="completeQuizBtn" @onclick="CompleteQuiz">Quiz Complete</button>
                                     }
                                 </div>
                             }
