@@ -12,5 +12,6 @@ namespace ValhallaVaultCyberAwareness.Repositories.Interfaces
 		public Task<bool> UpdateSupportResponseAsync(SupportResponseModel supportResponse);
 
 		public Task<bool> DeleteSupportResponseAsync(int id);
-	}
+        Task GetAllQuestionsWithResponsesAsync();
+    }
 }

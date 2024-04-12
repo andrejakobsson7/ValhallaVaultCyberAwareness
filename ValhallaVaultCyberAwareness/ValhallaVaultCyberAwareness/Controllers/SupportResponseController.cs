@@ -48,5 +48,6 @@ namespace ValhallaVaultCyberAwareness.Controllers
             }
             return BadRequest();
         }
+
     }
 }
