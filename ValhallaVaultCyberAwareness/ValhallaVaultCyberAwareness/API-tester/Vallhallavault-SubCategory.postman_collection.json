@@ -245,6 +245,7 @@
 							"    var jsonData = pm.response.json();\r",
 							"    pm.expect(jsonData.errors).has.keys(\"newSubCategory\",\"$.segmentId\");\r",
 							"    pm.expect(jsonData.errors.newSubCategory).to.contain(\"The newSubCategory field is required.\");\r",
+							"    pm.expect(jsonData[\"errors\"][\"$.segmentId\"][0]).to.include(\"The JSON value could not be converted to System.Int32.\");\r",
 							"});"
 						],
 						"type": "text/javascript",
@@ -442,7 +443,7 @@
 							"    var jsonData = pm.response.json();  \r",
 							"    pm.expect(jsonData.errors).has.keys(\"subCategory\",\"$.id\");\r",
 							"    pm.expect(jsonData.errors.subCategory).to.contain(\"The subCategory field is required.\");\r",
-							"    pm.expect(jsonData[\"errors\"][\"$.id\"][0]).to.contain(\"The JSON value could not be converted to System.Int32. Path: $.id | LineNumber: 1 | BytePositionInLine: 14.\");\r",
+							"    pm.expect(jsonData[\"errors\"][\"$.id\"][0]).to.include(\"The JSON value could not be converted to System.Int32.\");\r",
 							"});"
 						],
 						"type": "text/javascript",
@@ -451,6 +452,21 @@
 				}
 			],
 			"request": {
+				"auth": {
+					"type": "basic",
+					"basic": [
+						{
+							"key": "password",
+							"value": "Password1234!",
+							"type": "string"
+						},
+						{
+							"key": "username",
+							"value": "admin",
+							"type": "string"
+						}
+					]
+				},
 				"method": "PUT",
 				"header": [],
 				"body": {
@@ -542,7 +558,7 @@
 							"pm.test(\"Response error property should contain the 'subCategory' and 'segmentId' fields with their values\", function () {\r",
 							"    var jsonData = pm.response.json();\r",
 							"\r",
-							"     pm.expect(jsonData[\"errors\"][\"$.segmentId\"][0]).to.contain(\"The JSON value could not be converted to System.Int32. Path: $.segmentId | LineNumber: 4 | BytePositionInLine: 21.\");\r",
+							"     pm.expect(jsonData[\"errors\"][\"$.segmentId\"][0]).to.contain(\"The JSON value could not be converted to System.Int32.\");\r",
 							"\r",
 							"});"
 						],
@@ -638,7 +654,7 @@
 				"method": "DELETE",
 				"header": [],
 				"url": {
-					"raw": "https://localhost:7107/api/SubCategory/1132",
+					"raw": "https://localhost:7107/api/SubCategory/1134",
 					"protocol": "https",
 					"host": [
 						"localhost"
@@ -647,7 +663,7 @@
 					"path": [
 						"api",
 						"SubCategory",
-						"1132"
+						"1134"
 					]
 				}
 			},

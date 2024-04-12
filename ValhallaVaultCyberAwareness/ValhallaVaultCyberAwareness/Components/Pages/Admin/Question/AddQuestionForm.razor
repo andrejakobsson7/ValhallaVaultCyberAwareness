@@ -60,7 +60,7 @@
             @if (CorrectAnswerHide == false)
             {
                 <br />
-                <Alert Color="AlertColor.Danger">
+                <Alert Color="AlertColor.Danger" id="myAlert">
                     <strong>Please add a correct answer</strong>  <Button Color="ButtonColor.Light" @onclick="ToggleCorrectHide">Close</Button>
                 </Alert>
 
@@ -70,7 +70,7 @@
             @if (MultipleCorrectAnswersHide == false)
             {
                 <br />
-                <Alert Color="AlertColor.Danger">
+                <Alert Color="AlertColor.Danger" id="myAlert">
                     <strong>Only 1 correct answer allowed</strong>  <Button Color="ButtonColor.Light" @onclick="ToggleMultipleCorrectHide">Close</Button>
                 </Alert>
 
