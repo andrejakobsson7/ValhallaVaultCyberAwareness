@@ -1,0 +1,728 @@
+{
+	"info": {
+		"_postman_id": "838448ea-bc60-49b2-a71c-bf3b3452c17d",
+		"name": "Vallhallavault API",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "33871223"
+	},
+	"item": [
+		{
+			"name": "GetById OK",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Response objects should all contain exactly id, name, description, segmentId, segment and questions\", function () {\r",
+							"    var jsonData = pm.response.json();\r",
+							"    pm.expect(jsonData).to.have.all.keys(\"id\",\"name\",\"description\",\"segmentId\",\"segment\",\"questions\");\r",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "basic",
+					"basic": [
+						{
+							"key": "password",
+							"value": "Password1234!",
+							"type": "string"
+						},
+						{
+							"key": "username",
+							"value": "admin",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://localhost:7107/api/SubCategory/42",
+					"protocol": "https",
+					"host": [
+						"localhost"
+					],
+					"port": "7107",
+					"path": [
+						"api",
+						"SubCategory",
+						"42"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GetById NOT FOUND",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 404\", function () {\r",
+							"    pm.response.to.have.status(404);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Response body to display desired message\", function () {\r",
+							"    let responseMessage = pm.response.text();\r",
+							"    pm.expect(responseMessage).to.eql(\"Subcategory does not exist.\");\r",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://localhost:7107/api/SubCategory/5123",
+					"protocol": "https",
+					"host": [
+						"localhost"
+					],
+					"port": "7107",
+					"path": [
+						"api",
+						"SubCategory",
+						"5123"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "POST OK",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Response objects should all contain exactly id, name, description, segmentId, segment and questions\", function () {\r",
+							"    var jsonData = pm.response.json();\r",
+							"    pm.expect(jsonData).to.have.all.keys(\"id\",\"name\",\"description\",\"segmentId\",\"segment\",\"questions\")\r",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "basic",
+					"basic": [
+						{
+							"key": "password",
+							"value": "Password1234!",
+							"type": "string"
+						},
+						{
+							"key": "username",
+							"value": "admin",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"name\": \"dawd\",\r\n    \"description\": \"Hello bob\",\r\n    \"segmentId\": 5\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://localhost:7107/api/SubCategory/",
+					"protocol": "https",
+					"host": [
+						"localhost"
+					],
+					"port": "7107",
+					"path": [
+						"api",
+						"SubCategory",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "POST without name",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 400\", function () {\r",
+							"    pm.response.to.have.status(400);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Response error property should contain the 'Name' property and its value\", function () {\r",
+							"    var jsonData = pm.response.json();\r",
+							"    pm.expect(jsonData.errors).has.key(\"Name\");\r",
+							"    pm.expect(jsonData.errors.Name).to.contain(\"The Name field is required.\")\r",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "basic",
+					"basic": [
+						{
+							"key": "password",
+							"value": "Password1234!",
+							"type": "string"
+						},
+						{
+							"key": "username",
+							"value": "admin",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"name\": null,\r\n    \"description\": \"Hello\",\r\n    \"segmentId\": 5\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://localhost:7107/api/SubCategory/",
+					"protocol": "https",
+					"host": [
+						"localhost"
+					],
+					"port": "7107",
+					"path": [
+						"api",
+						"SubCategory",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "POST without SegmentId",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 400\", function () {\r",
+							"    pm.response.to.have.status(400);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Response error property should contain the 'newSubCategory' and 'segmentId' properties with their values\", function () {\r",
+							"    var jsonData = pm.response.json();\r",
+							"    pm.expect(jsonData.errors).has.keys(\"newSubCategory\",\"$.segmentId\");\r",
+							"    pm.expect(jsonData.errors.newSubCategory).to.contain(\"The newSubCategory field is required.\");\r",
+							"    pm.expect(jsonData[\"errors\"][\"$.segmentId\"][0]).to.include(\"The JSON value could not be converted to System.Int32.\");\r",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"name\": \"Dogman\",\r\n    \"description\": \"Hello\",\r\n    \"segmentId\": null\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://localhost:7107/api/SubCategory/",
+					"protocol": "https",
+					"host": [
+						"localhost"
+					],
+					"port": "7107",
+					"path": [
+						"api",
+						"SubCategory",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "POST with non existing segment",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 400\", function () {\r",
+							"    pm.response.to.have.status(400);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Response body to display desired message\", function () {\r",
+							"    let responseMessage = pm.response.text();\r",
+							"    pm.expect(responseMessage).to.eql(\"Segment does not exist.\");\r",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"name\": \"Bobe\",\r\n    \"description\": \"Hello bob\",\r\n    \"segmentId\": 5000000\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://localhost:7107/api/SubCategory/",
+					"protocol": "https",
+					"host": [
+						"localhost"
+					],
+					"port": "7107",
+					"path": [
+						"api",
+						"SubCategory",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "PUT OK",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Response objects should all contain exactly id, name, description, segmentId, segment and questions\", function () {\r",
+							"    var jsonData = pm.response.json();\r",
+							"    pm.expect(jsonData).to.have.all.keys(\"id\",\"name\",\"description\",\"segmentId\",\"segment\",\"questions\")\r",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"id\": 5,\r\n    \"name\": \"Yoyo\",\r\n    \"description\": \"Hello\",\r\n    \"segmentId\": \"8\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://localhost:7107/api/SubCategory/5",
+					"protocol": "https",
+					"host": [
+						"localhost"
+					],
+					"port": "7107",
+					"path": [
+						"api",
+						"SubCategory",
+						"5"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "PUT with non existing subcategory",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 400\", function () {\r",
+							"    pm.response.to.have.status(400);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Response body to display desired message\", function () {\r",
+							"    let responseMessage = pm.response.text();\r",
+							"    pm.expect(responseMessage).to.eql(\"SubCategory does not exist.\");\r",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"id\": 60000,\r\n    \"name\": \"Yoyo\",\r\n    \"description\": \"Hello\",\r\n    \"segmentId\": \"8\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://localhost:7107/api/SubCategory/5123",
+					"protocol": "https",
+					"host": [
+						"localhost"
+					],
+					"port": "7107",
+					"path": [
+						"api",
+						"SubCategory",
+						"5123"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "PUT without Id",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 400\", function () {\r",
+							"    pm.response.to.have.status(400);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Response error field should contain the 'subCategory' and 'Id' properties with their values\", function () {\r",
+							"    var jsonData = pm.response.json();  \r",
+							"    pm.expect(jsonData.errors).has.keys(\"subCategory\",\"$.id\");\r",
+							"    pm.expect(jsonData.errors.subCategory).to.contain(\"The subCategory field is required.\");\r",
+							"    pm.expect(jsonData[\"errors\"][\"$.id\"][0]).to.include(\"The JSON value could not be converted to System.Int32.\");\r",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "basic",
+					"basic": [
+						{
+							"key": "password",
+							"value": "Password1234!",
+							"type": "string"
+						},
+						{
+							"key": "username",
+							"value": "admin",
+							"type": "string"
+						}
+					]
+				},
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"id\": null,\r\n    \"name\": \"Yoyo\",\r\n    \"description\": \"Hello\",\r\n    \"segmentId\": \"8\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://localhost:7107/api/SubCategory/5",
+					"protocol": "https",
+					"host": [
+						"localhost"
+					],
+					"port": "7107",
+					"path": [
+						"api",
+						"SubCategory",
+						"5"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "PUT without name",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 400\", function () {\r",
+							"    pm.response.to.have.status(400);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Response error property should contain the 'Name' property and its value\", function () {\r",
+							"    var jsonData = pm.response.json();\r",
+							"    pm.expect(jsonData.errors).has.key(\"Name\");\r",
+							"    pm.expect(jsonData.errors.Name).to.contain(\"The Name field is required.\")\r",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"id\": 5,\r\n    \"name\": null,\r\n    \"description\": \"Hello\",\r\n    \"segmentId\": \"8\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://localhost:7107/api/SubCategory/5",
+					"protocol": "https",
+					"host": [
+						"localhost"
+					],
+					"port": "7107",
+					"path": [
+						"api",
+						"SubCategory",
+						"5"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "PUT without SegmentId",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 400\", function () {\r",
+							"    pm.response.to.have.status(400);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Response error property should contain the 'subCategory' and 'segmentId' fields with their values\", function () {\r",
+							"    var jsonData = pm.response.json();\r",
+							"\r",
+							"     pm.expect(jsonData[\"errors\"][\"$.segmentId\"][0]).to.contain(\"The JSON value could not be converted to System.Int32.\");\r",
+							"\r",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"protocolProfileBehavior": {
+				"followRedirects": false,
+				"disableUrlEncoding": true
+			},
+			"request": {
+				"auth": {
+					"type": "basic",
+					"basic": [
+						{
+							"key": "password",
+							"value": "Password1234!",
+							"type": "string"
+						},
+						{
+							"key": "username",
+							"value": "admin",
+							"type": "string"
+						}
+					]
+				},
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"id\": 5,\r\n    \"name\": \"Yoyo\",\r\n    \"description\": \"Hello\",\r\n    \"segmentId\": null\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://localhost:7107/api/SubCategory/5",
+					"protocol": "https",
+					"host": [
+						"localhost"
+					],
+					"port": "7107",
+					"path": [
+						"api",
+						"SubCategory",
+						"5"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "DELETE OK",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Response body to display desired message\", function () {\r",
+							"    let responseMessage = pm.response.text();\r",
+							"    pm.expect(responseMessage).to.eql(\"Sub category was successfully deleted.\");\r",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "basic",
+					"basic": [
+						{
+							"key": "password",
+							"value": "Password1234!",
+							"type": "string"
+						},
+						{
+							"key": "username",
+							"value": "admin",
+							"type": "string"
+						}
+					]
+				},
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "https://localhost:7107/api/SubCategory/1134",
+					"protocol": "https",
+					"host": [
+						"localhost"
+					],
+					"port": "7107",
+					"path": [
+						"api",
+						"SubCategory",
+						"1134"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "DELETE NOT FOUND",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 400\", function () {\r",
+							"    pm.response.to.have.status(400);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Response body to display desired message\", function () {\r",
+							"    let responseMessage = pm.response.text();\r",
+							"    pm.expect(responseMessage).to.eql(\"Sub category does not exist.\");\r",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "basic",
+					"basic": [
+						{
+							"key": "password",
+							"value": "Password1234!",
+							"type": "string"
+						},
+						{
+							"key": "username",
+							"value": "admin",
+							"type": "string"
+						}
+					]
+				},
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "https://localhost:7107/api/SubCategory/1510510",
+					"protocol": "https",
+					"host": [
+						"localhost"
+					],
+					"port": "7107",
+					"path": [
+						"api",
+						"SubCategory",
+						"1510510"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}

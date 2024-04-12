@@ -1,0 +1,435 @@
+{
+	"info": {
+		"_postman_id": "47d97e85-5274-4de8-8d9b-b626f7f0b304",
+		"name": "ValhallaVault-Useranswers",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "33871340",
+		"_collection_link": "https://www.postman.com/andynr7/workspace/postmandemo/collection/33871340-47d97e85-5274-4de8-8d9b-b626f7f0b304?action=share&source=collection_link&creator=33871340"
+	},
+	"item": [
+		{
+			"name": "Unauthorized",
+			"item": [
+				{
+					"name": "Post",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "[\r\n    {\r\n        \"userid\": \"{{ordinary-user-username}}\",\r\n        \"answerid\": 1101\r\n    }\r\n]",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseaddress}}/useranswers",
+							"host": [
+								"{{baseaddress}}"
+							],
+							"path": [
+								"useranswers"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"auth": {
+				"type": "noauth"
+			},
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"type": "text/javascript",
+						"packages": {},
+						"exec": [
+							""
+						]
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"packages": {},
+						"exec": [
+							"pm.test(\"Status code is 401\", function () {\r",
+							"    pm.response.to.have.status(401);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Error text is Unauthorized\", function() {\r",
+							"    pm.expect(pm.response.text()).to.include(\"Unauthorized\")\r",
+							"})"
+						]
+					}
+				}
+			]
+		},
+		{
+			"name": "Ordinary user",
+			"item": [
+				{
+					"name": "Positive scenarios",
+					"item": [
+						{
+							"name": "Post",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "[\r\n    {\r\n        \"userid\": \"{{ordinary-user-userid}}\",\r\n        \"answerid\": 1101\r\n    },\r\n    {\r\n        \"userid\": \"{{ordinary-user-userid}}\",\r\n        \"answerid\": 1102\r\n    }\r\n]",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseaddress}}/useranswers",
+									"host": [
+										"{{baseaddress}}"
+									],
+									"path": [
+										"useranswers"
+									]
+								}
+							},
+							"response": []
+						}
+					],
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"type": "text/javascript",
+								"packages": {},
+								"exec": [
+									""
+								]
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"packages": {},
+								"exec": [
+									"pm.test(\"Status code is 201\", function () {\r",
+									"    pm.response.to.have.status(201);\r",
+									"});\r",
+									"\r",
+									"    pm.test(\"Verify confirmation\", function () {\r",
+									"        pm.expect(pm.response.text()).to.include(\"Useranswers have been successfully registered\");\r",
+									"    });"
+								]
+							}
+						}
+					]
+				},
+				{
+					"name": "Negative scenarios",
+					"item": [
+						{
+							"name": "Post",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "[\r\n    {\r\n        \"userid\": \"{{ordinary-user-userid}}\",\r\n        \"answerid\": -1\r\n    },\r\n    {\r\n        \"userid\": \"{{ordinary-user-userid}}\",\r\n        \"answerid\": 1102\r\n    }\r\n]",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseaddress}}/useranswers",
+									"host": [
+										"{{baseaddress}}"
+									],
+									"path": [
+										"useranswers"
+									]
+								}
+							},
+							"response": []
+						}
+					],
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"type": "text/javascript",
+								"packages": {},
+								"exec": [
+									""
+								]
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"packages": {},
+								"exec": [
+									"pm.test(\"Status code is 400\", function () {\r",
+									"    pm.response.to.have.status(400);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Error message include foreign key error\", function () {\r",
+									"\tpm.expect(pm.response.text()).to.include(\"The INSERT statement conflicted with the FOREIGN KEY constraint\");\r",
+									"});"
+								]
+							}
+						}
+					]
+				}
+			],
+			"auth": {
+				"type": "basic",
+				"basic": [
+					{
+						"key": "password",
+						"value": "{{ordinary-user-validpassword}}",
+						"type": "string"
+					},
+					{
+						"key": "username",
+						"value": "{{ordinary-user-username}}",
+						"type": "string"
+					}
+				]
+			},
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"type": "text/javascript",
+						"packages": {},
+						"exec": [
+							""
+						]
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"packages": {},
+						"exec": [
+							""
+						]
+					}
+				}
+			]
+		},
+		{
+			"name": "Invalid credentials",
+			"item": [
+				{
+					"name": "Invalid password",
+					"item": [
+						{
+							"name": "Invalid password",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											""
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "[\r\n    {\r\n        \"userid\": \"{{ordinary-user-username}}\",\r\n        \"answerid\": 1101\r\n    }\r\n]",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseaddress}}/useranswers",
+									"host": [
+										"{{baseaddress}}"
+									],
+									"path": [
+										"useranswers"
+									]
+								}
+							},
+							"response": []
+						}
+					],
+					"auth": {
+						"type": "basic",
+						"basic": [
+							{
+								"key": "password",
+								"value": "{{ordinary-user-invalidpassword}}",
+								"type": "string"
+							},
+							{
+								"key": "username",
+								"value": "{{ordinary-user-username}}",
+								"type": "string"
+							}
+						]
+					},
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"type": "text/javascript",
+								"packages": {},
+								"exec": [
+									""
+								]
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"packages": {},
+								"exec": [
+									"pm.test(\"Status code is 401\", function () {\r",
+									"    pm.response.to.have.status(401);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Error text is Wrong username/password\", function() {\r",
+									"    pm.expect(pm.response.text()).to.include(\"Wrong username and/or password\")\r",
+									"})"
+								]
+							}
+						}
+					]
+				},
+				{
+					"name": "Invalid username",
+					"item": [
+						{
+							"name": "Invalid username",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "[\r\n    {\r\n        \"userid\": \"{{ordinary-user-username}}\",\r\n        \"answerid\": 1101\r\n    }\r\n]",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseaddress}}/useranswers",
+									"host": [
+										"{{baseaddress}}"
+									],
+									"path": [
+										"useranswers"
+									]
+								}
+							},
+							"response": []
+						}
+					],
+					"auth": {
+						"type": "basic",
+						"basic": [
+							{
+								"key": "password",
+								"value": "{{ordinary-user-invalidpassword}}",
+								"type": "string"
+							},
+							{
+								"key": "username",
+								"value": "{{non-existing-username}}",
+								"type": "string"
+							}
+						]
+					},
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"type": "text/javascript",
+								"packages": {},
+								"exec": [
+									""
+								]
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"packages": {},
+								"exec": [
+									"pm.test(\"Status code is 401\", function () {\r",
+									"    pm.response.to.have.status(401);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Error text is Wrong username/password\", function() {\r",
+									"    pm.expect(pm.response.text()).to.include(\"Wrong username and/or password\")\r",
+									"})"
+								]
+							}
+						}
+					]
+				}
+			],
+			"auth": {
+				"type": "basic",
+				"basic": [
+					{
+						"key": "password",
+						"value": "",
+						"type": "string"
+					},
+					{
+						"key": "username",
+						"value": "",
+						"type": "string"
+					}
+				]
+			},
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"type": "text/javascript",
+						"packages": {},
+						"exec": [
+							""
+						]
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"packages": {},
+						"exec": [
+							""
+						]
+					}
+				}
+			]
+		}
+	]
+}
