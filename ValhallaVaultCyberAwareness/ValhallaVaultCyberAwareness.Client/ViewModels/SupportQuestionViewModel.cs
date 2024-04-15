@@ -15,6 +15,7 @@ namespace ValhallaVaultCyberAwareness.Client.ViewModels
         public bool IsAnsweringEnabled { get; set; }
         public List<SupportResponseModel> SupportResponses { get; set; } = new();
 
+
         public SupportQuestionViewModel(SupportQuestionModel supportQuestion)
         {
             InitializeFromSupportQuestion(supportQuestion);
@@ -25,7 +26,7 @@ namespace ValhallaVaultCyberAwareness.Client.ViewModels
             // Default constructor
         }
 
-        private void InitializeFromSupportQuestion(SupportQuestionModel supportQuestion)
+        public void InitializeFromSupportQuestion(SupportQuestionModel supportQuestion)
         {
             SetId(supportQuestion.Id);
             SetQuestion(supportQuestion.Question);
@@ -50,7 +51,7 @@ namespace ValhallaVaultCyberAwareness.Client.ViewModels
             Username = username;
         }
 
-        private void CalculateDaysSincePost(DateTime created)
+        public void CalculateDaysSincePost(DateTime created)
         {
             DaysSincePost = Math.Round((DateTime.Now - created).TotalDays);
         }
@@ -64,5 +65,6 @@ namespace ValhallaVaultCyberAwareness.Client.ViewModels
         {
             QuestionHasResponses = SupportResponses.Count > 0;
         }
+
     }
 }
